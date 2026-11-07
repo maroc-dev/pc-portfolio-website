@@ -14,4 +14,13 @@ export const runtime = {
   gpuBoost: 0,
   /** 1 = day (sun through the window), 0 = night (lamp on). Tweened when the theme flips. */
   daylight: 1,
+  /**
+   * Seconds into the opening assembly. Starts "finished" so everything is in place whenever the
+   * intro doesn't run (reduced motion, deep links, skipping).
+   */
+  assembly: Number.POSITIVE_INFINITY,
+  /** 0 → 1 as the display cable runs across the desk. */
+  cable: 1,
+  /** 0 → 1 as the monitor wakes up. */
+  screen: 1,
 };
