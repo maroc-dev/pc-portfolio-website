@@ -5,7 +5,8 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { useReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore, useExperience } from "@/state/experience-store";
-import { CameraRig } from "./CameraRig";
+import { Cable } from "./Cable";
+import { CameraRig } from "./camera/CameraRig";
 import { Desk } from "./Desk";
 import { Keyboard } from "./Keyboard";
 import { Lamp } from "./Lamp";
@@ -46,6 +47,7 @@ export default function SceneCanvas() {
         <Mug />
         <Monitor />
         <PcTower />
+        <Cable />
         <CameraRig />
       </Suspense>
     </Canvas>
