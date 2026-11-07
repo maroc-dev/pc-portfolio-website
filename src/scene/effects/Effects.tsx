@@ -1,4 +1,10 @@
-import { Bloom, EffectComposer, Outline, ToneMapping } from "@react-three/postprocessing";
+import {
+  Bloom,
+  EffectComposer,
+  Outline,
+  Sharpness,
+  ToneMapping,
+} from "@react-three/postprocessing";
 import { useThree } from "@react-three/fiber";
 import { ToneMappingMode, type OutlineEffect } from "postprocessing";
 import { useEffect, useRef } from "react";
@@ -6,7 +12,8 @@ import { highlightedMeshes, subscribeHighlights } from "../interaction/highlight
 
 /**
  * Post-processing for capable devices: soft outlines on every part while the PC is hovered,
- * a strong outline on the active part, a gentle bloom on LEDs, then neutral tone mapping that keeps the friendly colours true
+ * a strong outline on the active part, a gentle bloom on LEDs, neutral tone mapping that keeps the
+ * friendly colours true, and a light sharpen
  * (the composer takes over tone mapping from the renderer).
  */
 export function Effects() {
@@ -51,6 +58,8 @@ export function Effects() {
         radius={0.55}
       />
       <ToneMapping mode={ToneMappingMode.NEUTRAL} />
+      {/* A light sharpen restores detail that mipmapped textures soften at an angle. */}
+      <Sharpness sharpness={0.35} radius={1} />
     </EffectComposer>
   );
 }
