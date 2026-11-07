@@ -24,7 +24,7 @@ export function SiteHeader() {
         <span className="type-casual block text-lg leading-tight font-bold whitespace-nowrap">
           {profile.name}
         </span>
-        <span className="text-dust block text-sm">Software engineer</span>
+        <span className="text-muted block text-sm">Software engineer</span>
       </button>
       <nav aria-label="Sections" className="pointer-events-auto hidden md:block">
         <ul className="flex items-center gap-1 text-sm">
@@ -34,7 +34,7 @@ export function SiteHeader() {
                 type="button"
                 aria-current={selected === part ? "true" : undefined}
                 onClick={() => experienceStore.getState().select(part)}
-                className="text-dust hover:text-cream aria-[current=true]:text-amber rounded-full px-3 py-1.5 transition-colors"
+                className="text-muted hover:text-fg aria-[current=true]:text-accent rounded-full px-3 py-1.5 transition-colors"
               >
                 {label}
               </button>

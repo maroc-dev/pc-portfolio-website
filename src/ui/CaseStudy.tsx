@@ -13,14 +13,14 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
   return (
     <section className="mt-10">
       <h2 className="text-xl font-bold">{title}</h2>
-      <div className="text-cream/90 mt-3 leading-relaxed">{children}</div>
+      <div className="text-fg/90 mt-3 leading-relaxed">{children}</div>
     </section>
   );
 }
 
 function List({ items }: { items: string[] }) {
   return (
-    <ul className="marker:text-amber list-disc space-y-2 pl-5">
+    <ul className="marker:text-accent list-disc space-y-2 pl-5">
       {items.map((item) => (
         <li key={item}>{item}</li>
       ))}
@@ -41,17 +41,17 @@ export function CaseStudy({ project }: { project: Project }) {
     <article className="mx-auto max-w-[68ch] px-5 py-10 md:py-16">
       <Link
         href="/?part=ssd"
-        className="text-dust hover:text-cream text-sm underline-offset-4 hover:underline"
+        className="text-muted hover:text-fg text-sm underline-offset-4 hover:underline"
       >
         Back to the machine
       </Link>
-      <p className="text-dust mt-10 text-sm">{KIND_LABEL[project.kind]}</p>
+      <p className="text-muted mt-10 text-sm">{KIND_LABEL[project.kind]}</p>
       <h1 className="mt-1 text-4xl font-extrabold md:text-5xl">{project.title}</h1>
-      <p className="text-cream/90 mt-4 text-lg">{project.summary}</p>
+      <p className="text-fg/90 mt-4 text-lg">{project.summary}</p>
 
       <ul aria-label="Built with" className="mt-5 flex flex-wrap gap-2">
         {project.stack.map((tech) => (
-          <li key={tech} className="border-line text-dust rounded-full border px-3 py-1 text-sm">
+          <li key={tech} className="border-line text-muted rounded-full border px-3 py-1 text-sm">
             {tech}
           </li>
         ))}
@@ -64,7 +64,7 @@ export function CaseStudy({ project }: { project: Project }) {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-amber underline-offset-4 hover:underline"
+            className="text-accent underline-offset-4 hover:underline"
           >
             {link.label}
           </a>
@@ -73,7 +73,7 @@ export function CaseStudy({ project }: { project: Project }) {
 
       <div className="mt-10">{project.placeholder && <DraftNote />}</div>
       {!hasDetail && (
-        <p className="text-dust">
+        <p className="text-muted">
           The full write-up is on its way: the problem, how it&apos;s built, what was hard and what
           came out of it.
         </p>

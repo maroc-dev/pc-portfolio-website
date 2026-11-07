@@ -26,7 +26,7 @@ async function ProjectContent({ params }: { params: Params }) {
 export default function ProjectPage({ params }: PageProps<"/projects/[slug]">) {
   return (
     <main>
-      <Suspense fallback={<p className="text-dust mx-auto max-w-[68ch] px-5 py-16">Opening…</p>}>
+      <Suspense fallback={<p className="text-muted mx-auto max-w-[68ch] px-5 py-16">Opening…</p>}>
         <ProjectContent params={params} />
       </Suspense>
     </main>

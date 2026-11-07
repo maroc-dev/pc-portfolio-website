@@ -18,7 +18,7 @@ export function StaticFallback() {
           <p className="type-casual text-2xl font-bold">
             The desk lamp is on, but the 3D view is off.
           </p>
-          <p className="text-cream/85 mt-3">
+          <p className="text-fg/85 mt-3">
             Your browser can&apos;t show the 3D machine, so pick a part below to open each section
             directly.
           </p>

@@ -13,7 +13,7 @@ export function ArchiveSection({ section }: { section: Archive }) {
 
   return (
     <>
-      <p className="text-cream/90 max-w-[62ch]">{section.intro}</p>
+      <p className="text-fg/90 max-w-[62ch]">{section.intro}</p>
       <div role="tablist" aria-label="Drives" className="mt-5 flex flex-wrap gap-2">
         {section.drives.map((d) => (
           <button
@@ -24,9 +24,9 @@ export function ArchiveSection({ section }: { section: Archive }) {
             aria-selected={d.id === drive?.id}
             aria-controls={`${baseId}-panel`}
             onClick={() => setActive(d.id)}
-            className="border-line text-dust hover:text-cream aria-selected:border-amber/70 aria-selected:text-cream rounded-lg border px-3 py-1.5 text-sm transition-colors"
+            className="border-line text-muted hover:text-fg aria-selected:border-accent/70 aria-selected:text-fg rounded-lg border px-3 py-1.5 text-sm transition-colors"
           >
-            <span className="text-amber type-mono mr-1.5">{d.id}:</span>
+            <span className="text-accent type-mono mr-1.5">{d.id}:</span>
             {d.label}
           </button>
         ))}

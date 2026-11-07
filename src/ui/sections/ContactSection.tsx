@@ -3,7 +3,7 @@ import type { ContactSection as Contact } from "@/content/types";
 export function ContactSection({ section }: { section: Contact }) {
   return (
     <>
-      <p className="text-cream/90 max-w-[62ch]">{section.intro}</p>
+      <p className="text-fg/90 max-w-[62ch]">{section.intro}</p>
       <ul className="divide-line border-line mt-5 divide-y rounded-xl border">
         {section.links.map((link) => (
           <li key={link.label} className="flex items-baseline justify-between gap-4 px-4 py-3">
@@ -13,12 +13,12 @@ export function ContactSection({ section }: { section: Contact }) {
                 href={link.href}
                 target={link.href.startsWith("http") ? "_blank" : undefined}
                 rel="noopener noreferrer"
-                className="text-amber underline-offset-4 hover:underline"
+                className="text-accent underline-offset-4 hover:underline"
               >
                 {link.detail}
               </a>
             ) : (
-              <span className="text-dust">{link.detail}</span>
+              <span className="text-muted">{link.detail}</span>
             )}
           </li>
         ))}

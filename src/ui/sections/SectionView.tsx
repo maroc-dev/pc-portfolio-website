@@ -15,7 +15,7 @@ export function SectionView({ section }: { section: Section }) {
       {section.kind === "about" && <AboutSection section={section} />}
       {section.kind === "projects" && (
         <>
-          <p className="text-cream/90 mb-5 max-w-[62ch]">{section.intro}</p>
+          <p className="text-fg/90 mb-5 max-w-[62ch]">{section.intro}</p>
           <ProjectList projects={getProjects(section.projectSlugs)} />
         </>
       )}

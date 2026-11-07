@@ -32,14 +32,14 @@ export function BootOverlay() {
       role="status"
       className="pointer-events-none absolute inset-x-0 top-[22%] z-20 flex flex-col items-center gap-3"
     >
-      <p className="text-dust type-mono text-sm">powering on</p>
+      <p className="text-muted type-mono text-sm">powering on</p>
       <span className="bg-line block h-px w-24 overflow-hidden">
-        <span className="bg-amber block h-full w-full origin-left animate-[boot_1.6s_ease-out_forwards]" />
+        <span className="bg-accent block h-full w-full origin-left animate-[boot_1.6s_ease-out_forwards]" />
       </span>
       <button
         type="button"
         onClick={() => experienceStore.getState().finishBoot()}
-        className="text-dust hover:text-cream pointer-events-auto text-xs underline-offset-4 hover:underline"
+        className="text-muted hover:text-fg pointer-events-auto text-xs underline-offset-4 hover:underline"
       >
         Skip intro
       </button>
