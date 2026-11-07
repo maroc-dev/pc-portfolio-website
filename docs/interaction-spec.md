@@ -46,7 +46,9 @@ Motherboard, PSU and cooling are visible but not selectable in the MVP.
 
 ## Opening (about 4.4 s, skippable)
 
-The scene assembles while the camera glides in from a wider, higher angle: the desk rises into
+Before it starts, the canvas stays hidden for a short beat (at least 1.5 s after the scene
+mounts) while every shader is compiled and the desk grain is generated, so nothing stutters
+mid-animation. Then the canvas fades in and the scene assembles while the camera glides in from a wider, higher angle: the desk rises into
 place, the monitor, lamp, keyboard and mug settle, the light switch slides out of the wall. The
 PC builds from the inside out: chassis and plinth, motherboard, CPU, RAM, SSD, network card,
 GPU, radiator and wiring, then the glass closes and the cap drops on. The display cable runs
