@@ -126,6 +126,8 @@ export function CameraRig() {
       camera.fov = p.fov;
       camera.updateProjectionMatrix();
     }
+    // Later frame callbacks (the monitor's screen projection) need this frame's matrices.
+    camera.updateMatrixWorld();
   });
 
   return null;

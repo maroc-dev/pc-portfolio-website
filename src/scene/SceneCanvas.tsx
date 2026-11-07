@@ -40,6 +40,8 @@ export default function SceneCanvas() {
       <fog attach="fog" args={["#1d1b19", 2.6, 6]} />
       <PerformanceMonitor onDecline={() => experienceStore.getState().setQuality("low")} />
       <Suspense fallback={null}>
+        {/* First, so the camera is placed before anything projects through it this frame. */}
+        <CameraRig />
         <Lighting />
         <Desk />
         <Lamp />
@@ -48,7 +50,6 @@ export default function SceneCanvas() {
         <Monitor />
         <PcTower />
         <Cable />
-        <CameraRig />
       </Suspense>
     </Canvas>
   );
