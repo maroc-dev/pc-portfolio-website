@@ -1,26 +1,100 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Evening Workbench tokens — see docs/art-direction.md */
+@theme {
+  --color-night: #1d1b19;
+  --color-ink: #262320;
+  --color-line: #3a3530;
+  --color-walnut: #6b4a33;
+  --color-amber: #f2a65a;
+  --color-cream: #f3e9dc;
+  --color-dust: #a89c8e;
+  --color-teal: #5fb3a8;
+
+  --font-sans: var(--font-recursive), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-recursive), ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/*
+ * Recursive is one variable family; its axes carry the personality.
+ * font-variation-settings does not merge, so each utility sets the full set.
+ */
+@utility type-casual {
+  font-variation-settings:
+    "CASL" 1,
+    "MONO" 0,
+    "CRSV" 0.5;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@utility type-linear {
+  font-variation-settings:
+    "CASL" 0,
+    "MONO" 0,
+    "CRSV" 0.5;
+}
+
+@utility type-mono {
+  font-family: var(--font-mono);
+  font-variation-settings:
+    "CASL" 0.3,
+    "MONO" 1,
+    "CRSV" 0;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background: var(--color-night);
+  }
+
+  body {
+    background: var(--color-night);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    font-variation-settings:
+      "CASL" 0,
+      "MONO" 0,
+      "CRSV" 0.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-variation-settings:
+      "CASL" 1,
+      "MONO" 0,
+      "CRSV" 0.5;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-amber) 35%, transparent);
+    color: var(--color-cream);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 3px;
+    border-radius: 6px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
