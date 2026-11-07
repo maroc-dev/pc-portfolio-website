@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { pickQualityTier, readDeviceHints, supportsWebGL } from "@/lib/device/quality";
 import { experienceStore, useExperience } from "@/state/experience-store";
+import { useThemeSync } from "@/state/use-theme-sync";
 import { useUrlSync } from "@/state/use-url-sync";
 import { BootOverlay } from "@/ui/BootOverlay";
 import { HoverLabel } from "@/ui/HoverLabel";
@@ -24,6 +25,7 @@ const SceneCanvas = dynamic(() => import("@/scene/SceneCanvas"), { ssr: false })
 export function ExperienceShell() {
   const scene = useExperience((s) => s.scene);
   useUrlSync();
+  useThemeSync();
 
   useEffect(() => {
     const store = experienceStore.getState();
