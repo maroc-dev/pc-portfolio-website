@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Underscore folders (private App Router dirs) are not auto-detected. */
+@source "./_components";
+
 /* Evening Workbench tokens — see docs/art-direction.md */
 @theme {
   --color-night: #1d1b19;
@@ -96,5 +99,14 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@keyframes boot {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
