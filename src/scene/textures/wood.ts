@@ -1,9 +1,14 @@
 import { CanvasTexture, SRGBColorSpace } from "three";
 
-/** Deterministic hash-based value noise, so the desk looks the same on every visit. */
+/**
+ * Deterministic integer hash for value noise, so the desk looks the same on every visit.
+ * Integer mixing is far cheaper than a sin()-based hash over millions of pixels.
+ */
 function hash(x: number, y: number): number {
-  const h = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
-  return h - Math.floor(h);
+  let h = (Math.imul(x, 374761393) + Math.imul(y, 668265263)) | 0;
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  h ^= h >>> 16;
+  return (h >>> 0) / 4294967296;
 }
 
 function smooth(t: number): number {
@@ -37,32 +42,44 @@ function fbm(x: number, y: number): number {
 const LIGHT = [222, 190, 146];
 const DARK = [186, 145, 99];
 const PLANKS = 4;
+const WARP_STEP = 8;
 
 /**
  * Light oak desk top: long grain running along the desk's width, gentle knots, and faint seams
  * between glued planks. Returns a colour map and a matching roughness map (grain lines a touch
  * glossier), both large enough to stay sharp up close.
  */
-export function createWoodTextures(width = 2048, height = 1024) {
+export interface WoodTextures {
+  map: CanvasTexture;
+  roughnessMap: CanvasTexture;
+}
+
+export function createWoodTextures(width = 2048, height = 1024): WoodTextures {
   const colour = new ImageData(width, height);
   const rough = new ImageData(width, height);
   const plankHeight = height / PLANKS;
+  const warpRow = new Float32Array(Math.ceil(width / WARP_STEP) + 2);
 
   for (let y = 0; y < height; y++) {
     const plank = Math.floor(y / plankHeight);
     const seed = plank * 17.3;
     const inPlank = (y % plankHeight) / plankHeight;
     const seam = Math.min(inPlank, 1 - inPlank) < 0.004 ? 0.75 : 1;
+    const knotAt = hash(plank, 3);
+
+    // The ring warp is very low-frequency: sample it every WARP_STEP px and interpolate.
+    for (let k = 0; k < warpRow.length; k++) {
+      warpRow[k] = fbm(k * WARP_STEP * 0.0018 + seed, y * 0.012 + seed) * 22;
+    }
 
     for (let x = 0; x < width; x++) {
       // Warp the rings with low-frequency noise, then add fine fibres along the grain.
-      const warp = fbm(x * 0.0018 + seed, y * 0.012 + seed) * 22;
+      const k = x / WARP_STEP;
+      const k0 = Math.floor(k);
+      const warp = warpRow[k0]! + (warpRow[k0 + 1]! - warpRow[k0]!) * (k - k0);
       const rings = 0.5 + 0.5 * Math.sin(y * 0.55 + warp + seed);
       const fibres = valueNoise(x * 0.35, y * 2.4 + seed) * 0.18;
-      const knot = Math.max(
-        0,
-        1 - Math.hypot((x / width - hash(plank, 3)) * 9, inPlank - 0.5) * 2.2,
-      );
+      const knot = Math.max(0, 1 - Math.hypot((x / width - knotAt) * 9, inPlank - 0.5) * 2.2);
       const t = Math.min(1, Math.pow(rings, 4) * 0.42 + fibres + knot * 0.4);
 
       const i = (y * width + x) * 4;
