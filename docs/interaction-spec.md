@@ -44,10 +44,17 @@ Motherboard, PSU and cooling are visible but not selectable in the MVP.
   overview (0.9 s).
 - **Reduced motion:** every step jumps straight to its final state.
 
-## Boot (< 2 s, skippable)
+## Opening (about 4.4 s, skippable)
 
-Screen fades in, LEDs ramp, fans spin up, camera dollies in slightly. Navigation and the dock
-are usable from the first frame; any key or click skips the boot.
+The scene assembles while the camera glides in from a wider, higher angle: the desk rises into
+place, the monitor, lamp, keyboard and mug settle, the light switch slides out of the wall. The
+PC builds from the inside out: chassis and plinth, motherboard, CPU, RAM, SSD, network card,
+GPU, radiator and wiring, then the glass closes and the cap drops on. The display cable runs
+across the desk, the PC powers on (LEDs, fans, interior light) and finally the screen wakes.
+
+A "Setting up the desk" caption with a progress line sits above the dock. Any key, click or
+"Skip intro" jumps to the finished scene. Navigation works throughout. Reduced motion and deep
+links skip the opening entirely. Schedule: `src/scene/intro/schedule.ts`.
 
 ## Desktop (≥ 1024 px)
 
