@@ -67,7 +67,10 @@ const fragmentShader = /* glsl */ `
   uniform float uStrength;
   varying float vAlong;
   void main() {
-    float fade = smoothstep(0.0, 0.12, vAlong) * pow(1.0 - vAlong, 1.6);
+    // With MSAA, varyings at triangle edges can be extrapolated past 0..1; pow() of a negative
+    // base is NaN on some GPUs, and bloom then smears that NaN across the whole frame. Clamp.
+    float along = clamp(vAlong, 0.0, 1.0);
+    float fade = smoothstep(0.0, 0.12, along) * pow(1.0 - along, 1.6);
     float a = uStrength * fade;
     gl_FragColor = vec4(vec3(1.0, 0.96, 0.86) * a, a);
   }
