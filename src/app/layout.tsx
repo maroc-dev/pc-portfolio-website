@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Recursive } from "next/font/google";
 import "./globals.css";
 
+/** The whole portfolio is static content: every route must prerender completely. */
+export const ensureStatic = "navigation";
+
 const recursive = Recursive({
   variable: "--font-recursive",
   subsets: ["latin"],
