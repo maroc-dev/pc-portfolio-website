@@ -1,0 +1,74 @@
+# Interaction spec
+
+## Scene
+
+Camera at a 3/4 angle from the front-left. Monitor left of centre on a stand; tower on the
+right with its glass side facing the camera. Inside: motherboard, CPU and cooler, GPU with two
+fans, two RAM sticks, M.2 SSD, a network card, front I/O ports. On the desk: keyboard, lamp,
+and a cable from the tower to the monitor.
+
+## Part → content map
+
+| Part  | Section                                 | Heading           |
+| ----- | --------------------------------------- | ----------------- |
+| `cpu` | About me                                | The Core          |
+| `gpu` | AI, ML and graphics projects            | Accelerated Ideas |
+| `ram` | What I'm working on now + skills I have | Active Memory     |
+| `ssd` | Project archive                         | Project Archives  |
+| `nic` | Distributed systems                     | Connected Systems |
+| `io`  | Contact and résumé                      | Connect           |
+
+Motherboard, PSU and cooling are visible but not selectable in the MVP.
+
+## States
+
+`boot → overview ⇄ focused(part)`, with `transitioning` while the camera moves.
+
+- **Default:** part sits in ambient light.
+- **Hover (pointer devices):** emissive lift (~150 ms), DOM label with part name and heading,
+  pointer cursor. Reverses on leave.
+- **Selected:** the selection timeline runs (below); the content window opens on the monitor.
+
+## Selection timeline (~1.9 s, one GSAP timeline)
+
+1. Camera eases to the part's close-up preset (0.8 s, `power3.inOut`); the part glows.
+2. A signal pulse runs along the cable to the monitor.
+3. Camera eases to the monitor preset (0.9 s, `power3.out`). The tower stays in frame with
+   the selected part still lit.
+4. The content window opens over the projected screen (0.45 s).
+
+- Switching sections while a window is open skips the close-up: content cross-fades and the
+  new part lights up.
+- A new selection kills the running timeline and starts from the camera's current pose.
+- **Back** (close button, Esc, browser back): window closes (0.25 s), camera returns to the
+  overview (0.9 s).
+- **Reduced motion:** every step jumps straight to its final state.
+
+## Boot (< 2 s, skippable)
+
+Screen fades in, LEDs ramp, fans spin up, camera dollies in slightly. Navigation and the dock
+are usable from the first frame; any key or click skips the boot.
+
+## Desktop (≥ 1024 px)
+
+Header with name and section nav. Scene fills the viewport. A dock of part buttons sits at the
+bottom. When focused, the window is aligned to the monitor's projected screen rectangle.
+
+## Mobile (< 768 px or coarse pointer)
+
+Scene as a hero with tighter framing; a grid of labelled part buttons below it. No precise
+canvas tapping required. Selecting a part runs the same camera beat and opens a full-screen
+sheet styled like the same window. Low quality tier: capped DPR, no shadows, no glass
+transmission.
+
+## Fallbacks
+
+- No WebGL: static poster with the same navigation.
+- No JavaScript: the server-rendered section index and project pages remain readable.
+
+## Accessibility
+
+- Canvas is `aria-hidden`; every action is reachable from the dock, nav or a deep link
+  (`/?part=cpu`).
+- The window is a labelled dialog with focus management; Esc closes it.
+- Visible amber focus rings. Text contrast ≥ 4.5:1.
