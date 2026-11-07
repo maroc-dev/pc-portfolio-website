@@ -47,6 +47,17 @@ export function towerToWorld(local: Vector3): Vector3 {
 /** Outward normal of the glass side panel, world space. */
 export const glassNormal = new Vector3(0, 0, 1).applyQuaternion(towerQuaternion);
 
+/** Motherboard extent on the tray, in the tower's frame. */
+export const BOARD = { minX: -0.19, maxX: 0.1, minY: 0.1, maxY: 0.44 } as const;
+
+/** Maps a point on the board (tower frame) to texture UV (0..1, v up). */
+export function boardUV(x: number, y: number): [number, number] {
+  return [
+    (x - BOARD.minX) / (BOARD.maxX - BOARD.minX),
+    (y - BOARD.minY) / (BOARD.maxY - BOARD.minY),
+  ];
+}
+
 /** Centre of each selectable part, in the tower's frame (io sits on the top panel). */
 export const PART_ANCHORS: Record<PartId, Vector3> = {
   cpu: new Vector3(-0.06, 0.36, -0.075),
