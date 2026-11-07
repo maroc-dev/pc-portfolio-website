@@ -31,8 +31,6 @@ export const materials = {
   aluminium: standard({ color: "#c7ccd4", metalness: 0.85, roughness: 0.3 }),
   darkPlastic: standard({ color: "#20242d", metalness: 0.1, roughness: 0.6 }),
   rubber: standard({ color: "#16191f", metalness: 0, roughness: 0.85 }),
-  /** Light oak desk top. */
-  wood: standard({ color: "#d9b88f", metalness: 0, roughness: 0.5 }),
   /** Wall colour is themed per frame (see Room). */
   wall: standard({ color: "#d7e6f7", metalness: 0, roughness: 0.92 }),
   /** Navy felt desk mat. */
