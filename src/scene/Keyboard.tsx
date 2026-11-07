@@ -1,6 +1,8 @@
+import { useFrame } from "@react-three/fiber";
 import { useLayoutEffect, useMemo, useRef } from "react";
 import { MeshBasicMaterial, Object3D, type InstancedMesh } from "three";
 import { materials, palette } from "./materials";
+import { runtime } from "./runtime";
 
 const KEY = 0.024;
 const PITCH = 0.0285;
@@ -16,11 +18,13 @@ const ROWS: number[][] = [
 ];
 
 const backlight = new MeshBasicMaterial({
-  color: palette.amber,
+  color: palette.glow,
   transparent: true,
-  opacity: 0.18,
+  opacity: 0,
   toneMapped: false,
 });
+/** Backlight strength at night; off in daylight. */
+const BACKLIGHT_NIGHT = 0.28;
 
 function keyTransforms() {
   const dummy = new Object3D();
@@ -44,6 +48,10 @@ export function Keyboard() {
   const keys = useRef<InstancedMesh>(null);
   const matrices = useMemo(() => keyTransforms(), []);
 
+  useFrame(() => {
+    backlight.opacity = BACKLIGHT_NIGHT * (1 - runtime.daylight);
+  });
+
   useLayoutEffect(() => {
     const mesh = keys.current;
     if (!mesh) return;
@@ -53,7 +61,7 @@ export function Keyboard() {
 
   return (
     <group position={[-0.3, 0.003, 0.27]} rotation={[0.04, 0.05, 0]}>
-      <mesh position={[0, 0.008, 0]} material={materials.caseMetal}>
+      <mesh position={[0, 0.008, 0]} material={materials.caseWhite}>
         <boxGeometry args={[COLS * PITCH + 0.02, 0.016, ROWS.length * PITCH + 0.02]} />
       </mesh>
       <mesh position={[0, 0.0162, 0]} rotation={[-Math.PI / 2, 0, 0]} material={backlight}>
@@ -71,7 +79,7 @@ export function Keyboard() {
         position={[0.33, 0.006, 0.01]}
         rotation={[Math.PI / 2, 0, 0.12]}
         scale={[1, 1, 0.55]}
-        material={materials.caseMetal}
+        material={materials.caseWhite}
       >
         <capsuleGeometry args={[0.022, 0.05, 8, 16]} />
       </mesh>

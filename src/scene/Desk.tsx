@@ -5,16 +5,12 @@ import { materials } from "./materials";
 export function Desk() {
   return (
     <group>
-      <mesh position={[0, -DESK.thickness / 2, DESK.z]} material={materials.walnut} receiveShadow>
+      <mesh position={[0, -DESK.thickness / 2, DESK.z]} material={materials.wood} receiveShadow>
         <boxGeometry args={[DESK.width, DESK.thickness, DESK.depth]} />
       </mesh>
       {/* Felt desk mat under the keyboard. */}
       <mesh position={[-0.22, 0.0015, 0.24]} material={materials.felt}>
         <boxGeometry args={[0.86, 0.003, 0.34]} />
-      </mesh>
-      {/* Back wall catches the lamp's spill so the scene doesn't float in a void. */}
-      <mesh position={[0, 1.2, -0.55]} material={materials.wall}>
-        <planeGeometry args={[6, 3]} />
       </mesh>
       <ContactShadows
         position={[0, 0.0005, 0]}
@@ -22,9 +18,9 @@ export function Desk() {
         resolution={512}
         far={0.6}
         blur={2.4}
-        opacity={0.6}
+        opacity={0.45}
         frames={1}
-        color="#0d0b0a"
+        color="#1d2a40"
       />
     </group>
   );
