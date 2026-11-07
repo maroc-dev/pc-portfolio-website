@@ -13,7 +13,7 @@ const LENGTH = 0.125;
 const shimmer = (t: number) => 0.5 + 0.12 * Math.sin(t * 2.2);
 
 export function Ram() {
-  const glow = usePartAccent(palette.amber, shimmer, 2.8);
+  const glow = usePartAccent(palette.glow, shimmer, 2.8);
   return (
     <Interactive id="ram" accents={[glow]}>
       {STICKS.map((dy) => (

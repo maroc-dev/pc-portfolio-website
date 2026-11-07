@@ -17,7 +17,7 @@ const linkLight = (t: number) => (Math.sin(t * 13) * Math.sin(t * 3.1) > 0.55 ? 
  * the distributed-systems section has a home).
  */
 export function NetworkCard() {
-  const glow = usePartAccent(palette.teal, linkLight, 3);
+  const glow = usePartAccent(palette.signal, linkLight, 3);
   return (
     <Interactive id="nic" accents={[glow]}>
       <group position={A}>

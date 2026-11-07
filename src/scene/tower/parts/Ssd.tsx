@@ -12,7 +12,7 @@ const activity = (t: number) => (Math.sin(t * 9) * Math.sin(t * 2.3) > 0.45 ? 1.
 
 /** M.2 drive under a finned heatsink. */
 export function Ssd() {
-  const led = usePartAccent(palette.teal, activity, 3);
+  const led = usePartAccent(palette.signal, activity, 3);
   return (
     <Interactive id="ssd" accents={[led]}>
       <group position={[A.x, A.y, 0]}>

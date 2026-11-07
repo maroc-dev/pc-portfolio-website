@@ -32,7 +32,7 @@ export function Cable() {
   const curve = useMemo(() => new CatmullRomCurve3(CABLE_POINTS, false, "centripetal"), []);
   const pulse = useRef<ShaderMaterial>(null);
   const uniforms = useMemo(
-    () => ({ uProgress: { value: 0 }, uColor: { value: new Color(palette.amber) } }),
+    () => ({ uProgress: { value: 0 }, uColor: { value: new Color(palette.glow) } }),
     [],
   );
 

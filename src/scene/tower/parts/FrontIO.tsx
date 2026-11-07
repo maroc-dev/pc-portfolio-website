@@ -11,7 +11,7 @@ const breathe = (t: number) => 0.55 + 0.45 * (0.5 + 0.5 * Math.sin(t * 1.8));
 
 /** Front I/O on the top cap: USB-C, audio, reset, power and four USB-A ports. */
 export function FrontIO() {
-  const glow = usePartAccent(palette.amber, breathe, 3);
+  const glow = usePartAccent(palette.glow, breathe, 3);
   return (
     <Interactive id="io" accents={[glow]}>
       <group position={A}>

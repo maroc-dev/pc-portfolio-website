@@ -14,40 +14,44 @@ import {
 const standard = (params: MeshStandardMaterialParameters) => new MeshStandardMaterial(params);
 
 export const palette = {
-  night: new Color("#1d1b19"),
-  amber: new Color("#f2a65a"),
-  teal: new Color("#5fb3a8"),
-  cream: new Color("#f3e9dc"),
-  lamp: new Color("#ffb36b"),
+  /** Friendly blue LED glow (fan rings, strips, part accents). */
+  glow: new Color("#5aa9ff"),
+  /** Cyan for data activity (network, storage). */
+  signal: new Color("#4fd8e6"),
+  /** Warm incandescent desk lamp, the one warm light at night. */
+  lamp: new Color("#ffc58a"),
 };
 
 export const materials = {
-  caseMetal: standard({ color: "#2b2826", metalness: 0.6, roughness: 0.45 }),
+  caseMetal: standard({ color: "#3a4150", metalness: 0.55, roughness: 0.45 }),
   /** Marco's case: powder-blue painted steel, with white interior trim. */
-  casePowder: standard({ color: "#a9bde6", metalness: 0.15, roughness: 0.55 }),
-  caseWhite: standard({ color: "#e8e4de", metalness: 0.1, roughness: 0.6 }),
-  caseInner: standard({ color: "#1c1a19", metalness: 0.3, roughness: 0.75 }),
-  aluminium: standard({ color: "#b9b2a8", metalness: 0.85, roughness: 0.32 }),
-  darkPlastic: standard({ color: "#1a1918", metalness: 0.1, roughness: 0.6 }),
-  rubber: standard({ color: "#121110", metalness: 0, roughness: 0.9 }),
-  walnut: standard({ color: "#6b4a33", metalness: 0, roughness: 0.55 }),
-  wall: standard({ color: "#2b2622", metalness: 0, roughness: 0.95 }),
-  felt: standard({ color: "#2e2a27", metalness: 0, roughness: 1 }),
+  casePowder: standard({ color: "#a9c0ea", metalness: 0.12, roughness: 0.5 }),
+  caseWhite: standard({ color: "#eef1f6", metalness: 0.08, roughness: 0.55 }),
+  caseInner: standard({ color: "#252b38", metalness: 0.3, roughness: 0.7 }),
+  aluminium: standard({ color: "#c7ccd4", metalness: 0.85, roughness: 0.3 }),
+  darkPlastic: standard({ color: "#20242d", metalness: 0.1, roughness: 0.6 }),
+  rubber: standard({ color: "#16191f", metalness: 0, roughness: 0.85 }),
+  /** Light oak desk top. */
+  wood: standard({ color: "#d9b88f", metalness: 0, roughness: 0.5 }),
+  /** Wall colour is themed per frame (see Room). */
+  wall: standard({ color: "#d7e6f7", metalness: 0, roughness: 0.92 }),
+  /** Navy felt desk mat. */
+  felt: standard({ color: "#2f4b7c", metalness: 0, roughness: 1 }),
+  paint: standard({ color: "#f4f6f9", metalness: 0, roughness: 0.6 }),
   pcb: standard({ color: "#18231f", metalness: 0.2, roughness: 0.6 }),
   copper: standard({ color: "#b87333", metalness: 1, roughness: 0.35 }),
   gold: standard({ color: "#d4a64a", metalness: 1, roughness: 0.3 }),
-  keycap: standard({ color: "#2a2724", metalness: 0, roughness: 0.7 }),
+  keycap: standard({ color: "#f5f7fb", metalness: 0, roughness: 0.55 }),
   glass: new MeshPhysicalMaterial({
-    color: "#cfdcd8",
+    color: "#dce8f5",
     metalness: 0,
     roughness: 0.04,
     transparent: true,
-    opacity: 0.12,
+    opacity: 0.1,
     clearcoat: 1,
     depthWrite: false,
   }),
   /** Steady LEDs that only follow the power-on ramp (fan rings, strips). */
-  ledAmber: new MeshBasicMaterial({ color: palette.amber.clone(), toneMapped: false }),
-  ledTeal: new MeshBasicMaterial({ color: palette.teal.clone(), toneMapped: false }),
-  bulb: new MeshBasicMaterial({ color: "#ffd9a8", toneMapped: false }),
+  ledGlow: new MeshBasicMaterial({ color: palette.glow.clone(), toneMapped: false }),
+  ledSignal: new MeshBasicMaterial({ color: palette.signal.clone(), toneMapped: false }),
 };

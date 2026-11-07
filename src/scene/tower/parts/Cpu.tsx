@@ -8,7 +8,7 @@ const Z = TOWER.boardZ;
 
 /** CPU under an all-in-one cooler pump: "the core", with a glowing ring. */
 export function Cpu() {
-  const glow = usePartAccent(palette.amber, 0.7, 3.2);
+  const glow = usePartAccent(palette.glow, 0.7, 3.2);
   return (
     <Interactive id="cpu" accents={[glow]}>
       <group position={[A.x, A.y, 0]}>
