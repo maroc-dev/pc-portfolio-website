@@ -91,19 +91,18 @@ export function Desk() {
         position={[-0.22, 0.0015, 0.24]}
         material={materials.felt}
       />
-      {/* Baked once (frames=1), after the opening, so it sees the finished layout. */}
-      {assembled && (
-        <ContactShadows
-          position={[0, 0.0005, 0]}
-          scale={[DESK.width, DESK.depth + 0.4]}
-          resolution={1024}
-          far={0.6}
-          blur={2.4}
-          opacity={0.45}
-          frames={1}
-          color="#1d2a40"
-        />
-      )}
+      {/* Live while things land during the opening, then baked once for the finished desk. */}
+      <ContactShadows
+        key={assembled ? "baked" : "live"}
+        frames={assembled ? 1 : Infinity}
+        position={[0, 0.0005, 0]}
+        scale={[DESK.width, DESK.depth + 0.4]}
+        resolution={1024}
+        far={0.6}
+        blur={2.4}
+        opacity={0.45}
+        color="#1d2a40"
+      />
     </group>
   );
 }
