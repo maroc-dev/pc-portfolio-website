@@ -51,20 +51,20 @@ export function Motherboard() {
           roughness={0.55}
         />
       </mesh>
-      {/* VRM heatsinks hugging the socket */}
-      <mesh position={[cpu.x - 0.002, cpu.y + 0.052, Z + 0.008]} material={materials.caseMetal}>
-        <boxGeometry args={[0.1, 0.018, 0.014]} />
+      {/* I/O and VRM armour above the socket (the board is rotated: rear I/O faces up) */}
+      <mesh position={[cpu.x, cpu.y + 0.075, Z + 0.01]} material={materials.caseMetal}>
+        <boxGeometry args={[0.11, 0.045, 0.02]} />
       </mesh>
-      <mesh position={[cpu.x - 0.058, cpu.y - 0.005, Z + 0.008]} material={materials.caseMetal}>
-        <boxGeometry args={[0.018, 0.1, 0.014]} />
-      </mesh>
-      {/* Rear I/O shroud */}
-      <mesh position={[BOARD.minX + 0.012, cpu.y, Z + 0.012]} material={materials.darkPlastic}>
-        <boxGeometry args={[0.022, 0.12, 0.022]} />
+      <mesh position={[cpu.x - 0.06, cpu.y, Z + 0.007]} material={materials.caseMetal}>
+        <boxGeometry args={[0.018, 0.08, 0.014]} />
       </mesh>
       {/* Chipset heatsink */}
-      <mesh position={[0.05, 0.16, Z + 0.006]} material={materials.caseMetal}>
-        <boxGeometry args={[0.05, 0.05, 0.01]} />
+      <mesh position={[0.07, 0.178, Z + 0.006]} material={materials.caseMetal}>
+        <boxGeometry args={[0.04, 0.03, 0.01]} />
+      </mesh>
+      {/* Spare PCIe slot beside the network card's */}
+      <mesh position={[-0.078, 0.37, Z + 0.003]} material={materials.darkPlastic}>
+        <boxGeometry args={[0.007, 0.085, 0.006]} />
       </mesh>
     </group>
   );

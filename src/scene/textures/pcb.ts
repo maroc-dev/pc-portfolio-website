@@ -2,7 +2,7 @@ import { CanvasTexture, SRGBColorSpace } from "three";
 import { PART_ANCHORS, boardUV } from "../layout";
 
 const W = 1024;
-const H = 1200;
+const H = 1536;
 
 /** Deterministic PRNG so the board looks the same on every visit. */
 function mulberry32(seed: number) {
@@ -27,7 +27,7 @@ type Path = [number, number][];
 /** Traces leave the CPU socket, run straight, bend 45°, then run on: "power flows outward". */
 function routeTraces(rand: () => number): Path[] {
   const [cx, cy] = px(PART_ANCHORS.cpu.x, PART_ANCHORS.cpu.y);
-  const half = 70;
+  const half = 90;
   const paths: Path[] = [];
   const dirs: [number, number][] = [
     [1, 0],
@@ -91,20 +91,18 @@ function silkscreen(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = "rgba(220,214,200,0.55)";
   ctx.font = "600 22px ui-monospace, monospace";
   const label = (text: string, x: number, y: number) => ctx.fillText(text, ...px(x, y));
-  label("CPU_1", PART_ANCHORS.cpu.x - 0.035, PART_ANCHORS.cpu.y + 0.05);
-  label("DIMM_A1  B1", PART_ANCHORS.ram.x - 0.02, PART_ANCHORS.ram.y + 0.075);
-  label("M2_1", PART_ANCHORS.ssd.x - 0.06, PART_ANCHORS.ssd.y + 0.004);
-  label("PCIE_X4", PART_ANCHORS.nic.x - 0.05, PART_ANCHORS.nic.y + 0.012);
-  label("PCIE_X16", -0.18, 0.205);
+  label("CPU_1", PART_ANCHORS.cpu.x - 0.03, PART_ANCHORS.cpu.y - 0.045);
+  label("DIMM_A1 B1", PART_ANCHORS.ram.x - 0.06, PART_ANCHORS.ram.y - 0.022);
+  label("M2_1", PART_ANCHORS.ssd.x - 0.07, PART_ANCHORS.ssd.y - 0.02);
+  label("PCIE_1", PART_ANCHORS.nic.x - 0.02, PART_ANCHORS.nic.y - 0.06);
   // Mounting holes
   ctx.strokeStyle = "rgba(200,190,170,0.6)";
   ctx.lineWidth = 4;
   for (const [x, y] of [
-    [-0.18, 0.43],
-    [0.09, 0.43],
-    [-0.18, 0.11],
-    [0.09, 0.11],
-    [-0.04, 0.27],
+    [-0.068, 0.408],
+    [0.088, 0.408],
+    [-0.068, 0.167],
+    [0.088, 0.167],
   ] as const) {
     ctx.beginPath();
     ctx.arc(...px(x, y), 12, 0, Math.PI * 2);
