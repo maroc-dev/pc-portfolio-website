@@ -10,7 +10,7 @@ export interface DeviceHints {
 /** Picks a starting render tier; the scene can still step down at runtime. */
 export function pickQualityTier(hints: DeviceHints): QualityTier {
   if (hints.coarsePointer || hints.viewportWidth < 768) return "low";
-  if (hints.hardwareConcurrency !== undefined && hints.hardwareConcurrency <= 4) return "low";
+  if (hints.hardwareConcurrency !== undefined && hints.hardwareConcurrency <= 2) return "low";
   if (hints.deviceMemory !== undefined && hints.deviceMemory < 4) return "low";
   return "high";
 }

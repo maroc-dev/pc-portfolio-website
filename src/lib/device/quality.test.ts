@@ -16,7 +16,8 @@ describe("pickQualityTier", () => {
   it("uses low for touch, small screens and weak hardware", () => {
     expect(pickQualityTier({ ...desktop, coarsePointer: true })).toBe("low");
     expect(pickQualityTier({ ...desktop, viewportWidth: 390 })).toBe("low");
-    expect(pickQualityTier({ ...desktop, hardwareConcurrency: 4 })).toBe("low");
+    expect(pickQualityTier({ ...desktop, hardwareConcurrency: 2 })).toBe("low");
+    expect(pickQualityTier({ ...desktop, hardwareConcurrency: 4 })).toBe("high");
     expect(pickQualityTier({ ...desktop, deviceMemory: 2 })).toBe("low");
   });
 
