@@ -27,7 +27,7 @@ import { PcTower } from "./tower/PcTower";
  * and textures crisp); slowdowns step it down gradually before effects are ever switched off.
  */
 const MAX_DPR = 2;
-const MIN_DPR = 1;
+const MIN_DPR = 1.25;
 const LOW_DPR = 1.25;
 
 function startingDpr(high: boolean): number {
@@ -46,7 +46,8 @@ export default function SceneCanvas() {
     <Canvas
       dpr={high ? dpr : LOW_DPR}
       shadows={high ? "percentage" : false}
-      gl={{ antialias: !high, powerPreference: "high-performance" }}
+      // Always antialias the canvas itself, so edges stay smooth even if effects switch off.
+      gl={{ antialias: true, powerPreference: "high-performance" }}
       camera={{ fov: 32, near: 0.05, far: 20 }}
       frameloop={reducedMotion ? "demand" : "always"}
       onCreated={({ gl }) => {
