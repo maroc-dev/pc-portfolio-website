@@ -1,9 +1,13 @@
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
-import { AdditiveBlending, Color, type ShaderMaterial } from "three";
+import { AdditiveBlending, Color, type ShaderMaterial, type TubeGeometry } from "three";
 import { createCableCurve } from "./layout";
 import { materials, palette } from "./materials";
 import { runtime } from "./runtime";
+
+/** Tube resolution; the draw range grows in whole segments (6 indices per radial step). */
+const TUBULAR = 160;
+const RADIAL = 10;
 
 const vertexShader = /* glsl */ `
   varying float vAlong;
@@ -31,12 +35,18 @@ const fragmentShader = /* glsl */ `
 export function Cable() {
   const curve = useMemo(() => createCableCurve(), []);
   const pulse = useRef<ShaderMaterial>(null);
+  const body = useRef<TubeGeometry>(null);
   const uniforms = useMemo(
     () => ({ uProgress: { value: 0 }, uColor: { value: new Color(palette.glow) } }),
     [],
   );
 
   useFrame(() => {
+    // During the intro the cable runs out from the tower towards the monitor.
+    if (body.current) {
+      const segments = Math.ceil(TUBULAR * runtime.cable);
+      body.current.setDrawRange(0, segments * RADIAL * 6);
+    }
     if (!pulse.current) return;
     const s = runtime.signal;
     pulse.current.visible = s > 0 && s < 1;
@@ -47,10 +57,10 @@ export function Cable() {
   return (
     <group>
       <mesh material={materials.rubber}>
-        <tubeGeometry args={[curve, 96, 0.0045, 8, false]} />
+        <tubeGeometry ref={body} args={[curve, TUBULAR, 0.0045, RADIAL, false]} />
       </mesh>
       <mesh renderOrder={1} raycast={() => null}>
-        <tubeGeometry args={[curve, 96, 0.0062, 8, false]} />
+        <tubeGeometry args={[curve, TUBULAR, 0.0062, RADIAL, false]} />
         <shaderMaterial
           ref={pulse}
           uniforms={uniforms}
