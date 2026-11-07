@@ -2,7 +2,7 @@
 
 # PC Portfolio — project conventions
 
-Interactive 3D portfolio for Marco Ferreira: a desk scene with a PC and a monitor.
+Interactive 3D portfolio for Marco Ferreira: a sunny desk scene (with a night theme) with his PC and a monitor.
 Each PC part maps to a portfolio section; the monitor is where content opens.
 Design source of truth: `docs/art-direction.md` and `docs/interaction-spec.md`.
 
