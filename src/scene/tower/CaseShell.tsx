@@ -6,6 +6,8 @@ import { createHexTexture, createSlotTexture } from "../textures/perforation";
 
 const { width: W, depth: D, height: H, chamfer: C, plinth: P, cap: CAP, wall: T } = TOWER;
 const PANEL_H = H - P - CAP;
+const POWDER = "#a9c0ea";
+const HOLE = "#1d2433";
 const SLOT_X = [-0.145, -0.123, -0.101, -0.079, -0.057];
 const PANEL_Y = P + PANEL_H / 2;
 
@@ -80,10 +82,10 @@ function Panel({ from, to, material, thickness, glass }: PanelProps) {
  */
 export function CaseShell() {
   const assets = useMemo(() => {
-    const meshMap = createSlotTexture("#a9bde6", "#232530", [6, 11]);
-    const hexMap = createHexTexture("#9fb3da", "#1b1d24", [70, 70]);
-    const ventMap = createSlotTexture("#a9bde6", "#232530", [14, 1.5]);
-    const shroudMap = createHexTexture("#d8d3cb", "#2a2a2e", [7, 10]);
+    // Texture base colours match casePowder so perforated panels blend with the paint.
+    const meshMap = createSlotTexture(POWDER, HOLE, [6, 11]);
+    const hexMap = createHexTexture(POWDER, HOLE, [70, 70]);
+    const ventMap = createSlotTexture(POWDER, HOLE, [14, 2.5]);
     return {
       cap: octagonSlab(CAP, 0.012, 0),
       plinth: octagonSlab(P, 0.006, 0),
@@ -91,14 +93,13 @@ export function CaseShell() {
       meshPanel: new MeshStandardMaterial({ map: meshMap, metalness: 0.15, roughness: 0.6 }),
       grillePanel: new MeshStandardMaterial({ map: hexMap, metalness: 0.2, roughness: 0.6 }),
       vent: new MeshStandardMaterial({ map: ventMap, metalness: 0.15, roughness: 0.6 }),
-      shroud: new MeshStandardMaterial({ map: shroudMap, metalness: 0.1, roughness: 0.6 }),
     };
   }, []);
 
   useEffect(
     () => () => {
       for (const geometry of [assets.cap, assets.plinth, assets.grille]) geometry.dispose();
-      for (const material of [assets.meshPanel, assets.grillePanel, assets.vent, assets.shroud]) {
+      for (const material of [assets.meshPanel, assets.grillePanel, assets.vent]) {
         material.map?.dispose();
         material.dispose();
       }
@@ -110,9 +111,9 @@ export function CaseShell() {
   return (
     <group>
       <mesh geometry={assets.plinth} material={materials.casePowder} />
-      {/* Vents along the plinth's front edge */}
-      <mesh position={[0, P / 2, D / 2 + 0.0005]} material={assets.vent}>
-        <planeGeometry args={[W - 2 * C - 0.02, P * 0.5]} />
+      {/* Vents along the plinth's front; the PSU lives inside the plinth */}
+      <mesh position={[0, P * 0.45, D / 2 + 0.0005]} material={assets.vent}>
+        <planeGeometry args={[W - 2 * C - 0.03, P * 0.45]} />
       </mesh>
 
       <mesh geometry={assets.cap} position={[0, H - CAP, 0]} material={materials.casePowder} />
@@ -142,19 +143,9 @@ export function CaseShell() {
       {/* Corner pillars framing the glass */}
       {outline.map(([x, z], i) => (
         <mesh key={i} position={[x, PANEL_Y, z]} material={materials.casePowder}>
-          <boxGeometry args={[0.012, PANEL_H, 0.012]} />
+          <boxGeometry args={[0.008, PANEL_H, 0.008]} />
         </mesh>
       ))}
-
-      {/* Interior floor */}
-      <mesh position={[0, P + 0.002, 0]} material={materials.casePowder}>
-        <boxGeometry args={[W - 0.02, 0.004, D - 0.02]} />
-      </mesh>
-
-      {/* PSU shroud: white, honeycomb vented, bottom centre-right */}
-      <mesh position={[0.02, P + (TOWER.shroudHeight - P) / 2, 0.005]} material={assets.shroud}>
-        <boxGeometry args={[0.1, TOWER.shroudHeight - P, 0.22]} />
-      </mesh>
 
       {/* Expansion slot covers along the top (the board is mounted rotated) */}
       <mesh position={[-0.1, H - CAP - 0.006, -0.11]} material={materials.aluminium}>
@@ -170,7 +161,7 @@ export function CaseShell() {
       <mesh
         position={[W / 2 - C / 2 - 0.006, PANEL_Y, -D / 2 + C / 2 + 0.006]}
         rotation={[0, Math.PI / 4, 0]}
-        material={materials.ledAmber}
+        material={materials.ledGlow}
       >
         <boxGeometry args={[0.004, PANEL_H - 0.04, 0.002]} />
       </mesh>

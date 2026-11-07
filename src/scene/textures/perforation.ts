@@ -73,3 +73,13 @@ export function createSlotTexture(base: string, hole: string, repeat: [number, n
     slot((3 * TILE) / 4 + 7, (3 * TILE) / 4 + 6);
   }, repeat);
 }
+
+/** Fine vertical fin lines for the radiator core. */
+export function createFinTexture(base: string, gap: string, repeat: [number, number]) {
+  return tileTexture((ctx) => {
+    ctx.fillStyle = base;
+    ctx.fillRect(0, 0, TILE, TILE);
+    ctx.fillStyle = gap;
+    for (let x = 0; x < TILE; x += 8) ctx.fillRect(x, 0, 3, TILE);
+  }, repeat);
+}
