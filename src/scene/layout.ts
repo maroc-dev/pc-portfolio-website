@@ -87,7 +87,7 @@ export const PART_ANCHORS: Record<PartId, Vector3> = {
   ram: new Vector3(0.03, 0.238, -0.115),
   ssd: new Vector3(0.03, 0.193, -0.125),
   nic: new Vector3(-0.032, 0.365, -0.105),
-  gpu: new Vector3(-0.095, 0.265, -0.05),
+  gpu: new Vector3(-0.095, 0.276, -0.05),
   /** Front I/O strip on the top cap's front face. */
   io: new Vector3(0, TOWER.height - TOWER.cap / 2, TOWER.depth / 2),
 };

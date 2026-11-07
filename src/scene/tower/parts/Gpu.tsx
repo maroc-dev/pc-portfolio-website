@@ -9,19 +9,19 @@ import { Fan } from "../Fan";
 const A = PART_ANCHORS.gpu;
 /** Vertical card: thickness along x, length along y, height (out from the board) along z. */
 const THICK = 0.05;
-const LENGTH = 0.3;
+const LENGTH = 0.27;
 const HEIGHT = 0.12;
-const FAN_Y = [-0.1, 0, 0.1];
-const FINS = Array.from({ length: 13 }, (_, i) => -0.12 + i * 0.02);
+const FAN_Y = [-0.088, 0, 0.088];
+const FINS = Array.from({ length: 12 }, (_, i) => -0.11 + i * 0.02);
 /** Silver-grey shroud like the real card. */
 const shroud = new MeshStandardMaterial({ color: "#8d96a6", metalness: 0.6, roughness: 0.38 });
 
-/** In the card's frame; the plinth top sits 0.155 below the card's centre. */
+/** In the card's frame; the plinth top sits 0.166 below the card's centre. */
 const POWER_LEAD = [
   new Vector3(THICK / 2 + 0.002, 0.07, HEIGHT / 2 - 0.02),
   new Vector3(THICK / 2 + 0.018, 0.04, HEIGHT / 2 - 0.005),
   new Vector3(THICK / 2 + 0.024, -0.08, HEIGHT / 2 - 0.03),
-  new Vector3(THICK / 2 + 0.02, -0.158, 0.01),
+  new Vector3(THICK / 2 + 0.02, -0.17, 0.01),
 ];
 
 /**
@@ -50,10 +50,10 @@ export function Gpu() {
               rotation={[0, -Math.PI / 2, 0]}
               material={materials.rubber}
             >
-              <circleGeometry args={[0.048, 48]} />
+              <circleGeometry args={[0.043, 48]} />
             </mesh>
             <Fan
-              radius={0.044}
+              radius={0.04}
               position={[-THICK / 2 - 0.006, y, 0]}
               rotation={[0, -Math.PI / 2, 0]}
               speed={5}
