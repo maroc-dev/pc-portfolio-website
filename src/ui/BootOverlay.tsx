@@ -3,20 +3,24 @@
 import { useEffect } from "react";
 import { experienceStore, useExperience } from "@/state/experience-store";
 
-/** Longest the intro may hold the stage, even if the scene is slow to start. */
-const MAX_BOOT_MS = 4000;
+/**
+ * Safety net only: once the scene has loaded it plays and ends the intro itself. This catches a
+ * scene that never gets going, so the page can't stay in its intro state.
+ */
+const MAX_LOAD_MS = 12000;
 
 /**
- * A quiet "powering on" note while the machine starts. Never blocks: navigation works throughout,
- * and any key, click or the skip button ends it.
+ * A quiet caption while the desk assembles and the PC powers on. Never blocks: navigation works
+ * throughout, and any key, click or the skip button jumps to the finished scene.
  */
 export function BootOverlay() {
   const booting = useExperience((s) => s.phase === "boot");
+  const sceneReady = useExperience((s) => s.scene === "ready");
 
   useEffect(() => {
     if (!booting) return;
     const skip = () => experienceStore.getState().finishBoot();
-    const timer = window.setTimeout(skip, MAX_BOOT_MS);
+    const timer = sceneReady ? undefined : window.setTimeout(skip, MAX_LOAD_MS);
     window.addEventListener("keydown", skip);
     window.addEventListener("pointerdown", skip);
     return () => {
@@ -24,17 +28,19 @@ export function BootOverlay() {
       window.removeEventListener("keydown", skip);
       window.removeEventListener("pointerdown", skip);
     };
-  }, [booting]);
+  }, [booting, sceneReady]);
 
   if (!booting) return null;
   return (
     <div
       role="status"
-      className="pointer-events-none absolute inset-x-0 top-[22%] z-20 flex flex-col items-center gap-3"
+      className="pointer-events-none absolute inset-x-0 bottom-28 z-20 flex flex-col items-center gap-2.5 md:bottom-32"
     >
-      <p className="text-muted type-mono text-sm">powering on</p>
-      <span className="bg-line block h-px w-24 overflow-hidden">
-        <span className="bg-accent block h-full w-full origin-left animate-[boot_1.6s_ease-out_forwards]" />
+      <p className="border-line bg-panel/80 text-fg rounded-full border px-4 py-1.5 text-sm shadow-sm backdrop-blur-sm">
+        Setting up the desk
+      </p>
+      <span className="bg-line block h-0.5 w-28 overflow-hidden rounded-full">
+        <span className="bg-accent block h-full w-full origin-left animate-[boot_4.4s_ease-in-out_forwards] rounded-full" />
       </span>
       <button
         type="button"
