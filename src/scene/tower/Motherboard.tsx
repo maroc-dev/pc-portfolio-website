@@ -45,25 +45,22 @@ export function Motherboard() {
           ref={material}
           map={textures.map}
           emissiveMap={textures.emissiveMap}
-          emissive={palette.teal}
+          emissive={palette.signal}
           emissiveIntensity={TRACE_IDLE}
           metalness={0.3}
           roughness={0.55}
         />
       </mesh>
       {/* I/O and VRM armour above the socket (the board is rotated: rear I/O faces up) */}
-      <mesh position={[cpu.x, cpu.y + 0.075, Z + 0.01]} material={materials.caseMetal}>
-        <boxGeometry args={[0.11, 0.045, 0.02]} />
-      </mesh>
-      <mesh position={[cpu.x - 0.06, cpu.y, Z + 0.007]} material={materials.caseMetal}>
-        <boxGeometry args={[0.018, 0.08, 0.014]} />
+      <mesh position={[cpu.x + 0.012, cpu.y + 0.075, Z + 0.01]} material={materials.caseMetal}>
+        <boxGeometry args={[0.085, 0.045, 0.02]} />
       </mesh>
       {/* Chipset heatsink */}
       <mesh position={[0.07, 0.178, Z + 0.006]} material={materials.caseMetal}>
         <boxGeometry args={[0.04, 0.03, 0.01]} />
       </mesh>
       {/* Spare PCIe slot beside the network card's */}
-      <mesh position={[-0.078, 0.37, Z + 0.003]} material={materials.darkPlastic}>
+      <mesh position={[-0.052, 0.37, Z + 0.003]} material={materials.darkPlastic}>
         <boxGeometry args={[0.007, 0.085, 0.006]} />
       </mesh>
     </group>
