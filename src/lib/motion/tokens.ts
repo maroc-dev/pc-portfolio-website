@@ -15,5 +15,4 @@ export const duration = {
   windowIn: 0.45,
   windowOut: 0.25,
   toOverview: 0.9,
-  boot: 1.6,
 } as const;

@@ -2,6 +2,7 @@ import gsap from "gsap";
 import type { PartId } from "@/content/types";
 import { duration, ease } from "@/lib/motion/tokens";
 import type { CameraPose } from "../camera-presets";
+import { ASSEMBLY_END, CABLE_AT, INTRO_END, POWER_AT, SCREEN_AT } from "../intro/schedule";
 import { runtime } from "../runtime";
 
 /** Tweens `pose` towards `to` on `tl` at `at` seconds. */
@@ -77,11 +78,24 @@ export function overviewTimeline(pose: CameraPose, overview: CameraPose) {
   return tl;
 }
 
-/** Power-on: LEDs and fans ramp up while the camera eases in from slightly further back. */
-export function bootTimeline(pose: CameraPose, overview: CameraPose, onDone: () => void) {
+/**
+ * The opening: the scene assembles on its own clock while the camera glides in from a wider,
+ * higher angle; then the cable runs, the PC powers on and the screen wakes. One timeline, so
+ * skipping it (progress(1)) lands everything in its final state at once.
+ */
+export function introTimeline(
+  pose: CameraPose,
+  overview: CameraPose,
+  onDone: () => void,
+): gsap.core.Timeline {
   const tl = gsap.timeline({ onComplete: onDone });
-  tl.set(runtime, { power: 0 }, 0);
-  tl.to(runtime, { power: 1, duration: 1.1, ease: "power2.inOut" }, 0.2);
-  moveTo(tl, pose, overview, 0, duration.boot, ease.arrive);
+  tl.set(runtime, { assembly: 0, cable: 0, power: 0, screen: 0 }, 0);
+  tl.to(runtime, { assembly: ASSEMBLY_END, duration: ASSEMBLY_END, ease: "none" }, 0);
+  tl.to(runtime, { cable: 1, duration: 0.5, ease: "power1.inOut" }, CABLE_AT);
+  tl.to(runtime, { power: 1, duration: 0.8, ease: "power2.inOut" }, POWER_AT);
+  tl.to(runtime, { screen: 1, duration: 0.5, ease: ease.arrive }, SCREEN_AT);
+  moveTo(tl, pose, overview, 0, INTRO_END, "power2.inOut");
+  // Leave the assembly clock "finished" (not just at its last step) once the intro is over.
+  tl.set(runtime, { assembly: Number.POSITIVE_INFINITY }, INTRO_END);
   return tl;
 }

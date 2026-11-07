@@ -6,10 +6,22 @@ import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore } from "@/state/experience-store";
 import { monitorPose, overviewPose, partPose, type CameraPose } from "../camera-presets";
 import { runtime } from "../runtime";
-import { bootTimeline, overviewTimeline, selectionTimeline, snapTo } from "./timelines";
+import { introTimeline, overviewTimeline, selectionTimeline, snapTo } from "./timelines";
 
-/** How far the camera starts behind the overview during power-on. */
-const BOOT_PULLBACK = 1.18;
+/** The intro starts wider, higher and swung a little to the left, then glides to the overview. */
+const INTRO_PULLBACK = 1.35;
+const INTRO_RISE = 0.18;
+const INTRO_SWING = 0.28;
+
+function introStart(overview: CameraPose): CameraPose {
+  const offset = overview.position
+    .clone()
+    .sub(overview.target)
+    .multiplyScalar(INTRO_PULLBACK)
+    .applyAxisAngle(new Vector3(0, 1, 0), INTRO_SWING);
+  offset.y += INTRO_RISE;
+  return { ...overview, position: overview.target.clone().add(offset) };
+}
 /** Pointer parallax strength in metres (overview only). */
 const PARALLAX = new Vector2(0.05, 0.03);
 
@@ -37,7 +49,7 @@ export function CameraRig() {
     const store = experienceStore.getState();
     const a = aspectRef.current;
     const finish = () => {
-      runtime.power = 1;
+      Object.assign(runtime, { power: 1, cable: 1, screen: 1, assembly: Infinity });
       experienceStore.getState().finishBoot();
     };
 
@@ -51,11 +63,8 @@ export function CameraRig() {
       finish();
     } else {
       const overview = overviewPose(a);
-      const start = overview.target
-        .clone()
-        .add(overview.position.clone().sub(overview.target).multiplyScalar(BOOT_PULLBACK));
-      snapTo(pose.current, { ...overview, position: start });
-      boot.current = bootTimeline(pose.current, overview, finish);
+      snapTo(pose.current, introStart(overview));
+      boot.current = introTimeline(pose.current, overview, finish);
     }
     invalidate();
     return () => {
