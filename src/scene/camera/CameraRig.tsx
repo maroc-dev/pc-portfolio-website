@@ -5,7 +5,7 @@ import type { PartId } from "@/content/types";
 import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore } from "@/state/experience-store";
 import { monitorPose, overviewPose, partPose, type CameraPose } from "../camera-presets";
-import { hideCanvas, prepareIntro, revealCanvas } from "../intro/prepare";
+import { hideCanvas, nextFrames, prepareIntro, revealCanvas } from "../intro/prepare";
 import { runtime } from "../runtime";
 import { introTimeline, overviewTimeline, selectionTimeline, snapTo } from "./timelines";
 
@@ -78,13 +78,17 @@ export function CameraRig() {
         if (complete) finish();
         revealCanvas(canvas);
       };
-      void prepareIntro(gl, scene, camera).then(() => {
+      void (async () => {
+        await prepareIntro(gl, scene, camera);
+        if (abandoned) return;
+        // Draw the opening's first frame before fading in, so the finished scene never flashes.
+        Object.assign(runtime, { assembly: 0, cable: 0, power: 0, screen: 0 });
+        await nextFrames(2);
         if (abandoned) return;
         pendingIntro.current = null;
-        Object.assign(runtime, { assembly: 0, cable: 0, power: 0, screen: 0 });
         boot.current = introTimeline(pose.current, overview, finish);
         revealCanvas(canvas);
-      });
+      })();
     }
     invalidate();
     return () => {
