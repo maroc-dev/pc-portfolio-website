@@ -1,113 +1,144 @@
 import { CanvasTexture, SRGBColorSpace } from "three";
 import { parts } from "@/content/parts";
 import { profile } from "@/content/profile";
+import type { Theme } from "@/state/experience-store";
 
-const W = 1600;
-const H = 1000;
+/** Drawn at 2560 × 1600 so text stays crisp when the camera is close to the monitor. */
+const W = 2560;
+const H = 1600;
+
+const PALETTES = {
+  day: {
+    top: "#f6f9ff",
+    bottom: "#dbe7fa",
+    glow: "rgba(255, 214, 150, 0.35)",
+    bar: "rgba(27, 42, 68, 0.06)",
+    fg: "#1b2a44",
+    muted: "#52627d",
+    accent: "#2563c9",
+    tile: "rgba(255, 255, 255, 0.85)",
+    tileEdge: "rgba(37, 99, 201, 0.28)",
+  },
+  night: {
+    top: "#17233d",
+    bottom: "#0d1524",
+    glow: "rgba(90, 169, 255, 0.22)",
+    bar: "rgba(231, 238, 252, 0.06)",
+    fg: "#e7eefc",
+    muted: "#9aabc8",
+    accent: "#7fb2ff",
+    tile: "rgba(231, 238, 252, 0.06)",
+    tileEdge: "rgba(127, 178, 255, 0.35)",
+  },
+} as const;
+
+/** Where the text cursor sits, as fractions of the screen (origin top-left). */
+export interface CursorRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 function fontFamily(): string {
   const value = getComputedStyle(document.documentElement).getPropertyValue("--font-recursive");
   return value.trim() || "system-ui, sans-serif";
 }
 
-function roundRect(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  r: number,
-) {
-  ctx.beginPath();
-  ctx.roundRect(x, y, w, h, r);
-}
-
-function draw(ctx: CanvasRenderingContext2D, cursorOn: boolean) {
+function draw(ctx: CanvasRenderingContext2D, theme: Theme): CursorRect {
+  const c = PALETTES[theme];
   const family = fontFamily();
   const firstName = profile.name.split(" ")[0];
+  const s = W / 1600;
 
-  const bg = ctx.createLinearGradient(0, 0, W, H);
-  bg.addColorStop(0, "#2b221c");
-  bg.addColorStop(1, "#171412");
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, c.top);
+  bg.addColorStop(1, c.bottom);
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
-  const glow = ctx.createRadialGradient(W * 0.15, H * 1.05, 0, W * 0.15, H * 1.05, W * 0.75);
-  glow.addColorStop(0, "rgba(242,166,90,0.28)");
-  glow.addColorStop(1, "rgba(242,166,90,0)");
+  const glow = ctx.createRadialGradient(W * 0.85, H * 0.1, 0, W * 0.85, H * 0.1, W * 0.6);
+  glow.addColorStop(0, c.glow);
+  glow.addColorStop(1, "rgba(0,0,0,0)");
   ctx.fillStyle = glow;
   ctx.fillRect(0, 0, W, H);
 
   // Menu bar
-  ctx.fillStyle = "rgba(243,233,220,0.06)";
-  ctx.fillRect(0, 0, W, 56);
-  ctx.fillStyle = "#a89c8e";
-  ctx.font = `500 26px ${family}`;
+  ctx.fillStyle = c.bar;
+  ctx.fillRect(0, 0, W, 56 * s);
+  ctx.fillStyle = c.muted;
+  ctx.font = `500 ${26 * s}px ${family}`;
   ctx.textBaseline = "middle";
-  ctx.fillText("workbench", 40, 29);
+  ctx.fillText("workbench", 40 * s, 29 * s);
 
   // Greeting
   ctx.textBaseline = "alphabetic";
-  ctx.fillStyle = "#f3e9dc";
-  ctx.font = `800 132px ${family}`;
+  ctx.fillStyle = c.fg;
+  ctx.font = `800 ${132 * s}px ${family}`;
   const hello = `hi, I'm ${firstName}`;
-  ctx.fillText(hello, 110, 380);
-  if (cursorOn) {
-    const x = 110 + ctx.measureText(hello).width + 18;
-    ctx.fillStyle = "#f2a65a";
-    ctx.fillRect(x, 270, 26, 116);
-  }
+  ctx.fillText(hello, 110 * s, 380 * s);
+  const cursor: CursorRect = {
+    x: (110 * s + ctx.measureText(hello).width + 18 * s) / W,
+    y: (270 * s) / H,
+    width: (26 * s) / W,
+    height: (116 * s) / H,
+  };
 
-  ctx.fillStyle = "#a89c8e";
-  ctx.font = `400 46px ${family}`;
-  ctx.fillText(profile.greeting, 114, 470);
+  ctx.fillStyle = c.muted;
+  ctx.font = `400 ${46 * s}px ${family}`;
+  ctx.fillText(profile.greeting, 114 * s, 470 * s);
 
-  ctx.fillStyle = "#f2a65a";
-  ctx.font = `500 40px ${family}`;
-  ctx.fillText("Click any part of the machine to open it.", 114, 560);
+  ctx.fillStyle = c.accent;
+  ctx.font = `600 ${40 * s}px ${family}`;
+  ctx.fillText("Click any part of the PC to open it.", 114 * s, 560 * s);
 
   // App tiles mirroring the parts
-  const tile = 150;
-  const gap = 78;
+  const tile = 150 * s;
+  const gap = 78 * s;
+  const top = 720 * s;
   const total = parts.length * tile + (parts.length - 1) * gap;
   let x = (W - total) / 2;
+  ctx.textAlign = "center";
   for (const part of parts) {
-    roundRect(ctx, x, 720, tile, tile, 30);
-    ctx.fillStyle = "rgba(243,233,220,0.08)";
+    ctx.beginPath();
+    ctx.roundRect(x, top, tile, tile, 30 * s);
+    ctx.fillStyle = c.tile;
     ctx.fill();
-    ctx.strokeStyle = "rgba(242,166,90,0.35)";
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = c.tileEdge;
+    ctx.lineWidth = 3 * s;
     ctx.stroke();
-    ctx.fillStyle = "#f3e9dc";
-    ctx.font = `700 40px ${family}`;
-    ctx.textAlign = "center";
-    ctx.fillText(part.label, x + tile / 2, 720 + tile / 2 + 14);
-    ctx.fillStyle = "#a89c8e";
-    ctx.font = `400 23px ${family}`;
-    ctx.fillText(part.topic, x + tile / 2, 720 + tile + 44);
-    ctx.textAlign = "left";
+    ctx.fillStyle = c.fg;
+    ctx.font = `700 ${40 * s}px ${family}`;
+    ctx.fillText(part.label, x + tile / 2, top + tile / 2 + 14 * s);
+    ctx.fillStyle = c.muted;
+    ctx.font = `400 ${23 * s}px ${family}`;
+    ctx.fillText(part.topic, x + tile / 2, top + tile + 44 * s);
     x += tile + gap;
   }
+  ctx.textAlign = "left";
+  return cursor;
 }
 
-/** The monitor's idle desktop. `setCursor` redraws with the blinking cursor on or off. */
-export function createIdleScreen() {
+/**
+ * The monitor's idle desktop, themed for day and night. The blinking cursor is a separate mesh
+ * (see Monitor), so this large texture only re-uploads when the theme or font changes.
+ */
+export function createIdleScreen(theme: Theme) {
   const canvas = document.createElement("canvas");
   canvas.width = W;
   canvas.height = H;
   const ctx = canvas.getContext("2d")!;
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;
-  texture.anisotropy = 4;
 
-  let cursorOn = true;
+  let current = theme;
+  let cursor: CursorRect = { x: 0, y: 0, width: 0, height: 0 };
   const redraw = () => {
-    draw(ctx, cursorOn);
+    cursor = draw(ctx, current);
     texture.needsUpdate = true;
   };
   redraw();
-  // Redraw once the web font is ready so the screen uses Recursive, not the fallback.
-  // A missing fallback face can reject the load; draw with whatever is available either way.
+  // Redraw once the web font is ready; a missing fallback face can reject, so draw regardless.
   void document.fonts
     .load(`800 132px ${fontFamily()}`)
     .catch(() => undefined)
@@ -115,9 +146,13 @@ export function createIdleScreen() {
 
   return {
     texture,
-    setCursor(on: boolean) {
-      if (on === cursorOn) return;
-      cursorOn = on;
+    /** Latest cursor placement (changes when the font or theme redraws the greeting). */
+    get cursor() {
+      return cursor;
+    },
+    setTheme(next: Theme) {
+      if (next === current) return;
+      current = next;
       redraw();
     },
     dispose() {
