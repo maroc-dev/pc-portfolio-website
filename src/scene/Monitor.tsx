@@ -1,10 +1,12 @@
 import { RoundedBox } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { MeshBasicMaterial } from "three";
 import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
+import { experienceStore, type ScreenRect } from "@/state/experience-store";
 import { MONITOR } from "./layout";
 import { materials, palette } from "./materials";
+import { SCREEN_CORNERS, projectRect, rectChanged } from "./screen-rect";
 import { createIdleScreen } from "./textures/idle-screen";
 
 const { screenCenter: C, screenWidth: SW, screenHeight: SH, bezel: B, depth: D } = MONITOR;
@@ -25,8 +27,25 @@ export function Monitor() {
     [screen, screenMaterial],
   );
 
-  useFrame(({ clock }) => {
+  const published = useRef<ScreenRect | null>(null);
+
+  useFrame(({ clock, camera, size }) => {
     screen.setCursor(prefersReducedMotion() || Math.floor(clock.elapsedTime * 1.6) % 2 === 0);
+
+    // Tell the interface where the screen is so the content window can sit exactly on it.
+    const { selected, setScreenRect } = experienceStore.getState();
+    if (!selected) {
+      if (published.current) {
+        published.current = null;
+        setScreenRect(null);
+      }
+      return;
+    }
+    const rect = projectRect(SCREEN_CORNERS, camera, size);
+    if (rectChanged(published.current, rect)) {
+      published.current = rect;
+      setScreenRect(rect);
+    }
   });
 
   const panelZ = C.z - D / 2;
