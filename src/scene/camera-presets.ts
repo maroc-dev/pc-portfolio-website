@@ -38,10 +38,10 @@ const isPortrait = (aspect: number) => aspect < 1;
 export function overviewPose(aspect: number): CameraPose {
   return frame(
     {
-      target: new Vector3(isPortrait(aspect) ? 0.1 : 0.14, 0.27, -0.06),
+      target: new Vector3(isPortrait(aspect) ? 0.12 : 0.16, 0.34, -0.08),
       direction: new Vector3(-0.28, 0.34, 1),
-      width: isPortrait(aspect) ? 1.75 : 1.95,
-      height: 0.92,
+      width: isPortrait(aspect) ? 1.95 : 2.15,
+      height: 1.05,
       fov: isPortrait(aspect) ? 40 : 32,
     },
     aspect,

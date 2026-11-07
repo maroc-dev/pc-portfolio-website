@@ -8,24 +8,33 @@ import { experienceStore, useExperience } from "@/state/experience-store";
 import { Cable } from "./Cable";
 import { CameraRig } from "./camera/CameraRig";
 import { Desk } from "./Desk";
+import { Effects } from "./effects/Effects";
 import { Keyboard } from "./Keyboard";
 import { Lamp } from "./Lamp";
 import { Lighting } from "./Lighting";
 import { Monitor } from "./Monitor";
 import { Mug } from "./Mug";
+import { LightSwitch } from "./room/LightSwitch";
+import { Room } from "./room/Room";
+import { SunShafts } from "./room/SunShafts";
+import { ShadowCasting } from "./ShadowCasting";
+import { TagAnchors } from "./TagAnchors";
+import { ThemeDriver } from "./ThemeDriver";
 import { PcTower } from "./tower/PcTower";
 
-const DPR = { high: [1, 1.75], low: [1, 1.25] } as const;
+const DPR = { high: [1, 2], low: [1, 1.25] } as const;
 
 /** The WebGL scene. Loaded client-side only; the page is fully usable without it. */
 export default function SceneCanvas() {
   const quality = useExperience((s) => s.quality);
   const reducedMotion = useReducedMotion();
+  const high = quality === "high";
 
   return (
     <Canvas
       dpr={[...DPR[quality]]}
-      gl={{ antialias: quality === "high", powerPreference: "high-performance" }}
+      shadows={high ? "percentage" : false}
+      gl={{ antialias: !high, powerPreference: "high-performance" }}
       camera={{ fov: 32, near: 0.05, far: 20 }}
       frameloop={reducedMotion ? "demand" : "always"}
       onCreated={({ gl }) => {
@@ -36,13 +45,15 @@ export default function SceneCanvas() {
       }}
       onPointerMissed={() => experienceStore.getState().hover(null)}
     >
-      <color attach="background" args={["#1d1b19"]} />
-      <fog attach="fog" args={["#1d1b19", 2.6, 6]} />
+      <color attach="background" args={["#cfe2f6"]} />
+      <fog attach="fog" args={["#cfe2f6", 3, 7]} />
       <PerformanceMonitor onDecline={() => experienceStore.getState().setQuality("low")} />
+      <ThemeDriver />
       <Suspense fallback={null}>
         {/* First, so the camera is placed before anything projects through it this frame. */}
         <CameraRig />
-        <Lighting />
+        <Lighting shadows={high} />
+        <Room />
         <Desk />
         <Lamp />
         <Keyboard />
@@ -50,7 +61,12 @@ export default function SceneCanvas() {
         <Monitor />
         <PcTower />
         <Cable />
+        <LightSwitch />
+        <TagAnchors />
+        <SunShafts dust={high && !reducedMotion} />
+        <ShadowCasting enabled={high} />
       </Suspense>
+      {high && <Effects />}
     </Canvas>
   );
 }

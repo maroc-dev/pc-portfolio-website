@@ -7,8 +7,10 @@ import { experienceStore, useExperience } from "@/state/experience-store";
 import { useThemeSync } from "@/state/use-theme-sync";
 import { useUrlSync } from "@/state/use-url-sync";
 import { BootOverlay } from "@/ui/BootOverlay";
+import { ExploreHint } from "@/ui/ExploreHint";
 import { HoverLabel } from "@/ui/HoverLabel";
 import { PartDock } from "@/ui/PartDock";
+import { PartTags } from "@/ui/PartTags";
 import { ScreenWindow } from "@/ui/ScreenWindow";
 import { SiteHeader } from "@/ui/SiteHeader";
 import { StaticFallback } from "@/ui/StaticFallback";
@@ -44,8 +46,10 @@ export function ExperienceShell() {
           {scene !== "unavailable" && <SceneCanvas />}
         </div>
         {scene === "unavailable" ? <StaticFallback /> : <BootOverlay />}
+        <PartTags />
         <ScreenWindow />
       </div>
+      <ExploreHint />
       <PartDock />
       <HoverLabel />
     </div>
