@@ -23,6 +23,7 @@ a person's space rather than a product render.
 | `night`  | `#1d1b19` | Background. Warm charcoal, never neutral black.                |
 | `ink`    | `#262320` | Raised surfaces (windows, sheets).                             |
 | `walnut` | `#6b4a33` | Desk and wood.                                                 |
+| `powder` | `#a9bde6` | Marco's case. The one cool colour in the scene.                |
 | `amber`  | `#f2a65a` | Lamp, primary glow, focus rings, primary actions.              |
 | `cream`  | `#f3e9dc` | Primary text.                                                  |
 | `dust`   | `#a89c8e` | Secondary text (≥ 4.5:1 on `night`).                           |
@@ -39,11 +40,20 @@ One variable family: **Recursive**, using its axes instead of extra families.
 
 Avoid: all-caps eyebrow labels, `→` suffixes, one-word colour accents in headlines.
 
+## The machine
+
+The tower is modelled on Marco's own PC: an octagonal showcase case in powder blue with
+panoramic glass across the front corners and right side, a perforated left panel, a chamfered
+top cap with a honeycomb grille and the front I/O strip, a vertically mounted GPU on the left, a
+ring-pump AIO with a three-fan radiator on the right, horizontal RAM, and a white honeycomb PSU
+shroud. All branding is left off. A network card is added (it is not in the real build) so the
+distributed-systems section has a home. The real build's lighting is cyan; the scene keeps warm
+amber LEDs to match the Evening Workbench mood.
+
 ## Materials
 
-- **Case:** matte charcoal metal (metalness ~0.6, roughness ~0.45), slightly warm.
-- **Side panel:** tinted glass. Physical transmission on capable devices, plain transparency
-  on the low tier.
+- **Case:** powder-blue painted steel (`#a9bde6`), white interior trim.
+- **Glass:** tinted, reflective, plain transparency (no transmission pass).
 - **PCB:** deep green-black with copper traces drawn into a procedural texture; an emissive
   mask lets traces glow when a part is selected.
 - **Desk:** walnut, satin finish.
