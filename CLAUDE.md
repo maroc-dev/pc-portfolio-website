@@ -30,6 +30,8 @@ three + @react-three/fiber + drei · GSAP (only animation system) · zustand · 
 - One animation system: GSAP for timelines, CSS for simple hover/focus. Don't add Motion or a
   second smooth-scroll engine.
 - Reuse geometries/materials; dispose what you create imperatively.
+- Shaders: clamp varyings before `pow`/`sqrt`/`log`. MSAA can extrapolate them past their range,
+  a single NaN pixel then gets smeared over the whole frame by Bloom (renders black on real GPUs).
 
 ## Workflow
 
