@@ -24,6 +24,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
             </ul>
             <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
               <Link
+                prefetch
                 href={`/projects/${project.slug}`}
                 className="text-amber underline-offset-4 hover:underline"
               >
