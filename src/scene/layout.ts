@@ -9,12 +9,23 @@ import type { PartId } from "@/content/types";
 
 export const DESK = { width: 2.6, depth: 1.1, thickness: 0.05, z: 0.05 } as const;
 
+/** Back wall plane and the window cut into it (left of the monitor). */
+export const WALL_Z = -0.55;
+export const WINDOW = { x0: -1.2, x1: -0.48, y0: 0.5, y1: 1.3 } as const;
+
+/** Sunlight travels in through the window, down and to the right, onto the desk. */
+export const SUN_DIRECTION = new Vector3(0.62, -0.55, 0.56).normalize();
+export const SUN_TARGET = new Vector3(-0.1, 0, 0.1);
+
+/** Light switch on the wall between the monitor and the PC. */
+export const LIGHT_SWITCH = new Vector3(0.16, 0.5, WALL_Z + 0.005);
+
 export const MONITOR = {
   /** Centre of the visible screen surface, world space. */
   screenCenter: new Vector3(-0.32, 0.43, -0.18),
   screenWidth: 0.62,
   screenHeight: 0.3875, // 16:10
-  bezel: 0.012,
+  bezel: 0.008,
   depth: 0.025,
 } as const;
 
@@ -24,19 +35,19 @@ export const MONITOR = {
  * wall rotated so its expansion slots sit at the top, as in the real build.
  */
 export const TOWER = {
-  position: new Vector3(0.6, 0, -0.1),
+  position: new Vector3(0.64, 0, -0.12),
   rotationY: -0.3,
+  /** Shown larger than life so the parts read clearly; everything below is in model units. */
+  scale: 1.4,
   width: 0.34,
   depth: 0.32,
   height: 0.48,
   /** Vertical corner chamfers of the octagonal footprint. */
   chamfer: 0.065,
   /** Base plinth and top cap heights; the glass sits between them. */
-  plinth: 0.05,
+  plinth: 0.11,
   cap: 0.055,
   wall: 0.006,
-  /** Top of the PSU shroud. */
-  shroudHeight: 0.15,
   /** Front face of the motherboard. */
   boardZ: -0.132,
 } as const;
@@ -45,7 +56,7 @@ const towerQuaternion = new Quaternion().setFromEuler(new Euler(0, TOWER.rotatio
 export const towerMatrix = new Matrix4().compose(
   TOWER.position,
   towerQuaternion,
-  new Vector3(1, 1, 1),
+  new Vector3(TOWER.scale, TOWER.scale, TOWER.scale),
 );
 
 /** Converts a point in the tower's frame to world space. */
@@ -67,13 +78,16 @@ export function boardUV(x: number, y: number): [number, number] {
   ];
 }
 
+/** The GPU is turned towards the front glass so its fans face the viewer. */
+export const GPU_YAW = 0.7;
+
 /** Centre of each selectable part, in the tower's frame. */
 export const PART_ANCHORS: Record<PartId, Vector3> = {
   cpu: new Vector3(0.03, 0.31, -0.115),
   ram: new Vector3(0.03, 0.238, -0.115),
   ssd: new Vector3(0.03, 0.193, -0.125),
-  nic: new Vector3(-0.062, 0.365, -0.105),
-  gpu: new Vector3(-0.122, 0.24, -0.06),
+  nic: new Vector3(-0.032, 0.365, -0.105),
+  gpu: new Vector3(-0.095, 0.265, -0.05),
   /** Front I/O strip on the top cap's front face. */
   io: new Vector3(0, TOWER.height - TOWER.cap / 2, TOWER.depth / 2),
 };
