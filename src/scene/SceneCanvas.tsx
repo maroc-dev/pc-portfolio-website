@@ -10,6 +10,7 @@ import { Desk } from "./Desk";
 import { Keyboard } from "./Keyboard";
 import { Lamp } from "./Lamp";
 import { Lighting } from "./Lighting";
+import { Monitor } from "./Monitor";
 import { Mug } from "./Mug";
 
 const DPR = { high: [1, 1.75], low: [1, 1.25] } as const;
@@ -42,6 +43,7 @@ export default function SceneCanvas() {
         <Lamp />
         <Keyboard />
         <Mug />
+        <Monitor />
         <CameraRig />
       </Suspense>
     </Canvas>
