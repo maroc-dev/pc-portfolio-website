@@ -1,7 +1,7 @@
 import { RoundedBox } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
-import type { Mesh, PointLight } from "three";
+import type { Mesh, MeshBasicMaterial, PointLight } from "three";
 import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore, useExperience, type ScreenRect } from "@/state/experience-store";
 import { MONITOR } from "./layout";
@@ -13,12 +13,15 @@ import { createIdleScreen } from "./textures/idle-screen";
 const { screenCenter: C, screenWidth: SW, screenHeight: SH, bezel: B, depth: D } = MONITOR;
 const CHIN = 0.01;
 const BIAS_NIGHT = 1.1;
+/** Brightness of a switched-off screen: a dark panel, not pure black. */
+const SCREEN_OFF = 0.04;
 
 /** Slim monitor with a crisp, themed idle desktop and a blue bias light for night. */
 export function Monitor() {
   const maxAnisotropy = useThree((s) => s.gl.capabilities.getMaxAnisotropy());
   const cursor = useRef<Mesh>(null);
   const bias = useRef<PointLight>(null);
+  const panel = useRef<MeshBasicMaterial>(null);
   const published = useRef<ScreenRect | null>(null);
 
   const quality = useExperience((s) => s.quality);
@@ -49,9 +52,12 @@ export function Monitor() {
       );
       cursor.current.scale.set(rect.width * SW, rect.height * SH, 1);
       cursor.current.visible =
-        prefersReducedMotion() || Math.floor(clock.elapsedTime * 1.6) % 2 === 0;
+        runtime.screen > 0.95 &&
+        (prefersReducedMotion() || Math.floor(clock.elapsedTime * 1.6) % 2 === 0);
     }
-    if (bias.current) bias.current.intensity = BIAS_NIGHT * (1 - runtime.daylight);
+    if (bias.current) bias.current.intensity = BIAS_NIGHT * (1 - runtime.daylight) * runtime.screen;
+    // The screen fades up from black as the machine wakes.
+    panel.current?.color.setScalar(SCREEN_OFF + (1 - SCREEN_OFF) * runtime.screen);
 
     // Tell the interface where the screen is so the content window can sit exactly on it.
     const { selected, setScreenRect } = experienceStore.getState();
@@ -81,7 +87,12 @@ export function Monitor() {
       />
       <mesh position={[C.x, C.y, C.z + 0.0005]}>
         <planeGeometry args={[SW, SH]} />
-        <meshBasicMaterial map={screen.texture} map-anisotropy={maxAnisotropy} toneMapped={false} />
+        <meshBasicMaterial
+          ref={panel}
+          map={screen.texture}
+          map-anisotropy={maxAnisotropy}
+          toneMapped={false}
+        />
       </mesh>
       <mesh ref={cursor}>
         <planeGeometry args={[1, 1]} />
