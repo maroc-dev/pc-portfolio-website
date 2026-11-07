@@ -18,7 +18,9 @@ import { runtime } from "../runtime";
 /** Geometry is built at unit radius and shared by every fan; fans are scaled instead. */
 const BLADES = 7;
 const hubGeometry = new CylinderGeometry(0.3, 0.3, 0.22, 24).rotateX(Math.PI / 2);
-const bladeGeometry = new BoxGeometry(0.62, 0.34, 0.02).translate(0.62, 0, 0);
+/** Pitched about its own length (before the spoke rotation) so every blade stays in the fan plane. */
+const BLADE_PITCH = 0.38;
+const bladeGeometry = new BoxGeometry(0.62, 0.3, 0.02).rotateX(BLADE_PITCH).translate(0.62, 0, 0);
 const ringGeometry = new TorusGeometry(0.98, 0.035, 8, 48);
 const frameBar = new BoxGeometry(2.2, 0.16, 0.4);
 const rimGeometry = new TorusGeometry(1.0, 0.06, 8, 48);
@@ -73,7 +75,7 @@ export function Fan({
             key={i}
             geometry={bladeGeometry}
             material={dark ? materials.darkPlastic : bladeMaterial}
-            rotation={[0.38, 0, (i / BLADES) * Math.PI * 2]}
+            rotation={[0, 0, (i / BLADES) * Math.PI * 2]}
           />
         ))}
       </group>
