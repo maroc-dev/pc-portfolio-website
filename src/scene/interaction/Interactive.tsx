@@ -7,6 +7,8 @@ import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore, useExperience } from "@/state/experience-store";
 import { runtime } from "../runtime";
 import { createAccentMaterial } from "./accent-material";
+import { Highlight } from "./Highlight";
+import type { HighlightLevel } from "./highlight-registry";
 
 /** A glowing material owned by a part. Its intensity follows hover/selection. */
 export interface Accent {
@@ -49,12 +51,17 @@ interface InteractiveProps {
 }
 
 /**
- * Makes a group of meshes behave as one selectable part: pointer events feed the store, and the
- * part's accent materials brighten on hover/selection and dim while another part is selected.
+ * Makes a group of meshes behave as one selectable part: pointer events feed the store, the
+ * part is outlined (softly while the PC is hovered, strongly when hovered or selected), and its
+ * accent materials brighten on hover/selection and dim while another part is selected.
  */
 export function Interactive({ id, accents, children }: InteractiveProps) {
   const level = useRef(0);
   const hovered = useExperience((s) => s.hovered === id);
+  const outline = useExperience((s): HighlightLevel | null => {
+    if (s.hovered === id || s.selected === id) return "strong";
+    return s.pcHovered && s.phase !== "focused" ? "hint" : null;
+  });
   useCursor(hovered);
 
   useFrame(({ clock }, delta) => {
@@ -69,10 +76,8 @@ export function Interactive({ id, accents, children }: InteractiveProps) {
     applyGlow(accents, level.current, dim, t);
   });
 
-  const onOver = (e: ThreeEvent<PointerEvent>) => {
-    e.stopPropagation();
-    experienceStore.getState().hover(id);
-  };
+  // Hover is not stopped here: the tower also needs to know the pointer is over the PC.
+  const onOver = () => experienceStore.getState().hover(id);
   const onOut = () => {
     if (experienceStore.getState().hovered === id) experienceStore.getState().hover(null);
   };
@@ -83,7 +88,9 @@ export function Interactive({ id, accents, children }: InteractiveProps) {
 
   return (
     <group name={id} onPointerOver={onOver} onPointerOut={onOut} onClick={onClick}>
-      {children}
+      <Highlight active={outline !== null} strength={outline ?? "hint"}>
+        {children}
+      </Highlight>
     </group>
   );
 }

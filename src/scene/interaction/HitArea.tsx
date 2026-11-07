@@ -11,7 +11,7 @@ interface HitAreaProps {
 /** Invisible box that enlarges a small part's pointer target. */
 export function HitArea({ size, position }: HitAreaProps) {
   return (
-    <mesh position={position} material={invisible}>
+    <mesh position={position} material={invisible} userData={{ noOutline: true }}>
       <boxGeometry args={size} />
     </mesh>
   );
