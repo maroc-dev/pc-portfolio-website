@@ -1,6 +1,7 @@
 import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 import type { PartId } from "@/content/types";
+import type { QualityTier } from "@/lib/device/quality";
 
 /**
  * The only bridge between the 3D scene and the DOM interface.
@@ -11,7 +12,6 @@ import type { PartId } from "@/content/types";
  */
 
 export type Phase = "boot" | "overview" | "focused";
-export type QualityTier = "high" | "low";
 export type SceneStatus = "pending" | "ready" | "unavailable";
 
 export interface ScreenRect {
