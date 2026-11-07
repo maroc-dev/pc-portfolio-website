@@ -7,7 +7,7 @@ export function StaticFallback() {
     <div className="absolute inset-0 overflow-hidden">
       <Image
         src={poster}
-        alt="Marco's desk: a monitor and a powder-blue PC lit by a warm desk lamp."
+        alt="Marco's sunny desk: a monitor and a powder-blue PC."
         fill
         priority
         sizes="100vw"
