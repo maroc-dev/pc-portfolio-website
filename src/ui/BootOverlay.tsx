@@ -40,7 +40,7 @@ export function BootOverlay() {
         Setting up the desk
       </p>
       <span className="bg-line block h-0.5 w-28 overflow-hidden rounded-full">
-        <span className="bg-accent block h-full w-full origin-left animate-[boot_4.4s_ease-in-out_forwards] rounded-full" />
+        <span className="bg-accent block h-full w-2/5 animate-[sweep_1.4s_ease-in-out_infinite] rounded-full" />
       </span>
       <button
         type="button"

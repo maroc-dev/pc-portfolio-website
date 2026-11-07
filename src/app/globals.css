@@ -127,11 +127,11 @@
   }
 }
 
-@keyframes boot {
+@keyframes sweep {
   from {
-    transform: scaleX(0);
+    transform: translateX(-100%);
   }
   to {
-    transform: scaleX(1);
+    transform: translateX(250%);
   }
 }
