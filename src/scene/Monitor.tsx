@@ -3,7 +3,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import type { Mesh, PointLight } from "three";
 import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
-import { experienceStore, type ScreenRect } from "@/state/experience-store";
+import { experienceStore, useExperience, type ScreenRect } from "@/state/experience-store";
 import { MONITOR } from "./layout";
 import { materials, palette } from "./materials";
 import { runtime } from "./runtime";
@@ -21,7 +21,12 @@ export function Monitor() {
   const bias = useRef<PointLight>(null);
   const published = useRef<ScreenRect | null>(null);
 
-  const screen = useMemo(() => createIdleScreen(experienceStore.getState().theme), []);
+  const quality = useExperience((s) => s.quality);
+  // 3072 × 1920 on capable devices; 2048 × 1280 on phones and weaker GPUs to save memory.
+  const screen = useMemo(
+    () => createIdleScreen(experienceStore.getState().theme, quality === "high" ? 1.2 : 0.8),
+    [quality],
+  );
 
   useEffect(() => {
     const unsubscribe = experienceStore.subscribe((state, prev) => {

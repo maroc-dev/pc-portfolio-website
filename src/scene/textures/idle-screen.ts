@@ -3,7 +3,7 @@ import { parts } from "@/content/parts";
 import { profile } from "@/content/profile";
 import type { Theme } from "@/state/experience-store";
 
-/** Drawn at 2560 × 1600 so text stays crisp when the camera is close to the monitor. */
+/** Layout space for the desktop; the canvas renders it at `scale` (1.2× on capable devices). */
 const W = 2560;
 const H = 1600;
 
@@ -123,11 +123,12 @@ function draw(ctx: CanvasRenderingContext2D, theme: Theme): CursorRect {
  * The monitor's idle desktop, themed for day and night. The blinking cursor is a separate mesh
  * (see Monitor), so this large texture only re-uploads when the theme or font changes.
  */
-export function createIdleScreen(theme: Theme) {
+export function createIdleScreen(theme: Theme, scale = 1.2) {
   const canvas = document.createElement("canvas");
-  canvas.width = W;
-  canvas.height = H;
+  canvas.width = Math.round(W * scale);
+  canvas.height = Math.round(H * scale);
   const ctx = canvas.getContext("2d")!;
+  ctx.scale(scale, scale);
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;
 
