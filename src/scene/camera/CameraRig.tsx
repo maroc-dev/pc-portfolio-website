@@ -5,6 +5,7 @@ import type { PartId } from "@/content/types";
 import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore } from "@/state/experience-store";
 import { monitorPose, overviewPose, partPose, type CameraPose } from "../camera-presets";
+import { hideCanvas, prepareIntro, revealCanvas } from "../intro/prepare";
 import { runtime } from "../runtime";
 import { introTimeline, overviewTimeline, selectionTimeline, snapTo } from "./timelines";
 
@@ -42,6 +43,8 @@ export function CameraRig() {
   const pose = useRef<CameraPose>({ position: new Vector3(), target: new Vector3(), fov: 32 });
   const active = useRef<gsap.core.Timeline | null>(null);
   const boot = useRef<gsap.core.Timeline | null>(null);
+  /** Abandons an opening that is still preparing; `complete` jumps to the finished scene. */
+  const pendingIntro = useRef<((complete: boolean) => void) | null>(null);
   const parallax = useRef(new Vector2());
 
   // Initial placement and power-on.
@@ -62,24 +65,45 @@ export function CameraRig() {
       snapTo(pose.current, overviewPose(a));
       finish();
     } else {
+      // Hold the opening until shaders and textures are ready, then fade in and play it.
       const overview = overviewPose(a);
+      const { gl, scene, camera } = get();
+      const canvas = gl.domElement;
+      let abandoned = false;
       snapTo(pose.current, introStart(overview));
-      boot.current = introTimeline(pose.current, overview, finish);
+      hideCanvas(canvas);
+      pendingIntro.current = (complete) => {
+        abandoned = true;
+        pendingIntro.current = null;
+        if (complete) finish();
+        revealCanvas(canvas);
+      };
+      void prepareIntro(gl, scene, camera).then(() => {
+        if (abandoned) return;
+        pendingIntro.current = null;
+        Object.assign(runtime, { assembly: 0, cable: 0, power: 0, screen: 0 });
+        boot.current = introTimeline(pose.current, overview, finish);
+        revealCanvas(canvas);
+      });
     }
     invalidate();
     return () => {
+      // Unmounting (or React's dev double-mount) abandons a pending opening without ending it.
+      pendingIntro.current?.(false);
       boot.current?.kill();
       active.current?.kill();
     };
-  }, [invalidate]);
+  }, [get, invalidate]);
 
   // React to selection changes and boot skips.
   useEffect(
     () =>
       experienceStore.subscribe((state, prev) => {
         const skippedBoot = prev.phase === "boot" && state.phase !== "boot";
-        if ((skippedBoot || state.selected !== prev.selected) && boot.current) {
-          boot.current.progress(1);
+        if (skippedBoot || state.selected !== prev.selected) {
+          // Skipping (or choosing a part) before the opening starts shows the finished scene.
+          pendingIntro.current?.(true);
+          boot.current?.progress(1);
           boot.current = null;
         }
         if (state.selected === prev.selected) return;
