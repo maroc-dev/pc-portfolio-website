@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
-import { AdditiveBlending, CatmullRomCurve3, Color, type ShaderMaterial } from "three";
-import { CABLE_POINTS } from "./layout";
+import { AdditiveBlending, Color, type ShaderMaterial } from "three";
+import { createCableCurve } from "./layout";
 import { materials, palette } from "./materials";
 import { runtime } from "./runtime";
 
@@ -29,7 +29,7 @@ const fragmentShader = /* glsl */ `
 
 /** Display cable from the tower to the monitor; a pulse runs along it when a part is chosen. */
 export function Cable() {
-  const curve = useMemo(() => new CatmullRomCurve3(CABLE_POINTS, false, "centripetal"), []);
+  const curve = useMemo(() => createCableCurve(), []);
   const pulse = useRef<ShaderMaterial>(null);
   const uniforms = useMemo(
     () => ({ uProgress: { value: 0 }, uColor: { value: new Color(palette.glow) } }),

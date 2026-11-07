@@ -1,4 +1,4 @@
-import { Euler, Matrix4, Quaternion, Vector3 } from "three";
+import { CatmullRomCurve3, Euler, Matrix4, Quaternion, Vector3 } from "three";
 import type { PartId } from "@/content/types";
 
 /**
@@ -92,12 +92,24 @@ export const PART_ANCHORS: Record<PartId, Vector3> = {
   io: new Vector3(0, TOWER.height - TOWER.cap / 2, TOWER.depth / 2),
 };
 
-/** Display cable from the GPU outputs (top rear) down to the monitor stand, world space. */
+/**
+ * Display cable: out of the tower's back panel, straight down behind it, flat along the back of
+ * the desk (clear of the monitor base), then up into the monitor stand. World space.
+ */
+const CABLE_ON_DESK = 0.0075;
 export const CABLE_POINTS: Vector3[] = [
-  towerToWorld(new Vector3(-0.1, TOWER.height - TOWER.cap, -TOWER.depth / 2 - 0.004)),
-  towerToWorld(new Vector3(-0.1, 0.25, -TOWER.depth / 2 - 0.05)),
-  new Vector3(0.24, 0.006, -0.36),
-  new Vector3(-0.05, 0.006, -0.35),
-  new Vector3(-0.3, 0.02, -0.29),
-  new Vector3(-0.32, 0.12, -0.255),
+  towerToWorld(new Vector3(-0.1, 0.32, -TOWER.depth / 2 - 0.003)),
+  towerToWorld(new Vector3(-0.1, 0.27, -TOWER.depth / 2 - 0.03)),
+  towerToWorld(new Vector3(-0.1, 0.06, -TOWER.depth / 2 - 0.04)),
+  towerToWorld(new Vector3(-0.1, CABLE_ON_DESK / TOWER.scale, -TOWER.depth / 2 - 0.05)),
+  new Vector3(0.3, CABLE_ON_DESK, -0.45),
+  new Vector3(0.0, CABLE_ON_DESK, -0.43),
+  new Vector3(-0.18, CABLE_ON_DESK, -0.37),
+  new Vector3(-0.28, 0.03, -0.31),
+  new Vector3(-0.32, 0.12, -0.25),
 ];
+
+/** The cable's path. Low tension keeps it from overshooting into the desk between points. */
+export function createCableCurve(): CatmullRomCurve3 {
+  return new CatmullRomCurve3(CABLE_POINTS, false, "catmullrom", 0.2);
+}
