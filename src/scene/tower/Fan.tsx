@@ -12,7 +12,7 @@ import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { materials } from "../materials";
 
 /** Pale, slightly glossy blades like the real fans. */
-const bladeMaterial = new MeshStandardMaterial({ color: "#dbe5f3", roughness: 0.35, metalness: 0 });
+const bladeMaterial = new MeshStandardMaterial({ color: "#b9c6d9", roughness: 0.35, metalness: 0 });
 import { runtime } from "../runtime";
 
 /** Geometry is built at unit radius and shared by every fan; fans are scaled instead. */
