@@ -1,8 +1,15 @@
 import { TOWER } from "../layout";
 import { materials, palette } from "../materials";
 import { CaseShell } from "./CaseShell";
+import { Cooling } from "./Cooling";
 import { Fan } from "./Fan";
 import { Motherboard } from "./Motherboard";
+import { Cpu } from "./parts/Cpu";
+import { FrontIO } from "./parts/FrontIO";
+import { Gpu } from "./parts/Gpu";
+import { NetworkCard } from "./parts/NetworkCard";
+import { Ram } from "./parts/Ram";
+import { Ssd } from "./parts/Ssd";
 
 const FRONT_FAN_Y = [0.15, 0.27, 0.39];
 
@@ -12,6 +19,13 @@ export function PcTower() {
     <group position={TOWER.position} rotation={[0, TOWER.rotationY, 0]}>
       <CaseShell />
       <Motherboard />
+      <Cooling />
+      <Cpu />
+      <Ram />
+      <Ssd />
+      <NetworkCard />
+      <Gpu />
+      <FrontIO />
 
       {FRONT_FAN_Y.map((y) => (
         <Fan
