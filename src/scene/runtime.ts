@@ -12,4 +12,6 @@ export const runtime = {
   signal: 0,
   /** Extra fan speed multiplier, e.g. the GPU spin-up when selected. */
   gpuBoost: 0,
+  /** 1 = day (sun through the window), 0 = night (lamp on). Tweened when the theme flips. */
+  daylight: 1,
 };
