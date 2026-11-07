@@ -7,7 +7,10 @@ import { useReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore, useExperience } from "@/state/experience-store";
 import { CameraRig } from "./CameraRig";
 import { Desk } from "./Desk";
+import { Keyboard } from "./Keyboard";
+import { Lamp } from "./Lamp";
 import { Lighting } from "./Lighting";
+import { Mug } from "./Mug";
 
 const DPR = { high: [1, 1.75], low: [1, 1.25] } as const;
 
@@ -36,6 +39,9 @@ export default function SceneCanvas() {
       <Suspense fallback={null}>
         <Lighting />
         <Desk />
+        <Lamp />
+        <Keyboard />
+        <Mug />
         <CameraRig />
       </Suspense>
     </Canvas>
