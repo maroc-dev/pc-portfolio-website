@@ -13,6 +13,9 @@ export default defineConfig({
   fullyParallel: true,
   // Each worker renders WebGL in software; more than a couple at once starves the CPU.
   workers: 2,
+  // Software WebGL renders the full scene slowly, which delays the main thread.
+  timeout: 60_000,
+  expect: { timeout: 15_000 },
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
