@@ -12,6 +12,7 @@ import { Lamp } from "./Lamp";
 import { Lighting } from "./Lighting";
 import { Monitor } from "./Monitor";
 import { Mug } from "./Mug";
+import { PcTower } from "./tower/PcTower";
 
 const DPR = { high: [1, 1.75], low: [1, 1.25] } as const;
 
@@ -44,6 +45,7 @@ export default function SceneCanvas() {
         <Keyboard />
         <Mug />
         <Monitor />
+        <PcTower />
         <CameraRig />
       </Suspense>
     </Canvas>
