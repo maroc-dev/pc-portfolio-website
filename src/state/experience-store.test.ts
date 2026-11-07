@@ -62,3 +62,26 @@ describe("experience store", () => {
     expect(store.getState().windowOpen).toBe(false);
   });
 });
+
+describe("theme and hints", () => {
+  it("toggles between day and night", () => {
+    const store = createExperienceStore();
+    expect(store.getState().theme).toBe("day");
+    store.getState().toggleTheme();
+    expect(store.getState().theme).toBe("night");
+    store.getState().toggleTheme();
+    expect(store.getState().theme).toBe("day");
+  });
+
+  it("marks the machine explored on the first part hover or selection", () => {
+    const hovering = createExperienceStore();
+    hovering.getState().hover(null);
+    expect(hovering.getState().explored).toBe(false);
+    hovering.getState().hover("gpu");
+    expect(hovering.getState().explored).toBe(true);
+
+    const selecting = createExperienceStore();
+    selecting.getState().select("io");
+    expect(selecting.getState().explored).toBe(true);
+  });
+});
