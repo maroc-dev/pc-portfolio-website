@@ -1,6 +1,7 @@
 import { ContactShadows, RoundedBox } from "@react-three/drei";
 import { useEffect, useState } from "react";
 import { useExperience } from "@/state/experience-store";
+import { holdIntro } from "./intro/readiness";
 import { DESK } from "./layout";
 import { materials } from "./materials";
 import { createWoodTextures, type WoodTextures } from "./textures/wood";
@@ -23,17 +24,21 @@ const APRON_INSET = 0.06;
 /** Solid light-oak desk with a softly rounded edge, a slim apron, and a felt mat. */
 export function Desk() {
   const assembled = useExperience((s) => s.phase !== "boot");
-  // The grain takes a moment to generate, so it's made when the browser is idle; until then
-  // the desk shows plain oak and the first frame isn't held up.
+  // The grain takes a moment to generate, so it's made when the browser is idle rather than
+  // holding up the first frame. Without an intro the desk shows plain oak until then.
   const [wood, setWood] = useState<WoodTextures | null>(null);
   useEffect(() => {
     let made: WoodTextures | null = null;
+    // The opening waits for the grain so it never swaps in mid-animation.
+    const release = holdIntro();
     const cancel = whenIdle(() => {
       made = createWoodTextures();
       setWood(made);
+      release();
     });
     return () => {
       cancel();
+      release();
       made?.map.dispose();
       made?.roughnessMap.dispose();
     };
@@ -86,18 +91,19 @@ export function Desk() {
         position={[-0.22, 0.0015, 0.24]}
         material={materials.felt}
       />
-      {/* Baked once (frames=1); re-baked when the intro finishes so it sees the final layout. */}
-      <ContactShadows
-        key={assembled ? "assembled" : "intro"}
-        position={[0, 0.0005, 0]}
-        scale={[DESK.width, DESK.depth + 0.4]}
-        resolution={1024}
-        far={0.6}
-        blur={2.4}
-        opacity={0.45}
-        frames={1}
-        color="#1d2a40"
-      />
+      {/* Baked once (frames=1), after the opening, so it sees the finished layout. */}
+      {assembled && (
+        <ContactShadows
+          position={[0, 0.0005, 0]}
+          scale={[DESK.width, DESK.depth + 0.4]}
+          resolution={1024}
+          far={0.6}
+          blur={2.4}
+          opacity={0.45}
+          frames={1}
+          color="#1d2a40"
+        />
+      )}
     </group>
   );
 }
