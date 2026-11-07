@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Recursive } from "next/font/google";
+import { THEME_BOOTSTRAP } from "@/state/use-theme-sync";
 import "./globals.css";
 
 /** The whole portfolio is static content: every route must prerender completely. */
@@ -19,13 +20,23 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1d1b19",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#eaf2fc" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e1626" },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${recursive.variable} h-full`}>
+    <html
+      lang="en"
+      data-theme="day"
+      className={`${recursive.variable} h-full`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
+      </head>
       <body className="min-h-full">{children}</body>
     </html>
   );
