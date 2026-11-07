@@ -9,6 +9,8 @@ import { Cable } from "./Cable";
 import { CameraRig } from "./camera/CameraRig";
 import { Desk } from "./Desk";
 import { Effects } from "./effects/Effects";
+import { Assemble } from "./intro/Assemble";
+import { INTRO } from "./intro/schedule";
 import { Keyboard } from "./Keyboard";
 import { Lamp } from "./Lamp";
 import { Lighting } from "./Lighting";
@@ -17,6 +19,7 @@ import { Mug } from "./Mug";
 import { LightSwitch } from "./room/LightSwitch";
 import { Room } from "./room/Room";
 import { SunShafts } from "./room/SunShafts";
+import { PowerLights } from "./PowerLights";
 import { ShadowCasting } from "./ShadowCasting";
 import { TagAnchors } from "./TagAnchors";
 import { ThemeDriver } from "./ThemeDriver";
@@ -67,19 +70,32 @@ export default function SceneCanvas() {
         onFallback={() => experienceStore.getState().setQuality("low")}
       />
       <ThemeDriver />
+      <PowerLights />
       <Suspense fallback={null}>
         {/* First, so the camera is placed before anything projects through it this frame. */}
         <CameraRig />
         <Lighting shadows={high} />
         <Room />
-        <Desk />
-        <Lamp />
-        <Keyboard />
-        <Mug />
-        <Monitor />
+        <Assemble step={INTRO.desk}>
+          <Desk />
+        </Assemble>
+        <Assemble step={INTRO.lamp}>
+          <Lamp />
+        </Assemble>
+        <Assemble step={INTRO.keyboard}>
+          <Keyboard />
+        </Assemble>
+        <Assemble step={INTRO.mug}>
+          <Mug />
+        </Assemble>
+        <Assemble step={INTRO.monitor}>
+          <Monitor />
+        </Assemble>
         <PcTower />
         <Cable />
-        <LightSwitch />
+        <Assemble step={INTRO.lightSwitch}>
+          <LightSwitch />
+        </Assemble>
         <TagAnchors />
         <SunShafts dust={high && !reducedMotion} />
         <ShadowCasting enabled={high} />
