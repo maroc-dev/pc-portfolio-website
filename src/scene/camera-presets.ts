@@ -62,18 +62,13 @@ export function partPose(part: PartId, aspect: number): CameraPose {
   );
 }
 
-/**
- * Frames the monitor so its screen fills most of the viewport (leaving room for the header and
- * dock). On landscape screens the shot is nudged left so the glowing tower peeks in on the right.
- */
+/** Frames the monitor so its screen fills most of the viewport, leaving room for header and dock. */
 export function monitorPose(aspect: number): CameraPose {
   const portrait = isPortrait(aspect);
-  const target = MONITOR.screenCenter.clone();
-  if (!portrait) target.x += 0.07;
   return frame(
     {
-      target,
-      direction: new Vector3(0.06, 0.05, 1),
+      target: MONITOR.screenCenter.clone(),
+      direction: new Vector3(0, 0.04, 1),
       width: MONITOR.screenWidth / (portrait ? 0.96 : 0.62),
       height: MONITOR.screenHeight / 0.7,
       fov: 30,
