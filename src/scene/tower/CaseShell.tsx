@@ -1,5 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { ExtrudeGeometry, MeshStandardMaterial, Shape, type Material } from "three";
+import { Assemble } from "../intro/Assemble";
+import { INTRO } from "../intro/schedule";
 import { TOWER } from "../layout";
 import { materials } from "../materials";
 import { createHexTexture, createSlotTexture } from "../textures/perforation";
@@ -108,63 +110,75 @@ export function CaseShell() {
   );
 
   const outline = footprint();
+  const panels = outline.map((from, i) => {
+    const to = outline[(i + 1) % outline.length]!;
+    const face = FACES[i]!;
+    const material =
+      face === "glass"
+        ? materials.glass
+        : face === "mesh"
+          ? assets.meshPanel
+          : materials.casePowder;
+    return (
+      <Panel
+        key={i}
+        from={from}
+        to={to}
+        material={material}
+        thickness={face === "glass" ? 0.004 : T}
+        glass={face === "glass"}
+      />
+    );
+  });
+  const isGlass = (i: number) => FACES[i] === "glass";
+
+  // Assembled in three stages for the opening: chassis, then the glass closes, then the cap.
   return (
     <group>
-      <mesh geometry={assets.plinth} material={materials.casePowder} />
-      {/* Vents along the plinth's front; the PSU lives inside the plinth */}
-      <mesh position={[0, P * 0.45, D / 2 + 0.0005]} material={assets.vent}>
-        <planeGeometry args={[W - 2 * C - 0.03, P * 0.45]} />
-      </mesh>
-
-      <mesh geometry={assets.cap} position={[0, H - CAP, 0]} material={materials.casePowder} />
-      <mesh geometry={assets.grille} position={[0, H + 0.0005, 0]} material={assets.grillePanel} />
-
-      {outline.map((from, i) => {
-        const to = outline[(i + 1) % outline.length]!;
-        const face = FACES[i]!;
-        const material =
-          face === "glass"
-            ? materials.glass
-            : face === "mesh"
-              ? assets.meshPanel
-              : materials.casePowder;
-        return (
-          <Panel
-            key={i}
-            from={from}
-            to={to}
-            material={material}
-            thickness={face === "glass" ? 0.004 : T}
-            glass={face === "glass"}
-          />
-        );
-      })}
-
-      {/* Corner pillars framing the glass */}
-      {outline.map(([x, z], i) => (
-        <mesh key={i} position={[x, PANEL_Y, z]} material={materials.casePowder}>
-          <boxGeometry args={[0.008, PANEL_H, 0.008]} />
+      <Assemble step={INTRO.plinth}>
+        <mesh geometry={assets.plinth} material={materials.casePowder} />
+        {/* Vents along the plinth's front; the PSU lives inside the plinth */}
+        <mesh position={[0, P * 0.45, D / 2 + 0.0005]} material={assets.vent}>
+          <planeGeometry args={[W - 2 * C - 0.03, P * 0.45]} />
         </mesh>
-      ))}
-
-      {/* Expansion slot covers along the top (the board is mounted rotated) */}
-      <mesh position={[-0.1, H - CAP - 0.006, -0.11]} material={materials.aluminium}>
-        <boxGeometry args={[0.11, 0.004, 0.05]} />
-      </mesh>
-      {SLOT_X.map((x) => (
-        <mesh key={x} position={[x, H - CAP - 0.009, -0.095]} material={materials.caseMetal}>
-          <cylinderGeometry args={[0.0035, 0.0035, 0.004, 12]} />
+        {panels.filter((_, i) => !isGlass(i))}
+        {/* Expansion slot covers along the top (the board is mounted rotated) */}
+        <mesh position={[-0.1, H - CAP - 0.006, -0.11]} material={materials.aluminium}>
+          <boxGeometry args={[0.11, 0.004, 0.05]} />
         </mesh>
-      ))}
+        {SLOT_X.map((x) => (
+          <mesh key={x} position={[x, H - CAP - 0.009, -0.095]} material={materials.caseMetal}>
+            <cylinderGeometry args={[0.0035, 0.0035, 0.004, 12]} />
+          </mesh>
+        ))}
+        {/* Vertical light strip in the back-right corner */}
+        <mesh
+          position={[W / 2 - C / 2 - 0.006, PANEL_Y, -D / 2 + C / 2 + 0.006]}
+          rotation={[0, Math.PI / 4, 0]}
+          material={materials.ledGlow}
+        >
+          <boxGeometry args={[0.004, PANEL_H - 0.04, 0.002]} />
+        </mesh>
+      </Assemble>
 
-      {/* Vertical light strip in the back-right corner */}
-      <mesh
-        position={[W / 2 - C / 2 - 0.006, PANEL_Y, -D / 2 + C / 2 + 0.006]}
-        rotation={[0, Math.PI / 4, 0]}
-        material={materials.ledGlow}
-      >
-        <boxGeometry args={[0.004, PANEL_H - 0.04, 0.002]} />
-      </mesh>
+      <Assemble step={INTRO.shell}>
+        {panels.filter((_, i) => isGlass(i))}
+        {/* Corner pillars framing the glass */}
+        {outline.map(([x, z], i) => (
+          <mesh key={i} position={[x, PANEL_Y, z]} material={materials.casePowder}>
+            <boxGeometry args={[0.008, PANEL_H, 0.008]} />
+          </mesh>
+        ))}
+      </Assemble>
+
+      <Assemble step={INTRO.cap}>
+        <mesh geometry={assets.cap} position={[0, H - CAP, 0]} material={materials.casePowder} />
+        <mesh
+          geometry={assets.grille}
+          position={[0, H + 0.0005, 0]}
+          material={assets.grillePanel}
+        />
+      </Assemble>
     </group>
   );
 }
