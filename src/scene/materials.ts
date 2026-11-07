@@ -23,6 +23,9 @@ export const palette = {
 
 export const materials = {
   caseMetal: standard({ color: "#2b2826", metalness: 0.6, roughness: 0.45 }),
+  /** Marco's case: powder-blue painted steel, with white interior trim. */
+  casePowder: standard({ color: "#a9bde6", metalness: 0.15, roughness: 0.55 }),
+  caseWhite: standard({ color: "#e8e4de", metalness: 0.1, roughness: 0.6 }),
   caseInner: standard({ color: "#1c1a19", metalness: 0.3, roughness: 0.75 }),
   aluminium: standard({ color: "#b9b2a8", metalness: 0.85, roughness: 0.32 }),
   darkPlastic: standard({ color: "#1a1918", metalness: 0.1, roughness: 0.6 }),
