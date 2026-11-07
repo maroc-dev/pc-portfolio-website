@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 import type { Mesh, MeshBasicMaterial, PointLight } from "three";
 import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore, useExperience, type ScreenRect } from "@/state/experience-store";
+import { holdIntro } from "./intro/readiness";
 import { MONITOR } from "./layout";
 import { materials, palette } from "./materials";
 import { runtime } from "./runtime";
@@ -32,10 +33,14 @@ export function Monitor() {
   );
 
   useEffect(() => {
+    // The opening waits for the final screen so it never redraws mid-animation.
+    const release = holdIntro();
+    void screen.ready.then(release);
     const unsubscribe = experienceStore.subscribe((state, prev) => {
       if (state.theme !== prev.theme) screen.setTheme(state.theme);
     });
     return () => {
+      release();
       unsubscribe();
       screen.dispose();
     };

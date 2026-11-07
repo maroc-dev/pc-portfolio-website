@@ -140,13 +140,15 @@ export function createIdleScreen(theme: Theme, scale = 1.2) {
   };
   redraw();
   // Redraw once the web font is ready; a missing fallback face can reject, so draw regardless.
-  void document.fonts
+  const ready = document.fonts
     .load(`800 132px ${fontFamily()}`)
     .catch(() => undefined)
     .then(redraw);
 
   return {
     texture,
+    /** Resolves once the screen has been drawn with the web font. */
+    ready,
     /** Latest cursor placement (changes when the font or theme redraws the greeting). */
     get cursor() {
       return cursor;
