@@ -1,8 +1,10 @@
 import { CanvasTexture, SRGBColorSpace } from "three";
 import { PART_ANCHORS, boardUV } from "../layout";
 
+/** Traces are laid out on a 1024 × 1536 grid and rendered at 1.5× so they stay sharp up close. */
 const W = 1024;
 const H = 1536;
+const SCALE = 1.5;
 
 /** Deterministic PRNG so the board looks the same on every visit. */
 function mulberry32(seed: number) {
@@ -116,9 +118,10 @@ export function createPcbTextures() {
   const traces = routeTraces(rand);
 
   const colour = document.createElement("canvas");
-  colour.width = W;
-  colour.height = H;
+  colour.width = W * SCALE;
+  colour.height = H * SCALE;
   const c = colour.getContext("2d")!;
+  c.scale(SCALE, SCALE);
   c.fillStyle = "#16201c";
   c.fillRect(0, 0, W, H);
   for (let i = 0; i < 3000; i++) {
@@ -129,17 +132,18 @@ export function createPcbTextures() {
   silkscreen(c);
 
   const glow = document.createElement("canvas");
-  glow.width = W;
-  glow.height = H;
+  glow.width = W * SCALE;
+  glow.height = H * SCALE;
   const g = glow.getContext("2d")!;
+  g.scale(SCALE, SCALE);
   g.fillStyle = "#000";
   g.fillRect(0, 0, W, H);
   strokePaths(g, traces, "#fff");
 
   const map = new CanvasTexture(colour);
   map.colorSpace = SRGBColorSpace;
-  map.anisotropy = 4;
+  map.anisotropy = 16;
   const emissiveMap = new CanvasTexture(glow);
-  emissiveMap.anisotropy = 4;
+  emissiveMap.anisotropy = 16;
   return { map, emissiveMap };
 }

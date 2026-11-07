@@ -55,10 +55,10 @@ export function Lighting({ shadows }: { shadows: boolean }) {
         shadow-mapSize={[2048, 2048]}
         shadow-bias={-0.0004}
         shadow-normalBias={0.02}
-        shadow-camera-left={-1.6}
-        shadow-camera-right={1.6}
-        shadow-camera-top={1.6}
-        shadow-camera-bottom={-1.6}
+        shadow-camera-left={-1.3}
+        shadow-camera-right={1.3}
+        shadow-camera-top={1.3}
+        shadow-camera-bottom={-1.3}
         shadow-camera-near={0.5}
         shadow-camera-far={8}
       />
