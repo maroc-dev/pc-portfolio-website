@@ -1,54 +1,53 @@
-import { useMemo } from "react";
-import { CatmullRomCurve3, TubeGeometry, Vector3 } from "three";
-import { PART_ANCHORS, TOWER } from "../layout";
+import { useEffect, useMemo } from "react";
+import { MeshStandardMaterial } from "three";
 import { materials } from "../materials";
+import { createFinTexture } from "../textures/perforation";
 import { Fan } from "./Fan";
-
-const cpu = PART_ANCHORS.cpu;
-const Z = TOWER.boardZ;
-const FAN_Y = [0.14, 0.255, 0.37];
-const FAN_X = 0.122;
+import { CoolantTubes } from "./Cables";
+import { RADIATOR_FANS_Y, RADIATOR_FAN_RADIUS, RADIATOR_FAN_X, RADIATOR_FAN_Z } from "./radiator";
 
 /** 360 mm radiator on the right side with three fans, plumbed to the CPU pump. */
 export function Cooling() {
-  const tubes = useMemo(
+  const core = useMemo(
     () =>
-      [0, 0.014].map(
-        (dz) =>
-          new TubeGeometry(
-            new CatmullRomCurve3([
-              new Vector3(cpu.x + 0.02, cpu.y + 0.022, Z + 0.02 + dz),
-              new Vector3(cpu.x + 0.04, cpu.y + 0.06, Z + 0.035 + dz),
-              new Vector3(0.09, 0.405, -0.075 + dz),
-              new Vector3(0.145, 0.408, -0.05 + dz),
-            ]),
-            32,
-            0.0045,
-            8,
-          ),
-      ),
+      new MeshStandardMaterial({
+        map: createFinTexture("#2b3240", "#11151d", [1, 24]),
+        metalness: 0.5,
+        roughness: 0.55,
+      }),
     [],
+  );
+  useEffect(
+    () => () => {
+      core.map?.dispose();
+      core.dispose();
+    },
+    [core],
   );
 
   return (
     <group>
-      <mesh position={[0.156, 0.255, -0.01]} material={materials.caseInner}>
-        <boxGeometry args={[0.026, 0.36, 0.125]} />
+      <mesh position={[0.156, 0.268, RADIATOR_FAN_Z]} material={core}>
+        <boxGeometry args={[0.026, 0.31, 0.12]} />
       </mesh>
-      {FAN_Y.map((y) => (
+      {/* End tanks */}
+      {[0.11, 0.426].map((y) => (
+        <mesh key={y} position={[0.156, y, RADIATOR_FAN_Z]} material={materials.darkPlastic}>
+          <boxGeometry args={[0.03, 0.012, 0.124]} />
+        </mesh>
+      ))}
+      {RADIATOR_FANS_Y.map((y) => (
         <Fan
           key={y}
-          radius={0.054}
-          position={[FAN_X, y, -0.01]}
+          radius={RADIATOR_FAN_RADIUS}
+          position={[RADIATOR_FAN_X, y, RADIATOR_FAN_Z]}
           rotation={[0, -Math.PI / 2, 0]}
-          ring={materials.ledAmber}
+          ring={materials.ledGlow}
           framed
           speed={3}
         />
       ))}
-      {tubes.map((geometry, i) => (
-        <mesh key={i} geometry={geometry} material={materials.rubber} />
-      ))}
+      <CoolantTubes />
     </group>
   );
 }
