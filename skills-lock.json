@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "skills": {
+    "build-awwwards-quality-sites": {
+      "source": "MengTo/Skills",
+      "sourceType": "github",
+      "skillPath": "agent-skills/web-design/build-awwwards-quality-sites/SKILL.md",
+      "computedHash": "64017fdb07bf9b015ed25c4f286cde2238ab14b44e9a22ce2330167ee861f547",
+      "installMode": "copy"
+    },
+    "cinematic-gsap-lenis-motion-system": {
+      "source": "MengTo/Skills",
+      "sourceType": "github",
+      "skillPath": "agent-skills/web-design/cinematic-gsap-lenis-motion-system/SKILL.md",
+      "computedHash": "c88995e62e587f7d2eaaa514131912a0ed5b77613513fdf61a938e51298ded4c",
+      "installMode": "copy"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "89496d5dd00f4810205f351759594fc2742bf8eea85a2f2b2d1de59f4bd91576",
+      "installMode": "copy"
+    },
+    "threejs": {
+      "source": "MengTo/Skills",
+      "sourceType": "github",
+      "skillPath": "agent-skills/web-design/threejs/SKILL.md",
+      "computedHash": "4ad72664a1fa3569194a8c0dfe7fa09d6b1aea2e59363e93c9d663f0245c5194",
+      "installMode": "copy"
+    },
+    "webgl-3d-object": {
+      "source": "MengTo/Skills",
+      "sourceType": "github",
+      "skillPath": "agent-skills/web-design/webgl-3d-object/SKILL.md",
+      "computedHash": "ccdb154011337b18118876fe26e7597c20124d7db7219e50cdfd8dd28e713001",
+      "installMode": "copy"
+    }
+  }
+}
