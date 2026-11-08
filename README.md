@@ -6,7 +6,7 @@ part opens a section on the monitor.
 | Part        | Opens                                  |
 | ----------- | -------------------------------------- |
 | CPU         | About me                               |
-| GPU         | AI, ML and graphics projects           |
+| GPU         | AI: projects at work, models at home   |
 | RAM         | What I'm working on now, and my skills |
 | SSD         | Project archive                        |
 | Mini server | Distributed systems                    |

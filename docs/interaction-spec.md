@@ -13,7 +13,7 @@ and a cable from the tower to the monitor.
 | Part     | Section                                       | Heading           |
 | -------- | --------------------------------------------- | ----------------- |
 | `cpu`    | About me                                      | The Core          |
-| `gpu`    | AI, ML and graphics projects                  | Accelerated Ideas |
+| `gpu`    | AI: professional projects, local models       | Accelerated Ideas |
 | `ram`    | What I'm working on now + skills I have       | Active Memory     |
 | `ssd`    | Project archive                               | Project Archives  |
 | `server` | Distributed systems (mini server on the desk) | Connected Systems |
