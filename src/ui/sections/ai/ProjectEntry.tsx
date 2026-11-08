@@ -1,6 +1,6 @@
 import { aiAnchor } from "@/content/parts";
 import type { AiProject } from "@/content/types";
-import { FlowDiagram } from "./FlowDiagram";
+import { ArchDiagram } from "./ArchDiagram";
 import { NetworkSample } from "./NetworkSample";
 
 function PlusIcon() {
@@ -13,7 +13,7 @@ function PlusIcon() {
 
 /**
  * One professional project as a drop-down: name and summary when closed; what I did, the stack,
- * a flow diagram and any example output when open. Native <details>, so it works without
+ * a simplified architecture diagram and any example output when open. Native <details>, so it works without
  * JavaScript and links can open it by id.
  */
 export function ProjectEntry({ project }: { project: AiProject }) {
@@ -48,9 +48,7 @@ export function ProjectEntry({ project }: { project: AiProject }) {
             <li key={tech}>{tech}</li>
           ))}
         </ul>
-        <div className="mt-6">
-          <FlowDiagram steps={project.flow} />
-        </div>
+        <ArchDiagram architecture={project.architecture} name={project.name} />
         {project.sample === "network-diagram" && <NetworkSample />}
       </div>
     </details>
