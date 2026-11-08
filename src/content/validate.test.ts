@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parts } from "./parts";
 import { projects } from "./projects";
-import { validateContent } from "./validate";
+import { validateArchitecture, validateContent } from "./validate";
 
 describe("content registry", () => {
   it("is valid", () => {
@@ -50,5 +50,24 @@ describe("content registry", () => {
     expect(validateContent(parts, [...projects, projects[0]!])).toContain(
       "Duplicate project slugs",
     );
+  });
+
+  it("reports architecture boxes that overlap or arrows to nowhere", () => {
+    const problems = validateArchitecture(
+      {
+        cols: 2,
+        rows: 1,
+        nodes: [
+          { id: "a", label: "A", kind: "service", col: 1, row: 1 },
+          { id: "b", label: "B", kind: "service", col: 1, row: 1 },
+        ],
+        edges: [{ from: "a", to: "c" }],
+      },
+      "Test",
+    );
+    expect(problems).toEqual([
+      'Test: box "b" overlaps another box',
+      'Test: arrow uses unknown box "c"',
+    ]);
   });
 });

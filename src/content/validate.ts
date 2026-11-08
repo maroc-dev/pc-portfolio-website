@@ -1,8 +1,39 @@
 import { parts, sectionAnchors } from "./parts";
 import { getProject, projects } from "./projects";
-import { PART_IDS, type HardwarePart, type Project } from "./types";
+import { PART_IDS, type Architecture, type HardwarePart, type Project } from "./types";
 
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+/** Every box fits the grid without sharing a cell, and every arrow joins two real boxes. */
+export function validateArchitecture(arch: Architecture, where: string): string[] {
+  const problems: string[] = [];
+  const ids = new Set<string>();
+  const taken = new Set<string>();
+  for (const node of arch.nodes) {
+    if (ids.has(node.id)) problems.push(`${where}: duplicate box "${node.id}"`);
+    ids.add(node.id);
+    const lastRow = node.row + (node.rowSpan ?? 1) - 1;
+    if (node.col < 1 || node.col > arch.cols || node.row < 1 || lastRow > arch.rows) {
+      problems.push(`${where}: box "${node.id}" is outside the grid`);
+    }
+    for (let row = node.row; row <= lastRow; row++) {
+      const cell = `${node.col},${row}`;
+      if (taken.has(cell)) problems.push(`${where}: box "${node.id}" overlaps another box`);
+      taken.add(cell);
+    }
+  }
+  for (const edge of arch.edges) {
+    for (const end of [edge.from, edge.to]) {
+      if (!ids.has(end)) problems.push(`${where}: arrow uses unknown box "${end}"`);
+    }
+  }
+  for (const group of arch.groups ?? []) {
+    if (group.col + group.colSpan - 1 > arch.cols || group.row + group.rowSpan - 1 > arch.rows) {
+      problems.push(`${where}: group "${group.label}" is outside the grid`);
+    }
+  }
+  return problems;
+}
 
 /** Returns human-readable problems with the content registry; empty means valid. */
 export function validateContent(
@@ -35,7 +66,7 @@ export function validateContent(
         if (!KEBAB.test(id)) problems.push(`AI project id "${id}" is not kebab-case`);
       }
       for (const project of section.professional.projects) {
-        if (project.flow.length < 2) problems.push(`AI project "${project.id}" needs a flow`);
+        problems.push(...validateArchitecture(project.architecture, `AI project "${project.id}"`));
       }
     }
     if (section.kind === "about") {

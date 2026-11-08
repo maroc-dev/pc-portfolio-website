@@ -192,16 +192,51 @@ export interface ContactSection {
   placeholder: boolean;
 }
 
-/** One step in a project's flow diagram. */
-export interface FlowStep {
+/** What a box in an architecture diagram stands for; each kind has its own look. */
+export type ArchKind = "person" | "service" | "store" | "external";
+
+/** A component, placed on the diagram's grid (1-based column and row). */
+export interface ArchNode {
+  id: string;
   label: string;
   detail?: string;
+  kind: ArchKind;
+  col: number;
+  row: number;
+  rowSpan?: number;
+}
+
+/** A connection between two components, drawn as an arrow from `from` to `to`. */
+export interface ArchEdge {
+  from: string;
+  to: string;
+  label?: string;
+  /** Arrowheads at both ends: a two-way exchange. */
+  both?: boolean;
+}
+
+/** A dashed boundary around a block of cells, e.g. "Runs locally". */
+export interface ArchGroup {
+  label: string;
+  col: number;
+  row: number;
+  colSpan: number;
+  rowSpan: number;
+}
+
+/** A simplified box-and-arrow architecture diagram. */
+export interface Architecture {
+  cols: number;
+  rows: number;
+  nodes: ArchNode[];
+  edges: ArchEdge[];
+  groups?: ArchGroup[];
 }
 
 /** Example outputs a project can show. Each is made-up data, drawn by the UI. */
 export type ProjectSample = "network-diagram";
 
-/** A professional AI project, shown as an expandable entry with its flow. */
+/** A professional AI project, shown as an expandable entry with its architecture. */
 export interface AiProject {
   /** Kebab-case and unique: the entry's element id is `ai-${id}`. */
   id: string;
@@ -211,7 +246,7 @@ export interface AiProject {
   summary: string;
   points: string[];
   stack: string[];
-  flow: FlowStep[];
+  architecture: Architecture;
   sample?: ProjectSample;
 }
 
