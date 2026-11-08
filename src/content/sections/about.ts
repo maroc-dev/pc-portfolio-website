@@ -140,6 +140,7 @@ export const about: AboutSection = {
       story: [
         "I'm finishing my B.S. in Computer Science at Rutgers, graduating in January 2027, with Distributed Systems and Imaging and Multimedia on this semester's schedule. At work, I build AI agent infrastructure at AT&T Labs.",
       ],
+      more: { label: "See what I'm working on now", part: "ram", anchor: "memory-now" },
     },
   ],
   education: [
