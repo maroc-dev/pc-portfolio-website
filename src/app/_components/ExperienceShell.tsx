@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { pickQualityTier, readDeviceHints, supportsWebGL } from "@/lib/device/quality";
 import { experienceStore, useExperience } from "@/state/experience-store";
-import { useFullscreenSync } from "@/state/use-fullscreen-sync";
 import { useThemeSync } from "@/state/use-theme-sync";
 import { useUrlSync } from "@/state/use-url-sync";
 import { BootOverlay } from "@/ui/BootOverlay";
@@ -29,7 +28,6 @@ export function ExperienceShell() {
   const scene = useExperience((s) => s.scene);
   useUrlSync();
   useThemeSync();
-  useFullscreenSync();
 
   useEffect(() => {
     const store = experienceStore.getState();
