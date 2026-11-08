@@ -35,3 +35,22 @@ test("RAM and About me link to each other", async ({ page }) => {
   const ram = window(page, "Active Memory");
   await expect(ram.getByRole("heading", { name: "Right now", level: 3 })).toBeInViewport();
 });
+
+test("the RAM jump bar lists what's inside and jumps to it", async ({ page }) => {
+  await page.goto("/?part=ram");
+  const ram = window(page, "Active Memory");
+  const contents = ram.getByRole("navigation", { name: "Active Memory" });
+  await expect(contents.getByRole("button")).toHaveText([
+    "Home cluster",
+    "Last semester",
+    "Databases",
+    "Skills",
+  ]);
+
+  await contents.getByRole("button", { name: "Databases" }).click();
+  await expect(ram.getByRole("heading", { name: /black box of databases/ })).toBeInViewport();
+  await expect(contents.getByRole("button", { name: "Databases" })).toHaveAttribute(
+    "aria-current",
+    "true",
+  );
+});
