@@ -152,6 +152,18 @@ export function ScreenWindow() {
     if (compact) experienceStore.getState().setFullView(false);
   }, [compact]);
 
+  // A link asked to open this section at a particular spot: expand it if it's a drop-down,
+  // then bring it into view. Runs after the content swap above has reset the scroll.
+  const anchor = useExperience((s) => s.anchor);
+  useEffect(() => {
+    if (!anchor || !open || shown !== selected || !body.current) return;
+    const target = body.current.querySelector<HTMLElement>(`#${CSS.escape(anchor)}`);
+    experienceStore.getState().clearAnchor();
+    if (!target) return;
+    if (target instanceof HTMLDetailsElement) target.open = true;
+    target.scrollIntoView({ block: "start", behavior: prefersReducedMotion() ? "auto" : "smooth" });
+  }, [anchor, open, shown, selected]);
+
   useEffect(() => {
     if (!open) return;
     // Esc steps out one level: full view first, then back to the desk.
