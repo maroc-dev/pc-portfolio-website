@@ -15,4 +15,6 @@ export const duration = {
   windowIn: 0.45,
   windowOut: 0.25,
   toOverview: 0.9,
+  /** Into and out of full view. */
+  zoom: 0.7,
 } as const;

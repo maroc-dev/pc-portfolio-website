@@ -63,9 +63,24 @@ export function partPose(part: PartId, aspect: number): CameraPose {
   );
 }
 
-/** Frames the monitor so its screen fills most of the viewport, leaving room for header and dock. */
-export function monitorPose(aspect: number): CameraPose {
+/**
+ * Frames the monitor. Normally its screen fills most of the viewport, leaving room for the header
+ * and dock; in full view the camera squares up and moves in until only a sliver of bezel shows.
+ */
+export function monitorPose(aspect: number, full = false): CameraPose {
   const portrait = isPortrait(aspect);
+  if (full) {
+    return frame(
+      {
+        target: MONITOR.screenCenter.clone(),
+        direction: new Vector3(0, 0, 1),
+        width: MONITOR.screenWidth / 0.97,
+        height: MONITOR.screenHeight / 0.95,
+        fov: 30,
+      },
+      aspect,
+    );
+  }
   return frame(
     {
       target: MONITOR.screenCenter.clone(),

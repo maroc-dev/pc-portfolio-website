@@ -71,6 +71,13 @@ export function selectionTimeline({
   return tl;
 }
 
+/** A plain camera move between two rest poses, e.g. into and out of full view. */
+export function moveTimeline(pose: CameraPose, to: CameraPose, seconds: number = duration.zoom) {
+  const tl = gsap.timeline();
+  moveTo(tl, pose, to, 0, seconds, ease.travel);
+  return tl;
+}
+
 export function overviewTimeline(pose: CameraPose, overview: CameraPose) {
   const tl = gsap.timeline();
   tl.set(runtime, { signal: 0, gpuBoost: 0 }, 0);

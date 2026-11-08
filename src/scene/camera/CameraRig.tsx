@@ -1,13 +1,19 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { MathUtils, Vector2, Vector3, type PerspectiveCamera } from "three";
-import type { PartId } from "@/content/types";
+import { duration } from "@/lib/motion/tokens";
 import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore } from "@/state/experience-store";
 import { monitorPose, overviewPose, partPose, type CameraPose } from "../camera-presets";
 import { hideCanvas, nextFrames, prepareIntro, revealCanvas } from "../intro/prepare";
 import { runtime } from "../runtime";
-import { introTimeline, overviewTimeline, selectionTimeline, snapTo } from "./timelines";
+import {
+  introTimeline,
+  moveTimeline,
+  overviewTimeline,
+  selectionTimeline,
+  snapTo,
+} from "./timelines";
 
 /** The intro starts wider, higher and swung a little to the left, then glides to the overview. */
 const INTRO_PULLBACK = 1.35;
@@ -26,8 +32,9 @@ function introStart(overview: CameraPose): CameraPose {
 /** Pointer parallax strength in metres (overview only). */
 const PARALLAX = new Vector2(0.05, 0.03);
 
-function restPose(selected: PartId | null, aspect: number): CameraPose {
-  return selected ? monitorPose(aspect) : overviewPose(aspect);
+function restPose(aspect: number): CameraPose {
+  const { selected, fullView } = experienceStore.getState();
+  return selected ? monitorPose(aspect, fullView) : overviewPose(aspect);
 }
 
 /**
@@ -42,6 +49,8 @@ export function CameraRig() {
   const aspectRef = useRef(aspect);
   const pose = useRef<CameraPose>({ position: new Vector3(), target: new Vector3(), fov: 32 });
   const active = useRef<gsap.core.Timeline | null>(null);
+  /** True while `active` is a plain move between rest poses, which a resize may re-aim. */
+  const resting = useRef(false);
   const boot = useRef<gsap.core.Timeline | null>(null);
   /** Abandons an opening that is still preparing; `complete` jumps to the finished scene. */
   const pendingIntro = useRef<((complete: boolean) => void) | null>(null);
@@ -110,13 +119,27 @@ export function CameraRig() {
           boot.current?.progress(1);
           boot.current = null;
         }
-        if (state.selected === prev.selected) return;
-
-        active.current?.kill();
         const a = aspectRef.current;
 
+        // Full view toggled with the same section open: just move in or out.
+        if (state.selected === prev.selected) {
+          if (state.fullView === prev.fullView || !state.selected) return;
+          active.current?.kill();
+          if (prefersReducedMotion()) {
+            snapTo(pose.current, restPose(a));
+            invalidate();
+            return;
+          }
+          active.current = moveTimeline(pose.current, restPose(a));
+          resting.current = true;
+          return;
+        }
+
+        active.current?.kill();
+        resting.current = false;
+
         if (prefersReducedMotion()) {
-          snapTo(pose.current, restPose(state.selected, a));
+          snapTo(pose.current, restPose(a));
           runtime.signal = 0;
           if (state.selected) experienceStore.getState().revealWindow();
           invalidate();
@@ -129,7 +152,7 @@ export function CameraRig() {
               part: state.selected,
               switching: prev.selected !== null,
               closeUp: partPose(state.selected, a),
-              monitor: monitorPose(a),
+              monitor: monitorPose(a, state.fullView),
               onArrive: () => experienceStore.getState().revealWindow(),
             })
           : overviewTimeline(pose.current, overviewPose(a));
@@ -137,11 +160,18 @@ export function CameraRig() {
     [invalidate],
   );
 
-  // Re-frame on resize when nothing is animating.
+  // Re-frame on resize when nothing is animating. A plain move (entering full view resizes the
+  // window mid-move) is re-aimed at the new framing instead.
   useEffect(() => {
     aspectRef.current = aspect;
-    if (active.current?.isActive() || boot.current?.isActive()) return;
-    snapTo(pose.current, restPose(experienceStore.getState().selected, aspect));
+    if (boot.current?.isActive()) return;
+    if (active.current?.isActive()) {
+      if (!resting.current) return;
+      active.current.kill();
+      active.current = moveTimeline(pose.current, restPose(aspect), duration.zoom / 2);
+      return;
+    }
+    snapTo(pose.current, restPose(aspect));
     invalidate();
   }, [aspect, invalidate]);
 
