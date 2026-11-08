@@ -8,7 +8,7 @@ import { holdIntro } from "./intro/readiness";
 import { MONITOR } from "./layout";
 import { materials, palette } from "./materials";
 import { runtime } from "./runtime";
-import { SCREEN_CORNERS, projectRect, rectChanged } from "./screen-rect";
+import { SCREEN_CORNERS, projectRect, rectChanged, restScreenRect } from "./screen-rect";
 import { createIdleScreen } from "./textures/idle-screen";
 
 const { screenCenter: C, screenWidth: SW, screenHeight: SH, bezel: B, depth: D } = MONITOR;
@@ -24,6 +24,8 @@ export function Monitor() {
   const bias = useRef<PointLight>(null);
   const panel = useRef<MeshBasicMaterial>(null);
   const published = useRef<ScreenRect | null>(null);
+  /** Viewport size the window's layout rect was last computed for. */
+  const layoutFor = useRef("");
 
   const quality = useExperience((s) => s.quality);
   // 3072 × 1920 on capable devices; 2048 × 1280 on phones and weaker GPUs to save memory.
@@ -65,7 +67,12 @@ export function Monitor() {
     panel.current?.color.setScalar(SCREEN_OFF + (1 - SCREEN_OFF) * runtime.screen);
 
     // Tell the interface where the screen is so the content window can sit exactly on it.
-    const { selected, setScreenRect } = experienceStore.getState();
+    const { selected, setScreenRect, setScreenLayout } = experienceStore.getState();
+    const viewport = `${size.width}x${size.height}`;
+    if (layoutFor.current !== viewport) {
+      layoutFor.current = viewport;
+      setScreenLayout(restScreenRect(size));
+    }
     if (!selected) {
       if (published.current) {
         published.current = null;

@@ -1,6 +1,6 @@
 import { PerspectiveCamera, Vector3 } from "three";
 import { describe, expect, it } from "vitest";
-import { projectRect, rectChanged } from "./screen-rect";
+import { projectRect, rectChanged, restScreenRect } from "./screen-rect";
 
 describe("projectRect", () => {
   it("maps a square facing the camera to a centred pixel rect", () => {
@@ -30,5 +30,18 @@ describe("rectChanged", () => {
   it("detects real movement and a missing previous rect", () => {
     expect(rectChanged(rect, { ...rect, width: 102 })).toBe(true);
     expect(rectChanged(null, rect)).toBe(true);
+  });
+});
+
+describe("restScreenRect", () => {
+  it("gives the window a whole-pixel 16:10 layout inside the viewport", () => {
+    const size = { width: 1440, height: 900 };
+    const rect = restScreenRect(size);
+    for (const value of Object.values(rect)) expect(Number.isInteger(value)).toBe(true);
+    expect(rect.width / rect.height).toBeCloseTo(1.6, 1);
+    expect(rect.left).toBeGreaterThan(0);
+    expect(rect.left + rect.width).toBeLessThan(size.width);
+    // The normal monitor framing leaves room around the screen for the header and dock.
+    expect(rect.width / size.width).toBeCloseTo(0.62, 1);
   });
 });

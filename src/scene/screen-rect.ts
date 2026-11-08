@@ -1,5 +1,6 @@
-import { Vector3, type Camera } from "three";
+import { PerspectiveCamera, Vector3, type Camera } from "three";
 import type { ScreenRect } from "@/state/experience-store";
+import { monitorPose } from "./camera-presets";
 import { MONITOR } from "./layout";
 
 const { screenCenter: C, screenWidth: SW, screenHeight: SH } = MONITOR;
@@ -45,4 +46,28 @@ export function rectChanged(a: ScreenRect | null, b: ScreenRect, tolerance = 0.5
     Math.abs(a.width - b.width) > tolerance ||
     Math.abs(a.height - b.height) > tolerance
   );
+}
+
+const restCamera = new PerspectiveCamera();
+
+/**
+ * Where the screen sits in the normal (not full view) monitor framing, rounded to whole pixels.
+ * The content window is laid out at this size, so text stays crisp at rest.
+ */
+export function restScreenRect(size: { width: number; height: number }): ScreenRect {
+  const aspect = size.width / Math.max(1, size.height);
+  const pose = monitorPose(aspect);
+  restCamera.fov = pose.fov;
+  restCamera.aspect = aspect;
+  restCamera.position.copy(pose.position);
+  restCamera.lookAt(pose.target);
+  restCamera.updateProjectionMatrix();
+  restCamera.updateMatrixWorld();
+  const rect = projectRect(SCREEN_CORNERS, restCamera, size);
+  return {
+    left: Math.round(rect.left),
+    top: Math.round(rect.top),
+    width: Math.round(rect.width),
+    height: Math.round(rect.height),
+  };
 }

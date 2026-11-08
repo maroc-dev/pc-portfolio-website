@@ -28,8 +28,14 @@ export interface ExperienceState {
   selected: PartId | null;
   /** Content window visible. Stays open while switching between parts. */
   windowOpen: boolean;
-  /** Monitor screen projected into viewport pixels, used to place the window. */
+  /** Monitor screen projected into viewport pixels right now; follows every camera move. */
   screenRect: ScreenRect | null;
+  /**
+   * Where the screen sits in the normal monitor framing for this viewport. The window is laid
+   * out at this size (like a monitor's fixed resolution) and only scaled to follow `screenRect`,
+   * so camera moves never re-flow its text.
+   */
+  screenLayout: ScreenRect | null;
   scene: SceneStatus;
   quality: QualityTier;
   /** Day (sunlight through the window) or night (desk lamp on). */
@@ -49,6 +55,7 @@ export interface ExperienceActions {
   back: () => void;
   revealWindow: () => void;
   setScreenRect: (rect: ScreenRect | null) => void;
+  setScreenLayout: (rect: ScreenRect | null) => void;
   setScene: (status: SceneStatus) => void;
   setQuality: (tier: QualityTier) => void;
   setTheme: (theme: Theme) => void;
@@ -66,6 +73,7 @@ export const initialState: ExperienceState = {
   selected: null,
   windowOpen: false,
   screenRect: null,
+  screenLayout: null,
   scene: "pending",
   quality: "high",
   theme: "day",
@@ -112,6 +120,7 @@ export function createExperienceStore(initial: Partial<ExperienceState> = {}) {
     },
 
     setScreenRect: (rect) => set({ screenRect: rect }),
+    setScreenLayout: (rect) => set({ screenLayout: rect }),
     setScene: (status) => set({ scene: status }),
     setQuality: (tier) => set({ quality: tier }),
     setTheme: (theme) => {
