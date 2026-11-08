@@ -1,6 +1,12 @@
 import { parts, sectionAnchors } from "./parts";
 import { getProject, projects } from "./projects";
-import { PART_IDS, type Architecture, type HardwarePart, type Project } from "./types";
+import {
+  PART_IDS,
+  type Architecture,
+  type HardwarePart,
+  type Project,
+  type SectionLink,
+} from "./types";
 
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
@@ -33,6 +39,20 @@ export function validateArchitecture(arch: Architecture, where: string): string[
     }
   }
   return problems;
+}
+
+/** A link into another section points at a real part and, if given, a real anchor in it. */
+function validateSectionLink(
+  link: SectionLink,
+  where: string,
+  registry: readonly HardwarePart[],
+): string[] {
+  const target = registry.find((p) => p.id === link.part);
+  if (!target) return [`${where} links to unknown part "${link.part}"`];
+  if (link.anchor && !sectionAnchors(target.section).includes(link.anchor)) {
+    return [`${where} links to missing anchor "${link.anchor}"`];
+  }
+  return [];
 }
 
 /** Returns human-readable problems with the content registry; empty means valid. */
@@ -71,13 +91,8 @@ export function validateContent(
     }
     if (section.kind === "about") {
       for (const stop of section.journey) {
-        const link = stop.more;
-        if (!link) continue;
-        const target = registry.find((p) => p.id === link.part);
-        if (!target)
-          problems.push(`Journey stop "${stop.id}" links to unknown part "${link.part}"`);
-        else if (link.anchor && !sectionAnchors(target.section).includes(link.anchor)) {
-          problems.push(`Journey stop "${stop.id}" links to missing anchor "${link.anchor}"`);
+        if (stop.more) {
+          problems.push(...validateSectionLink(stop.more, `Journey stop "${stop.id}"`, registry));
         }
       }
       const stops = section.journey.map((stop) => stop.id);
@@ -101,11 +116,23 @@ export function validateContent(
       }
     }
     if (section.kind === "memory") {
-      for (const item of section.current) {
-        if (item.projectSlug && !getProject(item.projectSlug)) {
-          problems.push(
-            `Part "${part.id}" focus item references unknown project "${item.projectSlug}"`,
-          );
+      const ids = section.now.map((item) => item.id);
+      if (new Set(ids).size !== ids.length) problems.push("Duplicate RAM item ids");
+      for (const item of section.now) {
+        const where = `RAM item "${item.id}"`;
+        if (!KEBAB.test(item.id)) problems.push(`${where} id is not kebab-case`);
+        if (item.more) problems.push(...validateSectionLink(item.more, where, registry));
+        const links = [...(item.links ?? []), ...(item.projects ?? []).flatMap((p) => p.links)];
+        for (const link of links) {
+          if (!link.href.startsWith("https://")) {
+            problems.push(`${where} link "${link.label}" is not https`);
+          }
+        }
+        for (const span of item.diagram?.spans ?? []) {
+          const count = item.diagram!.layers.length;
+          if (span.from < 1 || span.to > count || span.from > span.to) {
+            problems.push(`${where} diagram span "${span.label}" is outside its layers`);
+          }
         }
       }
     }

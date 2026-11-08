@@ -40,6 +40,33 @@ describe("content registry", () => {
     );
   });
 
+  it("reports a RAM diagram span past its layers", () => {
+    const broken = parts.map((p) =>
+      p.section.kind === "memory"
+        ? {
+            ...p,
+            section: {
+              ...p.section,
+              now: p.section.now.map((item) =>
+                item.diagram
+                  ? {
+                      ...item,
+                      diagram: {
+                        ...item.diagram,
+                        spans: [{ label: "Too far", note: "", from: 4, to: 9 }],
+                      },
+                    }
+                  : item,
+              ),
+            },
+          }
+        : p,
+    );
+    expect(validateContent(broken)).toContain(
+      'RAM item "databases" diagram span "Too far" is outside its layers',
+    );
+  });
+
   it("reports a missing part", () => {
     expect(validateContent(parts.filter((p) => p.id !== "ram"))).toContain(
       'Part "ram" has no registry entry',

@@ -92,7 +92,15 @@ export function sectionAnchors(section: Section): string[] {
   if (section.kind === "about") {
     return ["about-journey", "about-education", "about-hobbies"];
   }
+  if (section.kind === "memory") {
+    return ["memory-now", "memory-skills", ...section.now.map((item) => nowAnchor(item.id))];
+  }
   return [];
+}
+
+/** The element id of an item in the RAM section's "Right now". */
+export function nowAnchor(itemId: string): string {
+  return `now-${itemId}`;
 }
 
 /** The element id of a professional AI project's entry. */

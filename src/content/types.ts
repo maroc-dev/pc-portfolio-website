@@ -139,8 +139,11 @@ export interface ProjectsSection {
   placeholder: boolean;
 }
 
-/** How Marco knows a skill. Deliberately not a percentage. */
-export type SkillTier = "professional" | "projects" | "familiar" | "learning";
+/**
+ * What's known about how Marco uses a skill. Deliberately not a percentage, and only set where
+ * his résumé or notes say so: no tier makes no claim either way.
+ */
+export type SkillTier = "professional" | "learning";
 
 export interface Skill {
   name: string;
@@ -152,16 +155,59 @@ export interface SkillGroup {
   skills: Skill[];
 }
 
-export interface FocusItem {
-  title: string;
+/** A project tied to something Marco is doing now, e.g. a database he's building. */
+export interface NowProject {
+  name: string;
+  /** Where it stands, on label tape, e.g. "Building now". */
+  status: string;
+  detail: string[];
+  links: ProjectLink[];
+}
+
+/** One layer of a system, top to bottom, for a layer diagram. */
+export interface Layer {
+  name: string;
   detail: string;
-  projectSlug?: string;
+}
+
+/** A bracket beside a run of layers: which project covers them (1-based, inclusive). */
+export interface LayerSpan {
+  label: string;
+  note: string;
+  from: number;
+  to: number;
+  /** The one being worked on right now: drawn with yellow tape. */
+  active?: boolean;
+}
+
+/** A simplified stack of layers with the projects that cover them. */
+export interface LayerDiagram {
+  title: string;
+  layers: Layer[];
+  spans: LayerSpan[];
+  caption: string;
+}
+
+/** Something on Marco's desk right now. */
+export interface NowItem {
+  /** Kebab-case and unique: the element id is `now-${id}`. */
+  id: string;
+  /** What kind of now it is, on label tape, e.g. "Building". */
+  status: string;
+  title: string;
+  story: string[];
+  photo?: Photo;
+  links?: ProjectLink[];
+  more?: SectionLink;
+  projects?: NowProject[];
+  diagram?: LayerDiagram;
 }
 
 /** RAM: what Marco is working on right now, plus the skills he has. */
 export interface MemorySection {
   kind: "memory";
-  current: FocusItem[];
+  intro: string;
+  now: NowItem[];
   skillGroups: SkillGroup[];
   placeholder: boolean;
 }
