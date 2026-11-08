@@ -16,29 +16,47 @@ The first pass ("Evening Workbench") was a dark, amber, after-hours desk. Marco 
 welcoming, friendly blue look with sunlight, so the default became day, and the evening mood
 survives as the night theme behind the light switch.
 
+## Interface: the labelled workbench
+
+Home-lab people label everything with a label maker. That tape is the interface's one loud
+device: every _name_ (part tags over the PC, the dock, the hover card, the window's title bar,
+drive tabs, the project kind) is a strip of label tape. Yellow tape means "this one" (active,
+hovered, pointed at); paper tape is the resting state. Tape keeps its colours in both themes,
+like the physical thing, and hand-stuck tags get a small stable tilt (`src/lib/tape.ts`).
+
+Everything around the tape stays quiet: paper panels, navy ink, ruled lists instead of rows of
+identical rounded cards, no frosted glass, no monospace labels, no all-caps eyebrows. The theme
+toggle is a tiny wall plate with a rocker, the DOM twin of the switch on the wall.
+
 ## Palette
 
 Semantic tokens with day and night values (see `src/app/globals.css`).
 
-| Token    | Day       | Night     | Role                                  |
-| -------- | --------- | --------- | ------------------------------------- |
-| `base`   | `#eaf2fc` | `#0e1626` | Page background                       |
-| `panel`  | `#ffffff` | `#16213a` | Windows, sheets, dock                 |
-| `line`   | `#d3e0f1` | `#2a3b5e` | Borders                               |
-| `fg`     | `#1b2a44` | `#e7eefc` | Primary text                          |
-| `muted`  | `#52627d` | `#9aabc8` | Secondary text (≥ 4.5:1)              |
-| `accent` | `#2563c9` | `#7fb2ff` | Links, focus rings, selected states   |
-| `warm`   | `#9a5a0c` | `#ffb36b` | Lamp-coloured accents, used sparingly |
-| `signal` | `#0b6f7d` | `#5fd0e0` | Data activity                         |
+| Token        | Day       | Night     | Role                                         |
+| ------------ | --------- | --------- | -------------------------------------------- |
+| `base`       | `#e4edf9` | `#0d1628` | Page background (powder sky / navy room)     |
+| `panel`      | `#fbfcfe` | `#15203a` | Paper: windows, dock, cards                  |
+| `line`       | `#c9d6ea` | `#2b3c5f` | Rules and borders                            |
+| `fg`         | `#13234a` | `#e6edfb` | Ink (the navy of the desk mat)               |
+| `muted`      | `#4d5d7c` | `#9fb0cd` | Secondary text (≥ 4.5:1)                     |
+| `accent`     | `#1f4fbf` | `#8db8ff` | Links and focus rings                        |
+| `powder`     | `#a9c0ea` | `#5d77a8` | The case's powder blue: list rules, timeline |
+| `tape`       | `#ffd55c` | `#f2c74e` | Yellow label tape: the active or named thing |
+| `tape-paper` | `#fdfdfb` | `#dfe5f0` | Resting label tape                           |
 
 In the scene: pale blue walls, light oak desk, navy felt mat, white peripherals, powder-blue
 case (`#a9c0ea`), blue LEDs (`#5aa9ff`), cyan data LEDs, and one warm light, the lamp at night.
 
 ## Type
 
-One variable family, **Recursive**: casual axis for headings, linear for body, mono only for
-hardware labels and terminal-ish text. Avoid all-caps eyebrows, `→` suffixes and one-word colour
-accents.
+One variable family, **Archivo**, with its width axis doing the work:
+
+- Headings: expanded (125%) and heavy, like the lettering on a hardware box.
+- Labels and tape: semi-expanded (112.5%) bold.
+- Body: normal width, 16–17 px, line length under about 65 characters.
+- Small metadata: semi-condensed (87.5%) medium.
+
+Avoid all-caps eyebrows, `→` suffixes, middle-dot meta strings and one-word colour accents.
 
 ## The machine
 
