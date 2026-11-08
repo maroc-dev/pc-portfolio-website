@@ -1,6 +1,6 @@
 import type { JourneyStop } from "@/content/types";
-import { experienceStore } from "@/state/experience-store";
 import { PhotoFrame } from "../PhotoFrame";
+import { SectionLinkButton } from "../SectionLinkButton";
 
 /**
  * The journey as one line with a stop for each chapter. As the reader scrolls, AboutSection sets
@@ -51,18 +51,7 @@ export function Journey({ stops }: { stops: JourneyStop[] }) {
                 ))}
               </div>
 
-              {stop.more && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    const { part, anchor } = stop.more!;
-                    experienceStore.getState().select(part, anchor);
-                  }}
-                  className="text-accent mt-4 text-left font-semibold underline decoration-2 underline-offset-4"
-                >
-                  {stop.more.label}
-                </button>
-              )}
+              {stop.more && <SectionLinkButton link={stop.more} className="mt-4" />}
 
               {stop.placings && (
                 <ul className="mt-6 grid gap-4 @xl:grid-cols-2">
