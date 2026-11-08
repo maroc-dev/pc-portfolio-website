@@ -5,7 +5,7 @@
  * draft and so it is easy to find with a search before launch.
  */
 
-export const PART_IDS = ["cpu", "gpu", "ram", "ssd", "nic", "io"] as const;
+export const PART_IDS = ["cpu", "gpu", "ram", "ssd", "server", "io"] as const;
 export type PartId = (typeof PART_IDS)[number];
 
 export type ProjectKind = "personal" | "academic" | "professional" | "research";

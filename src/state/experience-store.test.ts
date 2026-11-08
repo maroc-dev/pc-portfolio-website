@@ -40,7 +40,7 @@ describe("experience store", () => {
   it("clears hover on selection", () => {
     const store = createExperienceStore();
     store.getState().hover("ssd");
-    store.getState().select("nic");
+    store.getState().select("server");
     expect(store.getState().hovered).toBeNull();
   });
 

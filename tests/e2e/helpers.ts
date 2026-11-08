@@ -5,7 +5,7 @@ export const PARTS = [
   { id: "gpu", button: "GPU AI and graphics", heading: "Accelerated Ideas" },
   { id: "ram", button: "RAM Now and skills", heading: "Active Memory" },
   { id: "ssd", button: "SSD Projects", heading: "Project Archives" },
-  { id: "nic", button: "NIC Distributed systems", heading: "Connected Systems" },
+  { id: "server", button: "Server Distributed systems", heading: "Connected Systems" },
   { id: "io", button: "I/O Contact", heading: "Connect" },
 ] as const;
 
