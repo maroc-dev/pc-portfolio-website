@@ -96,7 +96,7 @@ function silkscreen(ctx: CanvasRenderingContext2D) {
   label("CPU_1", PART_ANCHORS.cpu.x - 0.03, PART_ANCHORS.cpu.y - 0.045);
   label("DIMM_A1 B1", PART_ANCHORS.ram.x - 0.06, PART_ANCHORS.ram.y - 0.022);
   label("M2_1", PART_ANCHORS.ssd.x - 0.07, PART_ANCHORS.ssd.y - 0.02);
-  label("PCIE_1", PART_ANCHORS.nic.x - 0.02, PART_ANCHORS.nic.y - 0.06);
+  label("PCIE_1", -0.052, 0.305);
   // Mounting holes
   ctx.strokeStyle = "rgba(200,190,170,0.6)";
   ctx.lineWidth = 4;

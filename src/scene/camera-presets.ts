@@ -1,6 +1,6 @@
 import { MathUtils, Vector3 } from "three";
 import type { PartId } from "@/content/types";
-import { MONITOR, PART_ANCHORS, glassNormal, towerToWorld } from "./layout";
+import { MONITOR, PART_FOCUS } from "./layout";
 
 export interface CameraPose {
   position: Vector3;
@@ -49,11 +49,12 @@ export function overviewPose(aspect: number): CameraPose {
 }
 
 export function partPose(part: PartId, aspect: number): CameraPose {
-  const target = towerToWorld(PART_ANCHORS[part]);
+  const { center, facing } = PART_FOCUS[part];
+  const target = center.clone();
   return frame(
     {
       target,
-      direction: glassNormal.clone().add(new Vector3(0, 0.45, 0)),
+      direction: facing.clone().add(new Vector3(0, 0.45, 0)),
       width: 0.34,
       height: 0.24,
       fov: 32,

@@ -4,7 +4,7 @@ import { Vector3 } from "three";
 import { PART_IDS } from "@/content/types";
 import { experienceStore } from "@/state/experience-store";
 import { tagPositions } from "@/state/tag-positions";
-import { PART_ANCHORS, glassNormal, towerToWorld } from "./layout";
+import { PART_FOCUS } from "./layout";
 
 const scratch = new Vector3();
 
@@ -14,7 +14,7 @@ export function TagAnchors() {
     () =>
       PART_IDS.map((id) => ({
         id,
-        point: towerToWorld(PART_ANCHORS[id]).addScaledVector(glassNormal, 0.12),
+        point: PART_FOCUS[id].center.clone().addScaledVector(PART_FOCUS[id].facing, 0.12),
       })),
     [],
   );

@@ -81,15 +81,56 @@ export function boardUV(x: number, y: number): [number, number] {
 /** The GPU is turned towards the front glass so its fans face the viewer. */
 export const GPU_YAW = 0.7;
 
-/** Centre of each selectable part, in the tower's frame. */
-export const PART_ANCHORS: Record<PartId, Vector3> = {
+/** Parts that live inside (or on) the tower. */
+export type TowerPartId = Exclude<PartId, "server">;
+
+/** Centre of each tower part, in the tower's frame. */
+export const PART_ANCHORS: Record<TowerPartId, Vector3> = {
   cpu: new Vector3(0.03, 0.31, -0.115),
   ram: new Vector3(0.03, 0.238, -0.115),
   ssd: new Vector3(0.03, 0.193, -0.125),
-  nic: new Vector3(-0.032, 0.365, -0.105),
   gpu: new Vector3(-0.095, 0.276, -0.05),
   /** Front I/O strip on the top cap's front face. */
   io: new Vector3(0, TOWER.height - TOWER.cap / 2, TOWER.depth / 2),
+};
+
+/**
+ * The mini server: a small PC on the desk between the monitor and the tower, turned to face
+ * the viewer. Built in its own frame (front is +z, desk at y = 0).
+ */
+export const MINI_SERVER = {
+  position: new Vector3(0.19, 0, -0.15),
+  rotationY: -0.27,
+  width: 0.18,
+  height: 0.062,
+  depth: 0.17,
+} as const;
+
+const serverQuaternion = new Quaternion().setFromEuler(new Euler(0, MINI_SERVER.rotationY, 0));
+const serverMatrix = new Matrix4().compose(
+  MINI_SERVER.position,
+  serverQuaternion,
+  new Vector3(1, 1, 1),
+);
+
+export function serverToWorld(local: Vector3): Vector3 {
+  return local.clone().applyMatrix4(serverMatrix);
+}
+
+/** Outward normal of the mini server's front panel, world space. */
+export const serverFront = new Vector3(0, 0, 1).applyQuaternion(serverQuaternion);
+
+/** Where each selectable part sits in the world and which way it faces (close-ups, tags). */
+export const PART_FOCUS: Record<PartId, { center: Vector3; facing: Vector3 }> = {
+  cpu: { center: towerToWorld(PART_ANCHORS.cpu), facing: glassNormal },
+  ram: { center: towerToWorld(PART_ANCHORS.ram), facing: glassNormal },
+  ssd: { center: towerToWorld(PART_ANCHORS.ssd), facing: glassNormal },
+  gpu: { center: towerToWorld(PART_ANCHORS.gpu), facing: glassNormal },
+  io: { center: towerToWorld(PART_ANCHORS.io), facing: glassNormal },
+  server: {
+    center: serverToWorld(new Vector3(0, MINI_SERVER.height / 2, 0)),
+    facing: serverFront,
+  },
 };
 
 /**
@@ -112,4 +153,25 @@ export const CABLE_POINTS: Vector3[] = [
 /** The cable's path. Low tension keeps it from overshooting into the desk between points. */
 export function createCableCurve(): CatmullRomCurve3 {
   return new CatmullRomCurve3(CABLE_POINTS, false, "catmullrom", 0.2);
+}
+
+/**
+ * Network cable from the mini server's rear port, back along the desk (in front of the display
+ * cable), then up the tower's back-left corner into the case. World space.
+ */
+const NET_ON_DESK = 0.0065;
+export const ETHERNET_POINTS: Vector3[] = [
+  serverToWorld(new Vector3(0.03, 0.02, -MINI_SERVER.depth / 2 - 0.002)),
+  serverToWorld(new Vector3(0.035, 0.012, -MINI_SERVER.depth / 2 - 0.03)),
+  serverToWorld(new Vector3(0.04, NET_ON_DESK, -MINI_SERVER.depth / 2 - 0.06)),
+  new Vector3(0.36, NET_ON_DESK, -0.35),
+  new Vector3(0.44, NET_ON_DESK, -0.39),
+  towerToWorld(new Vector3(-0.165, NET_ON_DESK / TOWER.scale, -0.165)),
+  towerToWorld(new Vector3(-0.165, 0.025, -0.165)),
+  towerToWorld(new Vector3(-0.165, 0.12, -0.165)),
+  towerToWorld(new Vector3(-0.15, 0.3, -0.15)),
+];
+
+export function createEthernetCurve(): CatmullRomCurve3 {
+  return new CatmullRomCurve3(ETHERNET_POINTS, false, "catmullrom", 0.2);
 }
