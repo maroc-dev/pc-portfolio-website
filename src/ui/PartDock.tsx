@@ -11,13 +11,17 @@ function leave(id: PartId) {
 /**
  * Every part as a real button: the keyboard, screen-reader and touch route into the machine.
  * Each one carries the part's label tape; hovering or focusing it lights the part in the scene.
+ * Hidden in full view, where the monitor fills the screen.
  */
 export function PartDock() {
   const selected = useExperience((s) => s.selected);
+  const fullView = useExperience((s) => s.fullView);
   return (
     <nav
       aria-label="Parts of the machine"
-      className="relative z-20 px-4 pb-6 md:pointer-events-none md:absolute md:inset-x-0 md:bottom-0 md:flex md:justify-center md:pb-6"
+      className={`relative z-20 px-4 pb-6 transition-[opacity,visibility] duration-300 md:pointer-events-none md:absolute md:inset-x-0 md:bottom-0 md:flex md:justify-center md:pb-6 ${
+        fullView ? "invisible opacity-0" : ""
+      }`}
     >
       <p className="text-muted mb-3 text-sm md:hidden">Tap a part to look inside.</p>
       <ul className="md:border-line md:bg-panel grid grid-cols-3 gap-2 md:pointer-events-auto md:flex md:gap-0 md:rounded-[10px] md:border md:px-2 md:py-1.5 md:shadow-[0_10px_30px_-12px_rgb(19_35_74/0.35)]">
