@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import type { AboutSection as About } from "@/content/types";
-import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
+import { JumpBar } from "../JumpBar";
 import { SubHeading } from "../SubHeading";
 import { Education } from "./Education";
 import { Hobbies } from "./Hobbies";
@@ -13,18 +13,17 @@ const PARTS = [
   { id: "about-journey", label: "My journey" },
   { id: "about-education", label: "Education" },
   { id: "about-hobbies", label: "Hobbies" },
-] as const;
-type PartId = (typeof PARTS)[number]["id"];
+];
 
 /** Where, as a share of the scroll area's height, a stop counts as reached. */
 const READING_LINE = 0.45;
 
 /**
  * Tracks reading progress inside the window's scroll area (`data-scroll-root`): marks journey
- * stops as passed or current and reports which part of the page is on screen. Writes the stop attributes
- * straight to the DOM, so scrolling never re-renders the story.
+ * stops as passed or current. Writes the attributes straight to the DOM, so scrolling never
+ * re-renders the story.
  */
-function useReadingProgress(onPart: (id: PartId) => void) {
+function useReadingProgress() {
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const container = root.current;
@@ -44,15 +43,6 @@ function useReadingProgress(onPart: (id: PartId) => void) {
         if (state) stop.dataset.state = state;
         else delete stop.dataset.state;
       }
-
-      let part: PartId = PARTS[0].id;
-      for (const { id } of PARTS) {
-        const section = document.getElementById(id);
-        if (section && section.getBoundingClientRect().top <= view.top + view.height * 0.3) {
-          part = id;
-        }
-      }
-      onPart(part);
     };
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -66,20 +56,13 @@ function useReadingProgress(onPart: (id: PartId) => void) {
       scroller.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
-  }, [onPart]);
+  }, []);
   return root;
-}
-
-function jumpTo(id: PartId) {
-  document
-    .getElementById(id)
-    ?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
 }
 
 /** CPU: a photo first, a short hello, then the journey, education and life outside code. */
 export function AboutSection({ section }: { section: About }) {
-  const [part, setPart] = useState<PartId>(PARTS[0].id);
-  const root = useReadingProgress(setPart);
+  const root = useReadingProgress();
 
   return (
     <div ref={root}>
@@ -96,27 +79,7 @@ export function AboutSection({ section }: { section: About }) {
         </div>
       </div>
 
-      <nav
-        aria-label="About me"
-        className="bg-panel border-line sticky -top-7 z-10 -mx-5 mt-12 border-b px-5 py-3 md:-top-9 md:-mx-10 md:px-10"
-      >
-        <ul className="flex flex-wrap gap-2">
-          {PARTS.map(({ id, label }) => (
-            <li key={id}>
-              <button
-                type="button"
-                aria-current={part === id ? "true" : undefined}
-                onClick={() => jumpTo(id)}
-                className={`tape text-xs transition-[transform,background-color] duration-150 ${
-                  part === id ? "" : "tape-paper hover:bg-tape hover:-rotate-1"
-                }`}
-              >
-                {label}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <JumpBar label="About me" items={PARTS} className="mt-12" />
 
       <section
         id="about-journey"
