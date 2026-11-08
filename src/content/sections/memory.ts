@@ -63,8 +63,8 @@ export const memory: MemorySection = {
           name: "OptiSQL",
           status: "With Richard Baah",
           detail: [
-            "An in-memory query execution engine I built together with my friend Richard Baah.",
-            "We wrote the operators (filters, joins, aggregates) and a physical optimizer in Go, with a Rust version alongside, passed query plans around in Substrait, and put an HTTP server in front to take queries in, all tested in CI.",
+            "An in-memory query execution engine I built with my friend Richard Baah.",
+            "I worked on every part of it: the operators that run filters, joins and aggregates, the physical optimizer in Go with a Rust version alongside, query plans passed around in Substrait, and the HTTP server that takes queries in, all tested in CI.",
           ],
           links: [
             { label: "OptiSQL on GitHub", href: "https://github.com/Rich-T-kid/OptiSQL" },
@@ -82,7 +82,7 @@ export const memory: MemorySection = {
           { name: "Storage", detail: "Lays out pages and tuples on disk" },
         ],
         spans: [
-          { label: "OptiSQL", note: "The query side, built with Richard.", from: 1, to: 3 },
+          { label: "OptiSQL", note: "The query side, which I built with Richard.", from: 1, to: 3 },
           {
             label: "GooseDB",
             note: "The storage side, building now.",
