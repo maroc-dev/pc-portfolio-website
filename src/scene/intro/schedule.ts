@@ -23,6 +23,7 @@ export const INTRO = {
   lamp: step(0.6, [0, 0.45, 0]),
   mug: step(0.75, [0, 0.3, 0]),
   lightSwitch: step(0.8, [0, 0, -0.03], 0.5),
+  server: step(0.85, [0, 0.3, 0]),
 
   // The PC, inside-out: base, board, parts, cooling, then the shell closes around them.
   plinth: step(0.9, [0, 0.45, 0]),
@@ -30,7 +31,6 @@ export const INTRO = {
   cpu: step(1.35, [0, 0, 0.3], 0.5),
   ram: step(1.45, [0, 0, 0.3], 0.5),
   ssd: step(1.55, [0, 0, 0.3], 0.5),
-  nic: step(1.65, [0, 0.25, 0], 0.5),
   gpu: step(1.75, [-0.3, 0, 0.1]),
   cooling: step(1.9, [0.3, 0, 0]),
   wiring: step(2.1, [0, 0, 0.15], 0.45),

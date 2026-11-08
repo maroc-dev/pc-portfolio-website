@@ -16,7 +16,6 @@ import { Motherboard } from "./Motherboard";
 import { Cpu } from "./parts/Cpu";
 import { FrontIO } from "./parts/FrontIO";
 import { Gpu } from "./parts/Gpu";
-import { NetworkCard } from "./parts/NetworkCard";
 import { Ram } from "./parts/Ram";
 import { Ssd } from "./parts/Ssd";
 
@@ -50,9 +49,6 @@ export function PcTower() {
       </Assemble>
       <Assemble step={INTRO.ssd}>
         <Ssd />
-      </Assemble>
-      <Assemble step={INTRO.nic}>
-        <NetworkCard />
       </Assemble>
       <Assemble step={INTRO.gpu}>
         <Gpu />

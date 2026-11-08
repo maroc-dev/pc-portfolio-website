@@ -20,6 +20,8 @@ import { LightSwitch } from "./room/LightSwitch";
 import { Room } from "./room/Room";
 import { SunShafts } from "./room/SunShafts";
 import { PowerLights } from "./PowerLights";
+import { EthernetCable } from "./server/EthernetCable";
+import { MiniServer } from "./server/MiniServer";
 import { ShadowCasting } from "./ShadowCasting";
 import { TagAnchors } from "./TagAnchors";
 import { ThemeDriver } from "./ThemeDriver";
@@ -92,7 +94,11 @@ export default function SceneCanvas() {
           <Monitor />
         </Assemble>
         <PcTower />
+        <Assemble step={INTRO.server}>
+          <MiniServer />
+        </Assemble>
         <Cable />
+        <EthernetCable />
         <Assemble step={INTRO.lightSwitch}>
           <LightSwitch />
         </Assemble>
