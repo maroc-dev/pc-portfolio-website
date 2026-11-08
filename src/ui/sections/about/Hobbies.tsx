@@ -1,5 +1,5 @@
 import type { Hobby } from "@/content/types";
-import { PhotoFrame } from "./PhotoFrame";
+import { PhotoFrame } from "../PhotoFrame";
 
 export function Hobbies({ hobbies }: { hobbies: Hobby[] }) {
   return (

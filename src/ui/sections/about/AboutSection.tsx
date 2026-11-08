@@ -7,7 +7,7 @@ import { SubHeading } from "../SubHeading";
 import { Education } from "./Education";
 import { Hobbies } from "./Hobbies";
 import { Journey } from "./Journey";
-import { PhotoFrame } from "./PhotoFrame";
+import { PhotoFrame } from "../PhotoFrame";
 
 const PARTS = [
   { id: "about-journey", label: "My journey" },

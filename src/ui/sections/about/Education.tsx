@@ -1,5 +1,5 @@
 import type { School } from "@/content/types";
-import { PhotoFrame } from "./PhotoFrame";
+import { PhotoFrame } from "../PhotoFrame";
 
 function Course({ course }: { course: NonNullable<School["courses"]>[number] }) {
   return (

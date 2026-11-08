@@ -1,6 +1,7 @@
 import { getProjects } from "@/content/projects";
 import type { Section } from "@/content/types";
 import { AboutSection } from "./about/AboutSection";
+import { AiSection } from "./ai/AiSection";
 import { ArchiveSection } from "./ArchiveSection";
 import { ContactSection } from "./ContactSection";
 import { DraftNote } from "./DraftNote";
@@ -13,6 +14,7 @@ export function SectionView({ section }: { section: Section }) {
     <>
       {section.placeholder && <DraftNote />}
       {section.kind === "about" && <AboutSection section={section} />}
+      {section.kind === "ai" && <AiSection section={section} />}
       {section.kind === "projects" && (
         <>
           <p className="mb-6 max-w-[62ch] text-[1.0625rem] leading-relaxed">{section.intro}</p>
