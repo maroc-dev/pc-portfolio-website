@@ -11,8 +11,9 @@ export const projects: Project[] = [
   {
     slug: "distributed-training-system",
     title: "Distributed training system",
-    summary: "A simple, distributed model training system in Go, based on Google's MapReduce.",
-    kind: "personal",
+    summary:
+      "A fault-tolerant distributed training system in Go, with a replicated parameter server, built for Rutgers CS 417.",
+    kind: "academic",
     category: "distributed",
     stack: ["Go"],
     links: [{ label: "Source on GitHub", href: `${GITHUB}/distributed-training-system-in-golang` }],
