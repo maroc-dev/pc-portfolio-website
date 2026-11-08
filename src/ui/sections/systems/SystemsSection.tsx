@@ -4,6 +4,10 @@ import { ArchDiagram } from "../ArchDiagram";
 import { JumpBar } from "../JumpBar";
 import { PhotoFrame } from "../PhotoFrame";
 import { SectionLinkButton } from "../SectionLinkButton";
+import { OtExample } from "./OtExample";
+
+/** A point that opens with a short name, e.g. "Rooms: each document…", gets that name in bold. */
+const LEAD = /^([^:.]{2,32}): /;
 
 const CAPTION = "Simplified to the main pieces and how they talk to each other.";
 
@@ -11,16 +15,26 @@ function Points({ title, points }: { title: string; points: string[] }) {
   return (
     <div>
       <h4 className="type-label text-[0.9375rem]">{title}</h4>
-      <ul className="mt-3 space-y-2.5">
-        {points.map((point) => (
-          <li key={point} className="relative pl-5 leading-relaxed">
-            <span
-              aria-hidden="true"
-              className="bg-powder absolute top-[0.72em] left-0 h-[3px] w-2.5 rounded-full"
-            />
-            {point}
-          </li>
-        ))}
+      <ul className="mt-3 max-w-[70ch] space-y-2.5">
+        {points.map((point) => {
+          const lead = LEAD.exec(point);
+          return (
+            <li key={point} className="relative pl-5 leading-relaxed">
+              <span
+                aria-hidden="true"
+                className="bg-powder absolute top-[0.72em] left-0 h-[3px] w-2.5 rounded-full"
+              />
+              {lead ? (
+                <>
+                  <strong className="font-semibold">{lead[1]}:</strong>{" "}
+                  {point.slice(lead[0].length)}
+                </>
+              ) : (
+                point
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -66,10 +80,17 @@ function Project({ project }: { project: SystemsProject }) {
         </ul>
       )}
 
-      <div className="mt-8 grid gap-x-10 gap-y-7 @2xl:grid-cols-2">
+      <div
+        className={`mt-8 grid gap-x-10 gap-y-8 ${
+          // Side by side only when the two lists are about the same length.
+          Math.abs(project.built.length - project.shows.length) < 3 ? "@2xl:grid-cols-2" : ""
+        }`}
+      >
         <Points title={project.builtTitle ?? "What it does"} points={project.built} />
         <Points title={project.showsTitle ?? "What it shows"} points={project.shows} />
       </div>
+
+      {project.sample === "ot-example" && <OtExample />}
 
       {project.architecture && (
         <ArchDiagram
