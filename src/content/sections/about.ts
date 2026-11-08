@@ -1,12 +1,5 @@
-import type { AboutSection, Photo } from "../types";
-
-/** A slot for one of Marco's own photos. The caption says what belongs there. */
-const slot = (caption: string, width = 4, height = 3): Photo => ({
-  placeholder: true,
-  caption,
-  width,
-  height,
-});
+import { photoSlot as slot } from "../photos";
+import type { AboutSection } from "../types";
 
 /*
  * Written from Marco's own notes and résumé (November 2026). Polished for reading, but every fact
@@ -47,6 +40,11 @@ export const about: AboutSection = {
         "I also started shipping software for real users: two projects for Joint Base McGuire-Dix-Lakehurst, a sign-in kiosk and a completely private AI assistant. There's more on both under Education.",
       ],
       photo: slot("The makerspace"),
+      more: {
+        label: "See how the private assistant works",
+        part: "gpu",
+        anchor: "ai-jbmdl-assistant",
+      },
     },
     {
       id: "att",
@@ -59,6 +57,7 @@ export const about: AboutSection = {
         "I went deep on running models locally, with quantization and llama.cpp, was part of that early community, and got to talk with the team at Weights & Biases. At the end of it, AT&T kept me on as a contractor while I finish my bachelor's.",
       ],
       photo: slot("AT&T Labs"),
+      more: { label: "See how the diagram tool works", part: "gpu", anchor: "ai-network-diagrams" },
     },
     {
       id: "contractor",
@@ -68,6 +67,7 @@ export const about: AboutSection = {
       story: [
         "As a contractor, first through Externetworks and now as a senior software engineer through HCLTech, the projects got bigger and so did the systems. I also mentored interns, leading a team of five.",
       ],
+      more: { label: "See how these systems work", part: "gpu", anchor: "ai-professional" },
       built: [
         {
           name: "Network diagrams, at scale",

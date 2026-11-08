@@ -1,10 +1,10 @@
 import { about } from "./sections/about";
-import { aiGraphics } from "./sections/ai-graphics";
+import { ai } from "./sections/ai";
 import { archive } from "./sections/archive";
 import { contact } from "./sections/contact";
 import { distributed } from "./sections/distributed";
 import { memory } from "./sections/memory";
-import { PART_IDS, type HardwarePart, type PartId } from "./types";
+import { PART_IDS, type HardwarePart, type PartId, type Section } from "./types";
 
 /**
  * The single mapping between hardware and content. The scene looks parts up by `id`; meshes
@@ -27,10 +27,10 @@ export const parts: readonly HardwarePart[] = [
     label: "GPU",
     hardwareName: "Graphics card",
     heading: "Accelerated Ideas",
-    topic: "AI and graphics",
-    blurb: "Machine learning, AI tooling and real-time graphics projects.",
+    topic: "Artificial intelligence",
+    blurb: "The AI systems I build at work, and the models I run at home.",
     appName: "accelerated.app",
-    section: aiGraphics,
+    section: ai,
   },
   {
     id: "ram",
@@ -78,6 +78,26 @@ const byId = new Map(parts.map((p) => [p.id, p]));
 
 export function isPartId(value: unknown): value is PartId {
   return typeof value === "string" && (PART_IDS as readonly string[]).includes(value);
+}
+
+/** Element ids inside a section that links can open it at (see `SectionLink`). */
+export function sectionAnchors(section: Section): string[] {
+  if (section.kind === "ai") {
+    return [
+      "ai-professional",
+      "ai-personal",
+      ...section.professional.projects.map((p) => aiAnchor(p.id)),
+    ];
+  }
+  if (section.kind === "about") {
+    return ["about-journey", "about-education", "about-hobbies"];
+  }
+  return [];
+}
+
+/** The element id of a professional AI project's entry. */
+export function aiAnchor(projectId: string): string {
+  return `ai-${projectId}`;
 }
 
 export function getPart(id: PartId): HardwarePart {

@@ -10,12 +10,33 @@ describe("content registry", () => {
 
   it("reports a missing project reference", () => {
     const broken = parts.map((p) =>
-      p.id === "gpu" && p.section.kind === "projects"
+      p.id === "server" && p.section.kind === "projects"
         ? { ...p, section: { ...p.section, projectSlugs: ["does-not-exist"] } }
         : p,
     );
     expect(validateContent(broken)).toContain(
-      'Part "gpu" references unknown project "does-not-exist"',
+      'Part "server" references unknown project "does-not-exist"',
+    );
+  });
+
+  it("reports an About link to a spot that doesn't exist", () => {
+    const broken = parts.map((p) =>
+      p.section.kind === "about"
+        ? {
+            ...p,
+            section: {
+              ...p.section,
+              journey: p.section.journey.map((stop) =>
+                stop.id === "att"
+                  ? { ...stop, more: { label: "x", part: "gpu" as const, anchor: "ai-nope" } }
+                  : stop,
+              ),
+            },
+          }
+        : p,
+    );
+    expect(validateContent(broken)).toContain(
+      'Journey stop "att" links to missing anchor "ai-nope"',
     );
   });
 

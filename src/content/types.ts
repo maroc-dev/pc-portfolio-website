@@ -82,6 +82,15 @@ export interface JourneyStop {
   photo?: Photo;
   /** A hard stretch: the journey's line runs dashed through it. */
   pause?: boolean;
+  /** Where to read more: another part's section, opened at an element id. */
+  more?: SectionLink;
+}
+
+/** A link into another part's section, optionally to a specific element in it. */
+export interface SectionLink {
+  label: string;
+  part: PartId;
+  anchor?: string;
 }
 
 export interface Course {
@@ -183,8 +192,46 @@ export interface ContactSection {
   placeholder: boolean;
 }
 
+/** One step in a project's flow diagram. */
+export interface FlowStep {
+  label: string;
+  detail?: string;
+}
+
+/** Example outputs a project can show. Each is made-up data, drawn by the UI. */
+export type ProjectSample = "network-diagram";
+
+/** A professional AI project, shown as an expandable entry with its flow. */
+export interface AiProject {
+  /** Kebab-case and unique: the entry's element id is `ai-${id}`. */
+  id: string;
+  name: string;
+  /** Where it was built, shown on label tape, e.g. "AT&T Labs". */
+  org: string;
+  summary: string;
+  points: string[];
+  stack: string[];
+  flow: FlowStep[];
+  sample?: ProjectSample;
+}
+
+/** A machine Marco runs models on at home. */
+export interface Rig {
+  name: string;
+  detail: string;
+  photo: Photo;
+}
+
+/** GPU: AI, professionally and for fun. */
+export interface AiSection {
+  kind: "ai";
+  professional: { intro: string[]; projects: AiProject[] };
+  personal: { intro: string[]; rigs: Rig[] };
+  placeholder: boolean;
+}
+
 export type Section =
-  AboutSection | ProjectsSection | MemorySection | ArchiveSection | ContactSection;
+  AboutSection | AiSection | ProjectsSection | MemorySection | ArchiveSection | ContactSection;
 
 /** A selectable piece of hardware and the section it opens. */
 export interface HardwarePart {

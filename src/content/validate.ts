@@ -1,4 +1,4 @@
-import { parts } from "./parts";
+import { parts, sectionAnchors } from "./parts";
 import { getProject, projects } from "./projects";
 import { PART_IDS, type HardwarePart, type Project } from "./types";
 
@@ -28,7 +28,27 @@ export function validateContent(
           problems.push(`Part "${part.id}" references unknown project "${slug}"`);
       }
     }
+    if (section.kind === "ai") {
+      const ids = section.professional.projects.map((p) => p.id);
+      if (new Set(ids).size !== ids.length) problems.push("Duplicate AI project ids");
+      for (const id of ids) {
+        if (!KEBAB.test(id)) problems.push(`AI project id "${id}" is not kebab-case`);
+      }
+      for (const project of section.professional.projects) {
+        if (project.flow.length < 2) problems.push(`AI project "${project.id}" needs a flow`);
+      }
+    }
     if (section.kind === "about") {
+      for (const stop of section.journey) {
+        const link = stop.more;
+        if (!link) continue;
+        const target = registry.find((p) => p.id === link.part);
+        if (!target)
+          problems.push(`Journey stop "${stop.id}" links to unknown part "${link.part}"`);
+        else if (link.anchor && !sectionAnchors(target.section).includes(link.anchor)) {
+          problems.push(`Journey stop "${stop.id}" links to missing anchor "${link.anchor}"`);
+        }
+      }
       const stops = section.journey.map((stop) => stop.id);
       if (new Set(stops).size !== stops.length) problems.push("Duplicate journey stop ids");
       for (const id of stops) {
