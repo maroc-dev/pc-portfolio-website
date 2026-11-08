@@ -16,6 +16,9 @@ const NAV: { label: string; part: PartId }[] = [
 export function SiteHeader() {
   const selected = useExperience((s) => s.selected);
   const fullView = useExperience((s) => s.fullView);
+  // The greeting is real text, so it's there before (and without) the 3D monitor that also says
+  // it. It reads in full ink while the desk sets up, then steps back once the scene takes over.
+  const settled = useExperience((s) => s.phase !== "boot");
   return (
     <header
       className={`pointer-events-none relative z-30 flex items-start justify-between gap-4 px-4 py-4 transition-[opacity,visibility] duration-500 md:absolute md:inset-x-0 md:top-0 md:px-8 md:py-6 ${
@@ -30,7 +33,13 @@ export function SiteHeader() {
         <span className="type-display block text-[1.375rem] whitespace-nowrap md:text-[1.625rem]">
           {profile.name}
         </span>
-        <span className="text-muted mt-1 block text-sm">Software engineer</span>
+        <span
+          className={`mt-1 block max-w-[30ch] text-sm leading-snug transition-colors duration-700 ${
+            settled ? "text-muted" : "text-fg"
+          }`}
+        >
+          {profile.greeting}
+        </span>
       </button>
       <div className="pointer-events-auto flex items-center gap-5">
         <nav aria-label="Sections" className="hidden md:block">
