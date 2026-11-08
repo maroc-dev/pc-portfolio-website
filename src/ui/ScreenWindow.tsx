@@ -108,36 +108,36 @@ export function ScreenWindow() {
       style={compact ? undefined : placement(rect)}
       className={
         compact
-          ? "border-line bg-panel fixed inset-x-0 top-[8svh] bottom-0 z-50 flex flex-col overflow-hidden rounded-t-2xl border shadow-[0_-12px_40px_rgba(0,0,0,0.45)]"
+          ? "border-line bg-panel fixed inset-x-0 top-[8svh] bottom-0 z-50 flex flex-col overflow-hidden rounded-t-[14px] border shadow-[0_-12px_40px_rgb(13_22_40/0.45)]"
           : "bg-panel absolute z-20 flex flex-col overflow-hidden rounded-[3px]"
       }
     >
-      <div className="border-line flex h-10 shrink-0 items-center justify-between border-b px-4">
-        <span className="text-muted type-mono text-xs">{part.appName}</span>
+      <div className="border-line flex h-11 shrink-0 items-center justify-between gap-3 border-b px-3 md:px-4">
+        <p className="flex min-w-0 items-center gap-2.5">
+          <span className="tape text-xs">{part.label}</span>
+          <span className="type-meta text-muted truncate text-sm">{part.appName}</span>
+        </p>
         <button
           type="button"
           onClick={() => experienceStore.getState().back()}
-          className="text-muted hover:text-fg rounded-md px-2 py-1 text-sm transition-colors"
+          className="border-line text-muted hover:text-fg hover:border-powder shrink-0 rounded-md border px-2.5 py-1 text-sm transition-colors"
         >
           Back to the desk
         </button>
       </div>
       <div
         ref={body}
-        className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-6 md:px-8 md:py-7"
+        className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-7 md:px-10 md:py-9"
       >
-        <p className="text-muted text-sm">
-          <span className="text-accent type-mono mr-2">{part.label}</span>
-          {part.topic}
-        </p>
         <h2
           ref={heading}
           id={titleId}
           tabIndex={-1}
-          className="mt-1 mb-6 text-3xl font-extrabold outline-none md:text-4xl"
+          className="type-display text-[2.25rem] outline-none md:text-[3rem]"
         >
           {part.heading}
         </h2>
+        <p className="text-muted mt-3 mb-9 max-w-[52ch] text-lg leading-snug">{part.blurb}</p>
         <SectionView section={part.section} />
       </div>
     </div>

@@ -5,7 +5,7 @@ import { projects } from "@/content/projects";
 import type { ArchiveSection as Archive } from "@/content/types";
 import { ProjectList } from "./ProjectList";
 
-/** SSD: projects sorted into drives, browsed with tabs. */
+/** SSD: projects sorted into drives, browsed with tabs labelled like the drives themselves. */
 export function ArchiveSection({ section }: { section: Archive }) {
   const [active, setActive] = useState(section.drives[0]?.id);
   const baseId = useId();
@@ -13,8 +13,8 @@ export function ArchiveSection({ section }: { section: Archive }) {
 
   return (
     <>
-      <p className="text-fg/90 max-w-[62ch]">{section.intro}</p>
-      <div role="tablist" aria-label="Drives" className="mt-5 flex flex-wrap gap-2">
+      <p className="max-w-[62ch] text-[1.0625rem] leading-relaxed">{section.intro}</p>
+      <div role="tablist" aria-label="Drives" className="mt-6 flex flex-wrap gap-2.5">
         {section.drives.map((d) => (
           <button
             key={d.id}
@@ -24,10 +24,11 @@ export function ArchiveSection({ section }: { section: Archive }) {
             aria-selected={d.id === drive?.id}
             aria-controls={`${baseId}-panel`}
             onClick={() => setActive(d.id)}
-            className="border-line text-muted hover:text-fg aria-selected:border-accent/70 aria-selected:text-fg rounded-lg border px-3 py-1.5 text-sm transition-colors"
+            className={`tape text-sm transition-[transform,background-color] duration-150 ${
+              d.id === drive?.id ? "" : "tape-paper hover:bg-tape hover:-rotate-1"
+            }`}
           >
-            <span className="text-accent type-mono mr-1.5">{d.id}:</span>
-            {d.label}
+            {d.id}: {d.label}
           </button>
         ))}
       </div>
