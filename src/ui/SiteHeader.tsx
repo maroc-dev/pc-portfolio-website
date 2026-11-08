@@ -19,6 +19,7 @@ export function SiteHeader() {
   // The greeting is real text, so it's there before (and without) the 3D monitor that also says
   // it. It reads in full ink while the desk sets up, then steps back once the scene takes over.
   const settled = useExperience((s) => s.phase !== "boot");
+  // On phones an open section's sheet covers the header below the name.
   return (
     <header
       className={`pointer-events-none relative z-30 flex items-start justify-between gap-4 px-4 py-4 transition-[opacity,visibility] duration-500 md:absolute md:inset-x-0 md:top-0 md:px-8 md:py-6 ${
@@ -36,7 +37,7 @@ export function SiteHeader() {
         <span
           className={`mt-1 block max-w-[30ch] text-sm leading-snug transition-colors duration-700 ${
             settled ? "text-muted" : "text-fg"
-          }`}
+          } ${selected ? "max-md:hidden" : ""}`}
         >
           {profile.greeting}
         </span>
