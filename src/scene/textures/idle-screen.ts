@@ -1,6 +1,7 @@
 import { CanvasTexture, SRGBColorSpace } from "three";
 import { parts } from "@/content/parts";
 import { profile } from "@/content/profile";
+import { tapeTilt } from "@/lib/tape";
 import type { Theme } from "@/state/experience-store";
 
 /** Layout space for the desktop; the canvas renders it at `scale` (1.2× on capable devices). */
@@ -9,28 +10,30 @@ const H = 1600;
 
 const PALETTES = {
   day: {
-    top: "#f6f9ff",
-    bottom: "#dbe7fa",
-    glow: "rgba(255, 214, 150, 0.35)",
-    bar: "rgba(27, 42, 68, 0.06)",
-    fg: "#1b2a44",
-    muted: "#52627d",
-    accent: "#2563c9",
-    tile: "rgba(255, 255, 255, 0.85)",
-    tileEdge: "rgba(37, 99, 201, 0.28)",
+    top: "#fbfcfe",
+    bottom: "#dde8f7",
+    glow: "rgba(255, 213, 92, 0.26)",
+    bar: "rgba(19, 35, 74, 0.05)",
+    fg: "#13234a",
+    muted: "#4d5d7c",
+    accent: "#1f4fbf",
+    tape: "#fdfdfb",
+    tapeShadow: "rgba(19, 35, 74, 0.28)",
   },
   night: {
     top: "#17233d",
-    bottom: "#0d1524",
-    glow: "rgba(90, 169, 255, 0.22)",
-    bar: "rgba(231, 238, 252, 0.06)",
-    fg: "#e7eefc",
-    muted: "#9aabc8",
-    accent: "#7fb2ff",
-    tile: "rgba(231, 238, 252, 0.06)",
-    tileEdge: "rgba(127, 178, 255, 0.35)",
+    bottom: "#0d1628",
+    glow: "rgba(141, 184, 255, 0.16)",
+    bar: "rgba(230, 237, 251, 0.06)",
+    fg: "#e6edfb",
+    muted: "#9fb0cd",
+    accent: "#8db8ff",
+    tape: "#dfe5f0",
+    tapeShadow: "rgba(0, 0, 0, 0.55)",
   },
 } as const;
+
+const TAPE_INK = "#13234a";
 
 /** Where the text cursor sits, as fractions of the screen (origin top-left). */
 export interface CursorRect {
@@ -41,8 +44,67 @@ export interface CursorRect {
 }
 
 function fontFamily(): string {
-  const value = getComputedStyle(document.documentElement).getPropertyValue("--font-recursive");
+  const value = getComputedStyle(document.documentElement).getPropertyValue("--font-archivo");
   return value.trim() || "system-ui, sans-serif";
+}
+
+type Stretch = "normal" | "semi-expanded" | "expanded";
+
+/** Sets the font, including Archivo's width (the canvas shorthand alone is not honoured everywhere). */
+function setFont(
+  ctx: CanvasRenderingContext2D,
+  weight: number,
+  size: number,
+  family: string,
+  stretch: Stretch = "normal",
+) {
+  ctx.font = `${weight} ${stretch} ${size}px ${family}`;
+  if ("fontStretch" in ctx) ctx.fontStretch = stretch;
+}
+
+/** A strip of label tape with its name, like the ones on the desk. */
+function drawTape(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  s: number,
+  family: string,
+  c: (typeof PALETTES)[Theme],
+): void {
+  setFont(ctx, 700, 38 * s, family, "semi-expanded");
+  const width = ctx.measureText(text).width + 40 * s;
+  const height = 62 * s;
+  ctx.save();
+  ctx.translate(x + width / 2, y + height / 2);
+  ctx.rotate((tapeTilt(text) * Math.PI) / 180);
+  ctx.shadowColor = c.tapeShadow;
+  ctx.shadowBlur = 14 * s;
+  ctx.shadowOffsetY = 4 * s;
+  ctx.fillStyle = c.tape;
+  ctx.beginPath();
+  ctx.roundRect(-width / 2, -height / 2, width, height, 4 * s);
+  ctx.fill();
+  ctx.shadowColor = "transparent";
+  ctx.fillStyle = TAPE_INK;
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, -width / 2 + 20 * s, 2 * s);
+  ctx.restore();
+}
+
+/** Splits `text` into lines no wider than `max` in the current font. */
+function wrap(ctx: CanvasRenderingContext2D, text: string, max: number): string[] {
+  const lines: string[] = [];
+  let line = "";
+  for (const word of text.split(" ")) {
+    const next = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(next).width > max) {
+      lines.push(line);
+      line = word;
+    } else line = next;
+  }
+  if (line) lines.push(line);
+  return lines;
 }
 
 function draw(ctx: CanvasRenderingContext2D, theme: Theme): CursorRect {
@@ -67,55 +129,45 @@ function draw(ctx: CanvasRenderingContext2D, theme: Theme): CursorRect {
   ctx.fillStyle = c.bar;
   ctx.fillRect(0, 0, W, 56 * s);
   ctx.fillStyle = c.muted;
-  ctx.font = `500 ${26 * s}px ${family}`;
+  setFont(ctx, 600, 26 * s, family, "semi-expanded");
   ctx.textBaseline = "middle";
   ctx.fillText("workbench", 40 * s, 29 * s);
 
   // Greeting
+  const left = 120 * s;
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = c.fg;
-  ctx.font = `800 ${132 * s}px ${family}`;
+  setFont(ctx, 800, 150 * s, family, "expanded");
   const hello = `hi, I'm ${firstName}`;
-  ctx.fillText(hello, 110 * s, 380 * s);
+  ctx.fillText(hello, left, 400 * s);
   const cursor: CursorRect = {
-    x: (110 * s + ctx.measureText(hello).width + 18 * s) / W,
-    y: (270 * s) / H,
-    width: (26 * s) / W,
-    height: (116 * s) / H,
+    x: (left + ctx.measureText(hello).width + 22 * s) / W,
+    y: (282 * s) / H,
+    width: (28 * s) / W,
+    height: (128 * s) / H,
   };
 
   ctx.fillStyle = c.muted;
-  ctx.font = `400 ${46 * s}px ${family}`;
-  ctx.fillText(profile.greeting, 114 * s, 470 * s);
+  setFont(ctx, 400, 46 * s, family);
+  ctx.fillText(profile.greeting, left + 4 * s, 490 * s);
 
   ctx.fillStyle = c.accent;
-  ctx.font = `600 ${40 * s}px ${family}`;
-  ctx.fillText("Click any part of the PC to open it.", 114 * s, 560 * s);
+  setFont(ctx, 600, 40 * s, family);
+  ctx.fillText("Click any part of the PC to open it.", left + 4 * s, 575 * s);
 
-  // App tiles mirroring the parts
-  const tile = 150 * s;
-  const gap = 78 * s;
-  const top = 720 * s;
-  const total = parts.length * tile + (parts.length - 1) * gap;
-  let x = (W - total) / 2;
-  ctx.textAlign = "center";
-  for (const part of parts) {
-    ctx.beginPath();
-    ctx.roundRect(x, top, tile, tile, 30 * s);
-    ctx.fillStyle = c.tile;
-    ctx.fill();
-    ctx.strokeStyle = c.tileEdge;
-    ctx.lineWidth = 3 * s;
-    ctx.stroke();
+  // The parts, each with its label tape and what it opens
+  const column = (W - left * 2) / parts.length;
+  const top = 760 * s;
+  parts.forEach((part, i) => {
+    const x = left + i * column;
+    drawTape(ctx, part.label, x, top, s, family, c);
     ctx.fillStyle = c.fg;
-    ctx.font = `700 ${40 * s}px ${family}`;
-    ctx.fillText(part.label, x + tile / 2, top + tile / 2 + 14 * s);
-    ctx.fillStyle = c.muted;
-    ctx.font = `400 ${23 * s}px ${family}`;
-    ctx.fillText(part.topic, x + tile / 2, top + tile + 44 * s);
-    x += tile + gap;
-  }
-  ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
+    setFont(ctx, 500, 32 * s, family);
+    wrap(ctx, part.topic, column - 40 * s).forEach((line, n) => {
+      ctx.fillText(line, x + 4 * s, top + (128 + n * 42) * s);
+    });
+  });
   return cursor;
 }
 
