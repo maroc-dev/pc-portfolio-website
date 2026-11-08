@@ -342,10 +342,14 @@ export interface SystemsProject {
   stats?: Stat[];
   stack: string[];
   architecture?: Architecture;
+  sample?: SystemsSample;
   photo?: Photo;
   links: ProjectLink[];
   more?: SectionLink;
 }
+
+/** Worked examples a systems project can show. Each is made-up data, drawn by the UI. */
+export type SystemsSample = "ot-example";
 
 /** Server: software architecture and systems that scale. */
 export interface SystemsSection {
