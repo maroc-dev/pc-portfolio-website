@@ -62,9 +62,12 @@ makes the same page bigger.
 
 ## Opening (about 4.4 s, skippable)
 
-Before it starts, the canvas stays hidden for a short beat (at least 1.5 s after the scene
+From the very first paint, a still of the opening's first frame (the empty room from the wide
+angle; day or night, wide or tall, captured by `scripts/capture-stills.mjs`) fills the scene's
+space, and the header already carries the greeting as real text. Before it starts, the canvas
+stays hidden for a short beat (at least 1.5 s after the scene
 mounts) while every shader is compiled and the desk grain is generated, so nothing stutters
-mid-animation. Then the canvas fades in and the scene assembles while the camera glides in from a wider, higher angle: the desk rises into
+mid-animation. Then the canvas fades in over that identical picture and the scene assembles while the camera glides in from a wider, higher angle: the desk rises into
 place, the monitor, lamp, keyboard and mug settle, the light switch slides out of the wall and the mini server drops into place. The
 PC builds from the inside out: chassis and plinth, motherboard, CPU, RAM, SSD,
 GPU, radiator and wiring, then the glass closes and the cap drops on. The display cable runs
