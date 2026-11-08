@@ -26,6 +26,8 @@ npm install
 npm run dev          # http://localhost:3000
 npm run check        # typecheck, lint, format check, unit tests
 npm run test:e2e     # production build + Playwright (first run: npx playwright install chromium)
+node scripts/capture-stills.mjs   # with the site running: refresh the poster, link preview
+                                  # and loading stills (use a real GPU)
 ```
 
 ## Editing content
