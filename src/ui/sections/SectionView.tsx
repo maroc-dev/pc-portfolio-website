@@ -1,6 +1,6 @@
 import { getProjects } from "@/content/projects";
 import type { Section } from "@/content/types";
-import { AboutSection } from "./AboutSection";
+import { AboutSection } from "./about/AboutSection";
 import { ArchiveSection } from "./ArchiveSection";
 import { ContactSection } from "./ContactSection";
 import { DraftNote } from "./DraftNote";

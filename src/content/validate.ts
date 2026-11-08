@@ -2,6 +2,8 @@ import { parts } from "./parts";
 import { getProject, projects } from "./projects";
 import { PART_IDS, type HardwarePart, type Project } from "./types";
 
+const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
 /** Returns human-readable problems with the content registry; empty means valid. */
 export function validateContent(
   registry: readonly HardwarePart[] = parts,
@@ -26,6 +28,27 @@ export function validateContent(
           problems.push(`Part "${part.id}" references unknown project "${slug}"`);
       }
     }
+    if (section.kind === "about") {
+      const stops = section.journey.map((stop) => stop.id);
+      if (new Set(stops).size !== stops.length) problems.push("Duplicate journey stop ids");
+      for (const id of stops) {
+        if (!KEBAB.test(id)) problems.push(`Journey stop id "${id}" is not kebab-case`);
+      }
+      const photos = [
+        section.portrait,
+        ...section.journey.flatMap((stop) => (stop.photo ? [stop.photo] : [])),
+        ...section.education.flatMap((school) => school.photos ?? []),
+        ...section.hobbies.map((hobby) => hobby.photo),
+      ];
+      for (const photo of photos) {
+        if (photo.placeholder) continue;
+        if (!photo.src.startsWith("/"))
+          problems.push(`Photo "${photo.caption}" is not a local file`);
+        if (photo.credit && !photo.credit.href.startsWith("https://")) {
+          problems.push(`Photo "${photo.caption}" credit link is not https`);
+        }
+      }
+    }
     if (section.kind === "memory") {
       for (const item of section.current) {
         if (item.projectSlug && !getProject(item.projectSlug)) {
@@ -38,7 +61,7 @@ export function validateContent(
   }
 
   for (const project of projectList) {
-    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(project.slug)) {
+    if (!KEBAB.test(project.slug)) {
       problems.push(`Project slug "${project.slug}" is not kebab-case`);
     }
     for (const link of project.links) {

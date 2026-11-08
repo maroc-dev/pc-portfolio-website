@@ -35,16 +35,91 @@ export interface Project {
   placeholder: boolean;
 }
 
-export interface Milestone {
-  when: string;
-  title: string;
-  detail?: string;
+/** Where a photo came from, when it isn't Marco's own. */
+export interface PhotoCredit {
+  author: string;
+  license: string;
+  /** The photo's source page, e.g. on Wikimedia Commons. */
+  href: string;
 }
 
+/**
+ * A photo in the About story. Until Marco supplies his own pictures, a slot is a placeholder: it
+ * keeps its shape and caption so the layout and the story read the same once the photo arrives.
+ */
+export type Photo = {
+  /** Intrinsic size (or just the aspect ratio, for a placeholder slot). */
+  width: number;
+  height: number;
+  caption: string;
+} & (
+  { placeholder: true } | { placeholder: false; src: string; alt: string; credit?: PhotoCredit }
+);
+
+/** A competition result, e.g. "1st" in "SkillsUSA Web Design". */
+export interface Placing {
+  place: string;
+  event: string;
+}
+
+/** Something Marco built, named and described in a line. */
+export interface BuiltThing {
+  name: string;
+  detail: string;
+}
+
+/** One stop on the journey. Stops are in the order they're told, not strictly by date. */
+export interface JourneyStop {
+  /** Kebab-case and unique: used for in-page jumps. */
+  id: string;
+  /** Short name on the stop's label tape, e.g. "Rutgers". */
+  place: string;
+  when: string;
+  title: string;
+  story: string[];
+  placings?: Placing[];
+  built?: BuiltThing[];
+  photo?: Photo;
+  /** A hard stretch: the journey's line runs dashed through it. */
+  pause?: boolean;
+}
+
+export interface Course {
+  /** As Rutgers numbers it, e.g. "CS 417". */
+  code: string;
+  name: string;
+  takeaway: string;
+  /** Being taken this semester. */
+  current?: boolean;
+}
+
+export interface School {
+  name: string;
+  degree: string;
+  where: string;
+  when: string;
+  gpa: string;
+  honours: string[];
+  summary: string;
+  courses?: Course[];
+  highlights?: string[];
+  photos?: Photo[];
+}
+
+export interface Hobby {
+  name: string;
+  detail: string;
+  photo: Photo;
+}
+
+/** CPU: who Marco is, told as a journey, then education and life outside code. */
 export interface AboutSection {
   kind: "about";
+  portrait: Photo;
   intro: string[];
-  timeline: Milestone[];
+  journey: JourneyStop[];
+  education: School[];
+  hobbies: Hobby[];
   placeholder: boolean;
 }
 

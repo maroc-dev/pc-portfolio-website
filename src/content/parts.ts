@@ -18,7 +18,7 @@ export const parts: readonly HardwarePart[] = [
     hardwareName: "Processor",
     heading: "The Core",
     topic: "About me",
-    blurb: "Who I am and how I like to think about building software.",
+    blurb: "Who I am, how I got here, and what I do away from the keyboard.",
     appName: "about.app",
     section: about,
   },
