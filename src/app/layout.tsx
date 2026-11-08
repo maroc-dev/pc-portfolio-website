@@ -1,15 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Recursive } from "next/font/google";
+import { Archivo } from "next/font/google";
 import { THEME_BOOTSTRAP } from "@/state/use-theme-sync";
 import "./globals.css";
 
 /** The whole portfolio is static content: every route must prerender completely. */
 export const ensureStatic = "navigation";
 
-const recursive = Recursive({
-  variable: "--font-recursive",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
-  axes: ["CASL", "MONO", "CRSV"],
+  axes: ["wdth"],
   display: "swap",
 });
 
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#eaf2fc" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e1626" },
+    { media: "(prefers-color-scheme: light)", color: "#e4edf9" },
+    { media: "(prefers-color-scheme: dark)", color: "#0d1628" },
   ],
 };
 
@@ -31,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       data-theme="day"
-      className={`${recursive.variable} h-full`}
+      className={`${archivo.variable} h-full`}
       suppressHydrationWarning
     >
       <head>
