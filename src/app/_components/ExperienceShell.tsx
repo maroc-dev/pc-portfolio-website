@@ -9,6 +9,7 @@ import { useUrlSync } from "@/state/use-url-sync";
 import { BootOverlay } from "@/ui/BootOverlay";
 import { ExploreHint } from "@/ui/ExploreHint";
 import { HoverLabel } from "@/ui/HoverLabel";
+import { LoadingStill } from "@/ui/LoadingStill";
 import { PartDock } from "@/ui/PartDock";
 import { PartTags } from "@/ui/PartTags";
 import { ScreenWindow } from "@/ui/ScreenWindow";
@@ -43,6 +44,7 @@ export function ExperienceShell() {
       <SiteHeader />
       <div className="relative h-[56svh] md:absolute md:inset-0 md:h-auto">
         <div aria-hidden="true" className="absolute inset-0">
+          {scene !== "unavailable" && <LoadingStill />}
           {scene !== "unavailable" && <SceneCanvas />}
         </div>
         {scene === "unavailable" ? <StaticFallback /> : <BootOverlay />}

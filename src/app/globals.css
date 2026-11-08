@@ -38,6 +38,9 @@
   color-scheme: dark;
 }
 
+/* Night-theme styles, keyed off the light switch rather than the OS preference. */
+@custom-variant night (&:where([data-theme="night"], [data-theme="night"] *));
+
 @theme inline {
   --color-base: var(--base);
   --color-panel: var(--panel);
