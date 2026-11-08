@@ -47,6 +47,15 @@ are plain boxes, data stores carry a powder-blue top edge, and outside services 
 Every diagram says it is simplified, and why: internal details are left out to protect
 proprietary and confidential work. Example outputs (like the network diagram) use made-up data.
 
+## Now and skills (RAM)
+
+"Right now" is a short list of what's on Marco's desk, each item tagged by what kind of now it
+is (Building, Studying, Learning). Projects that belong together get a layer diagram: the
+system as a stack, with a bracket beside the layers each project covers; yellow tape marks the
+one being built now. Skills carry only what's known: a dot for "used at work" (from the résumé
+or the AI section), a dashed outline for "learning now". No tier makes no claim, and there are
+never percentages.
+
 ## Palette
 
 Semantic tokens with day and night values (see `src/app/globals.css`).

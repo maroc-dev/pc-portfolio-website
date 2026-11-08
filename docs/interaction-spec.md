@@ -14,7 +14,7 @@ and a cable from the tower to the monitor.
 | -------- | --------------------------------------------- | ----------------- |
 | `cpu`    | About me                                      | The Core          |
 | `gpu`    | AI: professional projects, local models       | Accelerated Ideas |
-| `ram`    | What I'm working on now + skills I have       | Active Memory     |
+| `ram`    | Now: building, studying, learning + skills    | Active Memory     |
 | `ssd`    | Project archive                               | Project Archives  |
 | `server` | Distributed systems (mini server on the desk) | Connected Systems |
 | `io`     | Contact and résumé                            | Connect           |
