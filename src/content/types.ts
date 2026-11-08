@@ -194,6 +194,8 @@ export interface NowItem {
   id: string;
   /** What kind of now it is, on label tape, e.g. "Building". */
   status: string;
+  /** A short name for the section's jump bar, e.g. "Home cluster". */
+  short: string;
   title: string;
   story: string[];
   photo?: Photo;

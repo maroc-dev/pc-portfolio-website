@@ -16,6 +16,7 @@ export const memory: MemorySection = {
     {
       id: "cluster",
       status: "Building",
+      short: "Home cluster",
       title: "A private cloud out of old computers",
       story: [
         "I'm taking the old computers I have lying around and joining them into a private compute cluster with Kubernetes.",
@@ -27,6 +28,7 @@ export const memory: MemorySection = {
     {
       id: "rutgers",
       status: "Studying",
+      short: "Last semester",
       title: "My last semester at Rutgers",
       story: [
         "I'm finishing my B.S. in Computer Science and graduating in January 2027. This semester it's Distributed Systems and Imaging and Multimedia.",
@@ -36,6 +38,7 @@ export const memory: MemorySection = {
     {
       id: "databases",
       status: "Learning",
+      short: "Databases",
       title: "Opening the black box of databases",
       story: [
         "I've always wanted to understand databases. For years I treated them as a magic black box: data goes in, answers come out.",

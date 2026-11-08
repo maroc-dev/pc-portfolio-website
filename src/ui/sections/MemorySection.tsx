@@ -1,5 +1,6 @@
 import { nowAnchor } from "@/content/parts";
 import type { MemorySection as Memory, NowItem, ProjectLink, Skill } from "@/content/types";
+import { JumpBar } from "./JumpBar";
 import { LayerStack } from "./memory/LayerStack";
 import { PhotoFrame } from "./PhotoFrame";
 import { SectionLinkButton } from "./SectionLinkButton";
@@ -29,7 +30,7 @@ function NowEntry({ item }: { item: NowItem }) {
     <article
       id={nowAnchor(item.id)}
       aria-labelledby={titleId}
-      className="border-line scroll-mt-4 border-t py-9 first-of-type:border-t-0 first-of-type:pt-6"
+      className="border-line scroll-mt-20 border-t py-9 first-of-type:border-t-0 first-of-type:pt-6"
     >
       <div
         className={item.photo ? "@3xl:grid @3xl:grid-cols-[minmax(0,1fr)_15rem] @3xl:gap-10" : ""}
@@ -102,11 +103,16 @@ function SkillChip({ skill }: { skill: Skill }) {
 
 /** RAM: what's loaded right now, then the skills already on board. */
 export function MemorySection({ section }: { section: Memory }) {
+  const contents = [
+    ...section.now.map((item) => ({ id: nowAnchor(item.id), label: item.short })),
+    { id: "memory-skills", label: "Skills" },
+  ];
   return (
-    <>
+    <div>
       <p className="max-w-[60ch] text-[1.0625rem] leading-relaxed">{section.intro}</p>
+      <JumpBar label="Active Memory" items={contents} className="mt-7" />
 
-      <section id="memory-now" aria-labelledby="memory-now-title" className="mt-9 scroll-mt-4">
+      <section id="memory-now" aria-labelledby="memory-now-title" className="mt-9 scroll-mt-20">
         <SubHeading id="memory-now-title">Right now</SubHeading>
         {section.now.map((item) => (
           <NowEntry key={item.id} item={item} />
@@ -116,7 +122,7 @@ export function MemorySection({ section }: { section: Memory }) {
       <section
         id="memory-skills"
         aria-labelledby="memory-skills-title"
-        className="mt-8 scroll-mt-4"
+        className="mt-8 scroll-mt-20"
       >
         <SubHeading id="memory-skills-title">Skills</SubHeading>
         <p aria-hidden="true" className="text-muted mt-3 flex flex-wrap gap-x-6 gap-y-2 text-sm">
@@ -146,6 +152,6 @@ export function MemorySection({ section }: { section: Memory }) {
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }
