@@ -8,15 +8,35 @@ import { COMPACT_QUERY, useMediaQuery } from "@/lib/dom/use-media-query";
 import { duration, ease } from "@/lib/motion/tokens";
 import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore, useExperience, type ScreenRect } from "@/state/experience-store";
-import { pressedBeforeFullscreenExit } from "@/state/use-fullscreen-sync";
 import { SectionView } from "./sections/SectionView";
 
-/** Window placement: on the monitor's screen when known, otherwise centred. */
-function placement(rect: ScreenRect | null): CSSProperties {
-  if (!rect) {
+/** Window layout: the screen's size in the normal monitor framing, otherwise centred. */
+function placement(layout: ScreenRect | null): CSSProperties {
+  if (!layout) {
     return { inset: 0, margin: "auto", width: "min(880px, 92vw)", height: "min(620px, 76vh)" };
   }
-  return { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
+  return {
+    left: layout.left,
+    top: layout.top,
+    width: layout.width,
+    height: layout.height,
+    transformOrigin: "0 0",
+  };
+}
+
+/**
+ * Moves and scales the window from its layout rect onto where the screen is right now. Close to
+ * identity it snaps to no transform at all, so text at rest is never resampled.
+ */
+function follow(layout: ScreenRect, live: ScreenRect | null): string {
+  if (!live) return "";
+  const dx = live.left - layout.left;
+  const dy = live.top - layout.top;
+  const sx = live.width / layout.width;
+  const sy = live.height / layout.height;
+  const still =
+    Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(sx - 1) < 0.004 && Math.abs(sy - 1) < 0.004;
+  return still ? "" : `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
 }
 
 /** Four corners pointing out (enter full view) or in (leave it). */
@@ -42,12 +62,13 @@ function FullViewIcon({ exit }: { exit: boolean }) {
 /**
  * The content "app" that opens on the monitor. On desktop it sits exactly over the projected
  * screen; on phones it becomes a full-height sheet styled like the same window. "Full screen"
- * moves the camera in until the monitor fills the viewport, and the window grows with it.
+ * moves the camera in until the monitor fills the viewport; the window zooms with the screen
+ * like a real display would, keeping its layout.
  */
 export function ScreenWindow() {
   const selected = useExperience((s) => s.selected);
   const open = useExperience((s) => s.windowOpen);
-  const rect = useExperience((s) => s.screenRect);
+  const layout = useExperience((s) => s.screenLayout);
   const compact = useMediaQuery(COMPACT_QUERY);
   const fullView = useExperience((s) => s.fullView);
 
@@ -79,7 +100,8 @@ export function ScreenWindow() {
         ...to,
         duration: duration.windowIn,
         ease: ease.arrive,
-        clearProps: "clipPath,opacity,transform",
+        // On desktop the transform belongs to `follow`; only the sheet animates it.
+        clearProps: compact ? "transform" : "clipPath,opacity",
       });
     } else if (!open && wasOpen.current) {
       wasOpen.current = false;
@@ -97,6 +119,22 @@ export function ScreenWindow() {
         });
     }
   }, [open, compact, shown]);
+
+  // Ride along with the camera: the screen's live rect only ever changes the transform (written
+  // straight to the DOM, so camera moves don't re-render React or re-flow the text).
+  useLayoutEffect(() => {
+    const el = panel.current;
+    if (!el || compact || !layout) return;
+    el.style.transform = follow(layout, experienceStore.getState().screenRect);
+    const unsubscribe = experienceStore.subscribe((state, prev) => {
+      if (state.screenRect !== prev.screenRect)
+        el.style.transform = follow(layout, state.screenRect);
+    });
+    return () => {
+      unsubscribe();
+      el.style.transform = "";
+    };
+  }, [layout, compact, shown]);
 
   // Switching parts while open: cross-fade the content in place.
   useLayoutEffect(() => {
@@ -121,7 +159,7 @@ export function ScreenWindow() {
       if (e.key !== "Escape") return;
       const store = experienceStore.getState();
       if (store.fullView) store.setFullView(false);
-      else if (!pressedBeforeFullscreenExit(e.timeStamp)) store.back();
+      else store.back();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -137,7 +175,7 @@ export function ScreenWindow() {
       role="dialog"
       aria-modal="false"
       aria-labelledby={titleId}
-      style={compact ? undefined : placement(rect)}
+      style={compact ? undefined : placement(layout)}
       className={
         compact
           ? "border-line bg-panel fixed inset-x-0 top-[8svh] bottom-0 z-50 flex flex-col overflow-hidden rounded-t-[14px] border shadow-[0_-12px_40px_rgb(13_22_40/0.45)]"
@@ -174,19 +212,16 @@ export function ScreenWindow() {
         ref={body}
         className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-7 md:px-10 md:py-9"
       >
-        {/* In full view the window is wide, so keep a readable column centred in it. */}
-        <div className={fullView ? "mx-auto max-w-[60rem]" : undefined}>
-          <h2
-            ref={heading}
-            id={titleId}
-            tabIndex={-1}
-            className="type-display text-[2.25rem] outline-none md:text-[3rem]"
-          >
-            {part.heading}
-          </h2>
-          <p className="text-muted mt-3 mb-9 max-w-[52ch] text-lg leading-snug">{part.blurb}</p>
-          <SectionView section={part.section} />
-        </div>
+        <h2
+          ref={heading}
+          id={titleId}
+          tabIndex={-1}
+          className="type-display text-[2.25rem] outline-none md:text-[3rem]"
+        >
+          {part.heading}
+        </h2>
+        <p className="text-muted mt-3 mb-9 max-w-[52ch] text-lg leading-snug">{part.blurb}</p>
+        <SectionView section={part.section} />
       </div>
     </div>
   );

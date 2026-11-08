@@ -19,7 +19,7 @@ export function PartDock() {
   return (
     <nav
       aria-label="Parts of the machine"
-      className={`relative z-20 px-4 pb-6 transition-[opacity,visibility] duration-300 md:pointer-events-none md:absolute md:inset-x-0 md:bottom-0 md:flex md:justify-center md:pb-6 ${
+      className={`relative z-20 px-4 pb-6 transition-[opacity,visibility] duration-500 md:pointer-events-none md:absolute md:inset-x-0 md:bottom-0 md:flex md:justify-center md:pb-6 ${
         fullView ? "invisible opacity-0" : ""
       }`}
     >

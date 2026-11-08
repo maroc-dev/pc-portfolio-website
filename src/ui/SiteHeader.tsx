@@ -18,7 +18,7 @@ export function SiteHeader() {
   const fullView = useExperience((s) => s.fullView);
   return (
     <header
-      className={`pointer-events-none relative z-30 flex items-start justify-between gap-4 px-4 py-4 transition-[opacity,visibility] duration-300 md:absolute md:inset-x-0 md:top-0 md:px-8 md:py-6 ${
+      className={`pointer-events-none relative z-30 flex items-start justify-between gap-4 px-4 py-4 transition-[opacity,visibility] duration-500 md:absolute md:inset-x-0 md:top-0 md:px-8 md:py-6 ${
         fullView ? "invisible opacity-0" : ""
       }`}
     >
