@@ -38,6 +38,8 @@ export interface ExperienceState {
   pcHovered: boolean;
   /** The visitor has found a part at least once; first-visit hints can go. */
   explored: boolean;
+  /** Full view: the camera moves in until the monitor's screen fills the viewport. */
+  fullView: boolean;
 }
 
 export interface ExperienceActions {
@@ -52,6 +54,8 @@ export interface ExperienceActions {
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
   setPcHovered: (hovered: boolean) => void;
+  /** Enters or leaves full view. Only possible while a section is open. */
+  setFullView: (on: boolean) => void;
 }
 
 export type ExperienceStore = ExperienceState & ExperienceActions;
@@ -67,6 +71,7 @@ export const initialState: ExperienceState = {
   theme: "day",
   pcHovered: false,
   explored: false,
+  fullView: false,
 };
 
 export function createExperienceStore(initial: Partial<ExperienceState> = {}) {
@@ -99,7 +104,7 @@ export function createExperienceStore(initial: Partial<ExperienceState> = {}) {
 
     back: () => {
       if (get().selected === null) return;
-      set({ phase: "overview", selected: null, windowOpen: false });
+      set({ phase: "overview", selected: null, windowOpen: false, fullView: false });
     },
 
     revealWindow: () => {
@@ -115,6 +120,10 @@ export function createExperienceStore(initial: Partial<ExperienceState> = {}) {
     toggleTheme: () => set({ theme: get().theme === "day" ? "night" : "day" }),
     setPcHovered: (hovered) => {
       if (get().pcHovered !== hovered) set({ pcHovered: hovered });
+    },
+    setFullView: (on) => {
+      const next = on && get().selected !== null;
+      if (get().fullView !== next) set({ fullView: next });
     },
   }));
 }

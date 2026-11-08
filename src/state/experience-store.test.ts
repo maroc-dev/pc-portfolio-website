@@ -84,4 +84,20 @@ describe("theme and hints", () => {
     selecting.getState().select("io");
     expect(selecting.getState().explored).toBe(true);
   });
+
+  it("enters full view only while a section is open, and leaves it on back", () => {
+    const store = createExperienceStore({ scene: "ready" });
+    store.getState().setFullView(true);
+    expect(store.getState().fullView).toBe(false);
+
+    store.getState().select("ram");
+    store.getState().setFullView(true);
+    expect(store.getState().fullView).toBe(true);
+
+    store.getState().select("cpu");
+    expect(store.getState().fullView).toBe(true);
+
+    store.getState().back();
+    expect(store.getState().fullView).toBe(false);
+  });
 });
