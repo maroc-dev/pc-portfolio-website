@@ -10,7 +10,7 @@ function leave(id: PartId) {
 
 /**
  * Every part as a real button: the keyboard, screen-reader and touch route into the machine.
- * Hovering or focusing a button lights the matching part in the scene.
+ * Each one carries the part's label tape; hovering or focusing it lights the part in the scene.
  */
 export function PartDock() {
   const selected = useExperience((s) => s.selected);
@@ -20,27 +20,38 @@ export function PartDock() {
       className="relative z-20 px-4 pb-6 md:pointer-events-none md:absolute md:inset-x-0 md:bottom-0 md:flex md:justify-center md:pb-6"
     >
       <p className="text-muted mb-3 text-sm md:hidden">Tap a part to look inside.</p>
-      <ul className="md:border-line md:bg-base/75 grid grid-cols-3 gap-2 md:pointer-events-auto md:flex md:gap-1 md:rounded-2xl md:border md:p-1.5 md:backdrop-blur-md">
-        {parts.map((part) => (
-          <li key={part.id}>
-            <button
-              type="button"
-              aria-pressed={selected === part.id}
-              title={part.blurb}
-              onClick={() => experienceStore.getState().select(part.id)}
-              onPointerEnter={() => experienceStore.getState().hover(part.id)}
-              onPointerLeave={() => leave(part.id)}
-              onFocus={() => experienceStore.getState().hover(part.id)}
-              onBlur={() => leave(part.id)}
-              className="group border-line bg-panel/60 hover:border-accent/50 hover:bg-panel aria-pressed:border-accent/70 aria-pressed:bg-panel flex w-full flex-col items-start rounded-xl border px-3 py-2.5 text-left transition-colors md:min-w-28 md:border-transparent md:bg-transparent"
-            >
-              <span className="text-muted type-mono group-aria-pressed:text-accent text-xs">
-                {part.label}
-              </span>
-              <span className="text-fg text-sm">{part.topic}</span>
-            </button>
-          </li>
-        ))}
+      <ul className="md:border-line md:bg-panel grid grid-cols-3 gap-2 md:pointer-events-auto md:flex md:gap-0 md:rounded-[10px] md:border md:px-2 md:py-1.5 md:shadow-[0_10px_30px_-12px_rgb(19_35_74/0.35)]">
+        {parts.map((part) => {
+          const pressed = selected === part.id;
+          return (
+            <li key={part.id}>
+              <button
+                type="button"
+                aria-pressed={pressed}
+                title={part.blurb}
+                onClick={() => experienceStore.getState().select(part.id)}
+                onPointerEnter={() => experienceStore.getState().hover(part.id)}
+                onPointerLeave={() => leave(part.id)}
+                onFocus={() => experienceStore.getState().hover(part.id)}
+                onBlur={() => leave(part.id)}
+                className="group border-line bg-panel flex w-full flex-col items-start gap-1.5 rounded-lg border px-3 py-2.5 text-left md:min-w-[7.5rem] md:border-0 md:bg-transparent md:px-3.5"
+              >
+                <span
+                  className={`tape text-xs transition-[transform,background-color] duration-150 group-hover:-rotate-2 group-focus-visible:-rotate-2 ${
+                    pressed ? "" : "tape-paper group-hover:bg-tape group-focus-visible:bg-tape"
+                  }`}
+                >
+                  {part.label}
+                </span>
+                <span
+                  className={`text-sm ${pressed ? "text-fg font-semibold" : "text-muted group-hover:text-fg"}`}
+                >
+                  {part.topic}
+                </span>
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

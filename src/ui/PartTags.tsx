@@ -6,9 +6,10 @@ import type { PartId } from "@/content/types";
 import { COMPACT_QUERY, useMediaQuery } from "@/lib/dom/use-media-query";
 import { useExperience } from "@/state/experience-store";
 import { tagPositions } from "@/state/tag-positions";
+import { tapeTilt } from "@/lib/tape";
 
 /**
- * While the pointer is over the PC, a small tag names each selectable part. Decorative
+ * While the pointer is over the PC, a strip of label tape names each selectable part. Decorative
  * (`aria-hidden`): the dock is the accessible list of the same parts.
  */
 export function PartTags() {
@@ -23,7 +24,8 @@ export function PartTags() {
     const place = () => {
       for (const [id, el] of tags.current) {
         const p = tagPositions.get(id);
-        if (p) el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) translate(-50%, -50%)`;
+        if (p)
+          el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) translate(-50%, -50%) rotate(${tapeTilt(id)}deg)`;
       }
       frame = requestAnimationFrame(place);
     };
@@ -41,7 +43,7 @@ export function PartTags() {
             if (el) tags.current.set(part.id, el);
             else tags.current.delete(part.id);
           }}
-          className="type-mono border-line bg-panel/90 text-fg absolute top-0 left-0 rounded-full border px-2 py-0.5 text-[11px] whitespace-nowrap shadow-sm transition-opacity duration-200"
+          className="tape absolute top-0 left-0 text-xs transition-opacity duration-200"
           style={{ opacity: visible && hovered !== part.id ? 1 : 0 }}
         >
           {part.label}

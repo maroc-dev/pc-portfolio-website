@@ -37,13 +37,13 @@ export function HoverLabel() {
       style={{ opacity: visible ? 1 : 0 }}
     >
       {part && (
-        <div className="border-line bg-base/90 max-w-64 rounded-xl border px-3.5 py-2.5 backdrop-blur-sm">
-          <p className="text-muted text-xs">
-            <span className="text-accent type-mono mr-1.5">{part.label}</span>
-            {part.hardwareName}
+        <div className="border-line bg-panel max-w-72 rounded-lg border px-4 pt-3 pb-3.5 shadow-[0_12px_30px_-14px_rgb(19_35_74/0.45)]">
+          <p className="flex items-center gap-2">
+            <span className="tape text-xs">{part.label}</span>
+            <span className="type-meta text-muted text-[0.8125rem]">{part.hardwareName}</span>
           </p>
-          <p className="type-casual mt-0.5 font-bold">{part.heading}</p>
-          <p className="text-muted mt-0.5 text-sm">{part.blurb}</p>
+          <p className="type-display mt-2.5 text-lg">{part.heading}</p>
+          <p className="text-muted mt-1 text-sm leading-snug">{part.blurb}</p>
         </div>
       )}
     </div>
