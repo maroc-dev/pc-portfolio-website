@@ -46,12 +46,16 @@ export interface ExperienceState {
   explored: boolean;
   /** Full view: the camera moves in until the monitor's screen fills the viewport. */
   fullView: boolean;
+  /** An element id the open section should scroll to (and expand) once it's showing. */
+  anchor: string | null;
 }
 
 export interface ExperienceActions {
   finishBoot: () => void;
   hover: (id: PartId | null) => void;
-  select: (id: PartId) => void;
+  /** Opens a part's section, optionally at an element inside it. */
+  select: (id: PartId, anchor?: string) => void;
+  clearAnchor: () => void;
   back: () => void;
   revealWindow: () => void;
   setScreenRect: (rect: ScreenRect | null) => void;
@@ -80,6 +84,7 @@ export const initialState: ExperienceState = {
   pcHovered: false,
   explored: false,
   fullView: false,
+  anchor: null,
 };
 
 export function createExperienceStore(initial: Partial<ExperienceState> = {}) {
@@ -96,10 +101,14 @@ export function createExperienceStore(initial: Partial<ExperienceState> = {}) {
       set(id ? { hovered: id, explored: true } : { hovered: null });
     },
 
-    select: (id) => {
+    select: (id, anchor) => {
       const { selected, windowOpen, scene } = get();
-      if (selected === id) return;
+      if (selected === id) {
+        if (anchor) set({ anchor });
+        return;
+      }
       set({
+        anchor: anchor ?? null,
         phase: "focused",
         selected: id,
         hovered: null,
@@ -112,7 +121,7 @@ export function createExperienceStore(initial: Partial<ExperienceState> = {}) {
 
     back: () => {
       if (get().selected === null) return;
-      set({ phase: "overview", selected: null, windowOpen: false, fullView: false });
+      set({ phase: "overview", selected: null, windowOpen: false, fullView: false, anchor: null });
     },
 
     revealWindow: () => {
@@ -129,6 +138,9 @@ export function createExperienceStore(initial: Partial<ExperienceState> = {}) {
     toggleTheme: () => set({ theme: get().theme === "day" ? "night" : "day" }),
     setPcHovered: (hovered) => {
       if (get().pcHovered !== hovered) set({ pcHovered: hovered });
+    },
+    clearAnchor: () => {
+      if (get().anchor !== null) set({ anchor: null });
     },
     setFullView: (on) => {
       const next = on && get().selected !== null;

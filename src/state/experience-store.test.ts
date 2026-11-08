@@ -100,4 +100,16 @@ describe("theme and hints", () => {
     store.getState().back();
     expect(store.getState().fullView).toBe(false);
   });
+
+  it("remembers where to open a section, even when it's already open", () => {
+    const store = createExperienceStore({ scene: "ready" });
+    store.getState().select("cpu");
+    store.getState().select("gpu", "ai-network-diagrams");
+    expect(store.getState()).toMatchObject({ selected: "gpu", anchor: "ai-network-diagrams" });
+    store.getState().clearAnchor();
+    store.getState().select("gpu", "ai-personal");
+    expect(store.getState().anchor).toBe("ai-personal");
+    store.getState().back();
+    expect(store.getState().anchor).toBeNull();
+  });
 });
