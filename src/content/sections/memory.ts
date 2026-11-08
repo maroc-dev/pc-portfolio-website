@@ -11,30 +11,8 @@ import type { MemorySection } from "../types";
 export const memory: MemorySection = {
   kind: "memory",
   intro:
-    "The now in my life: what I'm building, studying and learning this semester, and the skills I bring to it.",
+    "The now in my life: what I'm learning, building and studying this semester, and the skills I bring to it.",
   now: [
-    {
-      id: "cluster",
-      status: "Building",
-      short: "Home cluster",
-      title: "A private cloud out of old computers",
-      story: [
-        "I'm taking the old computers I have lying around and joining them into a private compute cluster with Kubernetes.",
-        "The plan is to give my friends free compute: Minecraft and other game servers, a home for old projects, private storage, hosting, whatever they need.",
-        "It's for me too. I want the freedom to run my own programs in my own isolated, AWS-like environment, and the best way I know to learn cloud computing, cloud engineering and distributed systems is to run them myself.",
-      ],
-      photo: photoSlot("The cluster, in progress"),
-    },
-    {
-      id: "rutgers",
-      status: "Studying",
-      short: "Last semester",
-      title: "My last semester at Rutgers",
-      story: [
-        "I'm finishing my B.S. in Computer Science and graduating in January 2027. This semester it's Distributed Systems and Imaging and Multimedia.",
-      ],
-      more: { label: "Read about my time at Rutgers", part: "cpu", anchor: "about-education" },
-    },
     {
       id: "databases",
       status: "Learning",
@@ -103,6 +81,28 @@ export const memory: MemorySection = {
         caption:
           "OptiSQL taught me how a query is planned and run. GooseDB is the whole thing: every layer, built by hand, all the way down to spreading data across machines. Simplified to six layers.",
       },
+    },
+    {
+      id: "cluster",
+      status: "Building",
+      short: "Home cluster",
+      title: "A private cloud out of old computers",
+      story: [
+        "I'm taking the old computers I have lying around and joining them into a private compute cluster with Kubernetes.",
+        "The plan is to give my friends free compute: Minecraft and other game servers, a home for old projects, private storage, hosting, whatever they need.",
+        "It's for me too. I want the freedom to run my own programs in my own isolated, AWS-like environment, and the best way I know to learn cloud computing, cloud engineering and distributed systems is to run them myself.",
+      ],
+      photo: photoSlot("The cluster, in progress"),
+    },
+    {
+      id: "rutgers",
+      status: "Studying",
+      short: "Last semester",
+      title: "My last semester at Rutgers",
+      story: [
+        "I'm finishing my B.S. in Computer Science and graduating in January 2027. This semester it's Distributed Systems and Imaging and Multimedia.",
+      ],
+      more: { label: "Read about my time at Rutgers", part: "cpu", anchor: "about-education" },
     },
   ],
   skillGroups: [
