@@ -16,32 +16,39 @@ const NAV: { label: string; part: PartId }[] = [
 export function SiteHeader() {
   const selected = useExperience((s) => s.selected);
   return (
-    <header className="pointer-events-none relative z-30 flex items-center justify-between gap-4 px-4 py-4 md:absolute md:inset-x-0 md:top-0 md:px-8 md:py-6">
+    <header className="pointer-events-none relative z-30 flex items-start justify-between gap-4 px-4 py-4 md:absolute md:inset-x-0 md:top-0 md:px-8 md:py-6">
       <button
         type="button"
         onClick={() => experienceStore.getState().back()}
         className="pointer-events-auto text-left"
       >
-        <span className="type-casual block text-lg leading-tight font-bold whitespace-nowrap">
+        <span className="type-display block text-[1.375rem] whitespace-nowrap md:text-[1.625rem]">
           {profile.name}
         </span>
-        <span className="text-muted block text-sm">Software engineer</span>
+        <span className="text-muted mt-1 block text-sm">Software engineer</span>
       </button>
-      <div className="pointer-events-auto flex items-center gap-3">
+      <div className="pointer-events-auto flex items-center gap-5">
         <nav aria-label="Sections" className="hidden md:block">
-          <ul className="flex items-center gap-1 text-sm">
-            {NAV.map(({ label, part }) => (
-              <li key={part}>
-                <button
-                  type="button"
-                  aria-current={selected === part ? "true" : undefined}
-                  onClick={() => experienceStore.getState().select(part)}
-                  className="text-muted hover:text-fg aria-[current=true]:text-accent rounded-full px-3 py-1.5 transition-colors"
-                >
-                  {label}
-                </button>
-              </li>
-            ))}
+          <ul className="flex items-center gap-1 text-[0.9375rem]">
+            {NAV.map(({ label, part }) => {
+              const current = selected === part;
+              return (
+                <li key={part}>
+                  <button
+                    type="button"
+                    aria-current={current ? "true" : undefined}
+                    onClick={() => experienceStore.getState().select(part)}
+                    className={
+                      current
+                        ? "tape mx-1.5 text-[0.875rem]"
+                        : "text-muted hover:text-fg px-2.5 py-1 transition-colors"
+                    }
+                  >
+                    {label}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </nav>
         <ThemeToggle />

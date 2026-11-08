@@ -24,7 +24,7 @@ export function ExploreHint() {
       className="pointer-events-none absolute inset-x-0 bottom-28 z-20 flex justify-center"
     >
       <span
-        className="border-line bg-panel/80 text-fg rounded-full border px-4 py-1.5 text-sm shadow-sm backdrop-blur-sm transition-opacity duration-300"
+        className="border-line bg-panel text-fg rounded-md border px-3.5 py-2 text-sm shadow-[0_6px_18px_-10px_rgb(19_35_74/0.4)] transition-opacity duration-300"
         style={{ opacity: message ? 1 : 0 }}
       >
         {message ?? " "}

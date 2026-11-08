@@ -10,7 +10,7 @@ import { experienceStore, useExperience } from "@/state/experience-store";
 const MAX_LOAD_MS = 12000;
 
 /**
- * A quiet caption while the desk assembles and the PC powers on. Never blocks: navigation works
+ * A strip of label tape "prints" while the desk assembles and the PC powers on. Never blocks: navigation works
  * throughout, and any key, click or the skip button jumps to the finished scene.
  */
 export function BootOverlay() {
@@ -34,18 +34,15 @@ export function BootOverlay() {
   return (
     <div
       role="status"
-      className="pointer-events-none absolute inset-x-0 bottom-28 z-20 flex flex-col items-center gap-2.5 md:bottom-32"
+      className="pointer-events-none absolute inset-x-0 bottom-28 z-20 flex flex-col items-center gap-3 md:bottom-32"
     >
-      <p className="border-line bg-panel/80 text-fg rounded-full border px-4 py-1.5 text-sm shadow-sm backdrop-blur-sm">
+      <p className="tape animate-[print-tape_1.3s_steps(19)_0.2s_both] text-sm">
         Setting up the desk
       </p>
-      <span className="bg-line block h-0.5 w-28 overflow-hidden rounded-full">
-        <span className="bg-accent block h-full w-2/5 animate-[sweep_1.4s_ease-in-out_infinite] rounded-full" />
-      </span>
       <button
         type="button"
         onClick={() => experienceStore.getState().finishBoot()}
-        className="text-muted hover:text-fg pointer-events-auto text-xs underline-offset-4 hover:underline"
+        className="text-muted hover:text-fg bg-panel/90 pointer-events-auto rounded px-2 py-0.5 text-xs underline-offset-4 hover:underline"
       >
         Skip intro
       </button>
