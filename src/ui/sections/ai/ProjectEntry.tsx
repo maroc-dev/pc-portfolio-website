@@ -1,6 +1,6 @@
 import { aiAnchor } from "@/content/parts";
 import type { AiProject } from "@/content/types";
-import { ArchDiagram } from "./ArchDiagram";
+import { ArchDiagram } from "../ArchDiagram";
 import { NetworkSample } from "./NetworkSample";
 
 function PlusIcon() {
@@ -48,7 +48,11 @@ export function ProjectEntry({ project }: { project: AiProject }) {
             <li key={tech}>{tech}</li>
           ))}
         </ul>
-        <ArchDiagram architecture={project.architecture} name={project.name} />
+        <ArchDiagram
+          architecture={project.architecture}
+          name={project.name}
+          caption="Simplified architecture. Internal details are left out to protect proprietary and confidential work."
+        />
         {project.sample === "network-diagram" && <NetworkSample />}
       </div>
     </details>

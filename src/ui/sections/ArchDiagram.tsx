@@ -60,7 +60,16 @@ function exit(a: Box, b: Box): [number, number] {
  * between the boxes as laid out (re-measured whenever the diagram changes size, including when
  * its drop-down opens or the window zooms), so they always meet the right edges.
  */
-export function ArchDiagram({ architecture, name }: { architecture: Architecture; name: string }) {
+export function ArchDiagram({
+  architecture,
+  name,
+  caption,
+}: {
+  architecture: Architecture;
+  name: string;
+  /** Says what was simplified, and why. */
+  caption: string;
+}) {
   const { cols, rows, nodes, edges, groups = [] } = architecture;
   const canvas = useRef<HTMLDivElement>(null);
   const [segments, setSegments] = useState<Segment[]>([]);
@@ -205,10 +214,7 @@ export function ArchDiagram({ architecture, name }: { architecture: Architecture
           </li>
         ))}
       </ul>
-      <figcaption className="text-muted mt-2.5 text-sm leading-relaxed">
-        Simplified architecture. Internal details are left out to protect proprietary and
-        confidential work.
-      </figcaption>
+      <figcaption className="text-muted mt-2.5 text-sm leading-relaxed">{caption}</figcaption>
     </figure>
   );
 }
