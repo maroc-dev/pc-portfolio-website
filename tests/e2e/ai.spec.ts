@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { window } from "./helpers";
 
-test("AI projects open as drop-downs with their flow", async ({ page }) => {
+test("AI projects open as drop-downs with their architecture", async ({ page }) => {
   await page.goto("/?part=gpu");
   const ai = window(page, "Accelerated Ideas");
   await expect(ai.getByRole("heading", { name: "Professional", level: 3 })).toBeVisible();
@@ -11,7 +11,9 @@ test("AI projects open as drop-downs with their flow", async ({ page }) => {
   await expect(sample).toBeHidden();
   await ai.getByText("Network diagram generator").click();
   await expect(sample).toBeVisible();
-  await expect(ai.getByRole("list", { name: "How it works" }).first()).toContainText("Topology");
+  const architecture = ai.getByRole("figure", { name: "Network diagram generator architecture" });
+  await expect(architecture).toContainText("Topology");
+  await expect(architecture).toContainText("Simplified architecture");
 });
 
 test("About me links straight to a project in the AI section", async ({ page }) => {

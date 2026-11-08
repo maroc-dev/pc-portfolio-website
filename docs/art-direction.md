@@ -40,6 +40,13 @@ About me is told as a journey: one line with a stop per chapter. Stops fill in a
 reaches them, the one they're on wears yellow tape, and the line runs dashed through the
 semester Marco spent recovering.
 
+## Architecture diagrams
+
+Each AI project shows its basic architecture as boxes and arrows: people are rounded, services
+are plain boxes, data stores carry a powder-blue top edge, and outside services are dashed.
+Every diagram says it is simplified, and why: internal details are left out to protect
+proprietary and confidential work. Example outputs (like the network diagram) use made-up data.
+
 ## Palette
 
 Semantic tokens with day and night values (see `src/app/globals.css`).
