@@ -2,8 +2,8 @@ import { about } from "./sections/about";
 import { ai } from "./sections/ai";
 import { archive } from "./sections/archive";
 import { contact } from "./sections/contact";
-import { distributed } from "./sections/distributed";
 import { memory } from "./sections/memory";
+import { systems } from "./sections/systems";
 import { PART_IDS, type HardwarePart, type PartId, type Section } from "./types";
 
 /**
@@ -57,10 +57,10 @@ export const parts: readonly HardwarePart[] = [
     label: "Server",
     hardwareName: "Mini server",
     heading: "Connected Systems",
-    topic: "Distributed systems",
-    blurb: "Systems that coordinate across machines, starting with this little server.",
+    topic: "Systems architecture",
+    blurb: "Software built to scale, and the systems I've built to learn how.",
     appName: "network.app",
-    section: distributed,
+    section: systems,
   },
   {
     id: "io",
@@ -95,7 +95,15 @@ export function sectionAnchors(section: Section): string[] {
   if (section.kind === "memory") {
     return ["memory-now", "memory-skills", ...section.now.map((item) => nowAnchor(item.id))];
   }
+  if (section.kind === "systems") {
+    return section.projects.map((project) => systemsAnchor(project.id));
+  }
   return [];
+}
+
+/** The element id of a project in the systems section. */
+export function systemsAnchor(projectId: string): string {
+  return `systems-${projectId}`;
 }
 
 /** The element id of an item in the RAM section's "Right now". */

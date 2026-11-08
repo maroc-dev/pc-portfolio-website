@@ -115,6 +115,23 @@ export function validateContent(
         }
       }
     }
+    if (section.kind === "systems") {
+      const ids = section.projects.map((p) => p.id);
+      if (new Set(ids).size !== ids.length) problems.push("Duplicate systems project ids");
+      for (const project of section.projects) {
+        const where = `Systems project "${project.id}"`;
+        if (!KEBAB.test(project.id)) problems.push(`${where} id is not kebab-case`);
+        if (project.architecture) {
+          problems.push(...validateArchitecture(project.architecture, where));
+        }
+        if (project.more) problems.push(...validateSectionLink(project.more, where, registry));
+        for (const link of project.links) {
+          if (!link.href.startsWith("https://")) {
+            problems.push(`${where} link "${link.label}" is not https`);
+          }
+        }
+      }
+    }
     if (section.kind === "memory") {
       const ids = section.now.map((item) => item.id);
       if (new Set(ids).size !== ids.length) problems.push("Duplicate RAM item ids");

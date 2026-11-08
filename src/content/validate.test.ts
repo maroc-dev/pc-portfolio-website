@@ -10,8 +10,16 @@ describe("content registry", () => {
 
   it("reports a missing project reference", () => {
     const broken = parts.map((p) =>
-      p.id === "server" && p.section.kind === "projects"
-        ? { ...p, section: { ...p.section, projectSlugs: ["does-not-exist"] } }
+      p.id === "server"
+        ? {
+            ...p,
+            section: {
+              kind: "projects" as const,
+              intro: "",
+              projectSlugs: ["does-not-exist"],
+              placeholder: false,
+            },
+          }
         : p,
     );
     expect(validateContent(broken)).toContain(
@@ -64,6 +72,33 @@ describe("content registry", () => {
     );
     expect(validateContent(broken)).toContain(
       'RAM item "databases" diagram span "Too far" is outside its layers',
+    );
+  });
+
+  it("reports a systems diagram arrow to a box that doesn't exist", () => {
+    const broken = parts.map((p) =>
+      p.section.kind === "systems"
+        ? {
+            ...p,
+            section: {
+              ...p.section,
+              projects: p.section.projects.map((project) =>
+                project.architecture
+                  ? {
+                      ...project,
+                      architecture: {
+                        ...project.architecture,
+                        edges: [{ from: "nowhere", to: "nowhere" }],
+                      },
+                    }
+                  : project,
+              ),
+            },
+          }
+        : p,
+    );
+    expect(validateContent(broken)).toContain(
+      'Systems project "draftly": arrow uses unknown box "nowhere"',
     );
   });
 

@@ -274,6 +274,8 @@ export interface ArchGroup {
 
 /** A simplified box-and-arrow architecture diagram. */
 export interface Architecture {
+  /** Under the diagram: what was simplified, and why. Sections may supply their own default. */
+  caption?: string;
   cols: number;
   rows: number;
   nodes: ArchNode[];
@@ -313,8 +315,54 @@ export interface AiSection {
   placeholder: boolean;
 }
 
+/** A measured result, e.g. "22,807" training steps per second. */
+export interface Stat {
+  value: string;
+  label: string;
+}
+
+/** A systems project, shown in full: what it does, what it shows, and how it's put together. */
+export interface SystemsProject {
+  /** Kebab-case and unique: the element id is `systems-${id}`. */
+  id: string;
+  name: string;
+  /** A short name for the section's jump bar. */
+  short: string;
+  /** Where it's from, on label tape, e.g. "Rutgers CS 417". */
+  tag: string;
+  summary: string;
+  /** What it does. */
+  built: string[];
+  /** Heading for `built`, when "What it does" doesn't fit, e.g. for work in progress. */
+  builtTitle?: string;
+  /** What it shows about building systems. */
+  shows: string[];
+  /** Heading for `shows`, when "What it shows" doesn't fit, e.g. for work in progress. */
+  showsTitle?: string;
+  stats?: Stat[];
+  stack: string[];
+  architecture?: Architecture;
+  photo?: Photo;
+  links: ProjectLink[];
+  more?: SectionLink;
+}
+
+/** Server: software architecture and systems that scale. */
+export interface SystemsSection {
+  kind: "systems";
+  intro: string[];
+  projects: SystemsProject[];
+  placeholder: boolean;
+}
+
 export type Section =
-  AboutSection | AiSection | ProjectsSection | MemorySection | ArchiveSection | ContactSection;
+  | AboutSection
+  | AiSection
+  | ProjectsSection
+  | MemorySection
+  | ArchiveSection
+  | ContactSection
+  | SystemsSection;
 
 /** A selectable piece of hardware and the section it opens. */
 export interface HardwarePart {
