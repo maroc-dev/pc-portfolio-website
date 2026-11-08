@@ -52,7 +52,7 @@ export const memory: MemorySection = {
           name: "GooseDB",
           status: "Building now",
           detail: [
-            "A database for storing and querying media, written in C++23. I'm building it from the bottom up, starting with the storage layer: pages, tuples and schemas.",
+            "A full database system I'm building from the ground up in C++23, for storing and querying media. It's meant to work more like a distributed, S3-style store than a classic single-machine database.",
             "It's early and changing fast, so GitHub is the best place to see where it stands.",
           ],
           links: [
@@ -75,24 +75,30 @@ export const memory: MemorySection = {
       diagram: {
         title: "Where the two projects sit in a database",
         layers: [
-          { name: "Query interface", detail: "Takes SQL in over HTTP" },
+          { name: "Query interface", detail: "Takes queries in" },
           { name: "Planning", detail: "Parses the query and picks a plan" },
           { name: "Execution", detail: "Runs scans, filters, joins and aggregates" },
           { name: "Buffer pool", detail: "Keeps the pages in use in memory" },
-          { name: "Storage", detail: "Lays out pages and tuples on disk" },
+          { name: "Storage", detail: "Lays data out on disk" },
+          { name: "Distribution", detail: "Spreads and replicates data across machines" },
         ],
         spans: [
-          { label: "OptiSQL", note: "The query side, which I built with Richard.", from: 1, to: 3 },
           {
             label: "GooseDB",
-            note: "The storage side, building now.",
-            from: 5,
-            to: 5,
+            note: "The whole system, from the ground up, built to spread across machines like S3. Building now.",
+            from: 1,
+            to: 6,
             active: true,
+          },
+          {
+            label: "OptiSQL",
+            note: "The query side, which I built with Richard.",
+            from: 1,
+            to: 3,
           },
         ],
         caption:
-          "Together they cover both ends of the course: OptiSQL is where a query comes in and runs, and GooseDB starts at the bottom, with how data sits on disk. Simplified to five layers.",
+          "OptiSQL taught me how a query is planned and run. GooseDB is the whole thing: every layer, built by hand, all the way down to spreading data across machines. Simplified to six layers.",
       },
     },
   ],

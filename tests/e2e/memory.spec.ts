@@ -11,7 +11,7 @@ test("RAM shows what's loaded now, the database layers and the skills", async ({
   await expect(ram.getByRole("heading", { name: /private cloud/ })).toBeVisible();
 
   const layers = ram.getByRole("figure", { name: "Where the two projects sit in a database" });
-  await expect(layers).toContainText("GooseDB covers Storage");
+  await expect(layers).toContainText("GooseDB covers Query interface to Distribution");
   await expect(layers).toContainText("OptiSQL covers Query interface to Execution");
 
   // Work and learning marks are spoken, not only drawn.
