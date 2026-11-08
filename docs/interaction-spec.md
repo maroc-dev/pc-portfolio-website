@@ -48,12 +48,15 @@ Motherboard, PSU and cooling are visible but not selectable in the MVP.
 ## Full view
 
 "Full screen" in the window's title bar (desktop only; phones already get a full-height sheet)
-moves the camera in, square to the monitor, until only a sliver of bezel shows (0.7 s). The
-window grows with the screen, the header and dock fade out, and the reading column stays
-centred. Where the browser allows it, the page also goes into real full screen.
+moves the camera in, square to the monitor, until only a sliver of bezel shows (0.7 s). It stays
+inside the page: the browser itself does not go full screen. The header and dock fade out.
 
-- Esc steps out one level: full view first, then back to the desk. Leaving the browser's full
-  screen (Esc, F11) also leaves full view, and that Esc is not counted twice.
+The window behaves like a real display with a fixed resolution: it is laid out once at the
+screen's size in the normal monitor framing and only scaled and moved (a CSS transform) to
+follow the screen while the camera moves. Nothing re-flows during the zoom; full view simply
+makes the same page bigger.
+
+- Esc steps out one level: full view first, then back to the desk.
 - Switching sections keeps full view; going back to the desk leaves it.
 - Reduced motion: the camera jumps straight to the framing.
 
