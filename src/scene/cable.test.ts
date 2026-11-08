@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DESK, createCableCurve } from "./layout";
+import { DESK, createCableCurve, createEthernetCurve } from "./layout";
 
 describe("display cable", () => {
   const curve = createCableCurve();
@@ -22,6 +22,22 @@ describe("display cable", () => {
     for (const p of samples) {
       const overBase = p.x > -0.45 && p.x < -0.19 && p.z > -0.307 && p.z < -0.137;
       if (overBase) expect(p.y - radius).toBeGreaterThan(0.008);
+    }
+  });
+});
+
+describe("network cable", () => {
+  const samples = createEthernetCurve().getSpacedPoints(400);
+  const radius = 0.0028;
+  const display = createCableCurve().getSpacedPoints(400);
+
+  it("never dips into the desk", () => {
+    for (const p of samples) expect(p.y - radius).toBeGreaterThanOrEqual(0);
+  });
+
+  it("keeps clear of the display cable", () => {
+    for (const p of samples) {
+      for (const q of display) expect(p.distanceTo(q)).toBeGreaterThan(radius + 0.0045);
     }
   });
 });
