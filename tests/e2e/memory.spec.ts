@@ -41,15 +41,15 @@ test("the RAM jump bar lists what's inside and jumps to it", async ({ page }) =>
   const ram = window(page, "Active Memory");
   const contents = ram.getByRole("navigation", { name: "Active Memory" });
   await expect(contents.getByRole("button")).toHaveText([
+    "Databases",
     "Home cluster",
     "Last semester",
-    "Databases",
     "Skills",
   ]);
 
-  await contents.getByRole("button", { name: "Databases" }).click();
-  await expect(ram.getByRole("heading", { name: /black box of databases/ })).toBeInViewport();
-  await expect(contents.getByRole("button", { name: "Databases" })).toHaveAttribute(
+  await contents.getByRole("button", { name: "Home cluster" }).click();
+  await expect(ram.getByRole("heading", { name: /private cloud/ })).toBeInViewport();
+  await expect(contents.getByRole("button", { name: "Home cluster" })).toHaveAttribute(
     "aria-current",
     "true",
   );
