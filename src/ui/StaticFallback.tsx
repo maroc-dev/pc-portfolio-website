@@ -15,7 +15,7 @@ export function StaticFallback() {
       />
       <div className="relative flex h-full items-center justify-center p-6">
         <div className="max-w-md text-center">
-          <p className="type-casual text-2xl font-bold">
+          <p className="type-display text-[1.75rem]">
             The desk lamp is on, but the 3D view is off.
           </p>
           <p className="text-fg/85 mt-3">
