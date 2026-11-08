@@ -28,6 +28,18 @@ Everything around the tape stays quiet: paper panels, navy ink, ruled lists inst
 identical rounded cards, no frosted glass, no monospace labels, no all-caps eyebrows. The theme
 toggle is a tiny wall plate with a rocker, the DOM twin of the switch on the wall.
 
+## Photos and the About journey
+
+Photos are prints pinned to the board: a paper border, a small stable tilt and a label-tape
+caption. A slot for one of Marco's own photos keeps the same frame with a hatched fill and
+"Photo coming soon" (`placeholder: true` in the content), so the story reads the same once the
+picture arrives. Photos that aren't Marco's are freely licensed (Wikimedia Commons) and credited
+under the print.
+
+About me is told as a journey: one line with a stop per chapter. Stops fill in as the reader
+reaches them, the one they're on wears yellow tape, and the line runs dashed through the
+semester Marco spent recovering.
+
 ## Palette
 
 Semantic tokens with day and night values (see `src/app/globals.css`).
