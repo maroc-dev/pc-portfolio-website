@@ -9,7 +9,7 @@ part opens a section on the monitor.
 | GPU         | AI: projects at work, models at home   |
 | RAM         | What I'm working on now, and my skills |
 | SSD         | Project archive                        |
-| Mini server | Distributed systems                    |
+| Mini server | Systems architecture                   |
 | Front I/O   | Contact and résumé                     |
 
 The tower is modelled on my own case (branding removed). A mini server sits beside it on the desk.

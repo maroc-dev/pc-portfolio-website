@@ -10,14 +10,14 @@ and a cable from the tower to the monitor.
 
 ## Part → content map
 
-| Part     | Section                                       | Heading           |
-| -------- | --------------------------------------------- | ----------------- |
-| `cpu`    | About me                                      | The Core          |
-| `gpu`    | AI: professional projects, local models       | Accelerated Ideas |
-| `ram`    | Now: building, studying, learning + skills    | Active Memory     |
-| `ssd`    | Project archive                               | Project Archives  |
-| `server` | Distributed systems (mini server on the desk) | Connected Systems |
-| `io`     | Contact and résumé                            | Connect           |
+| Part     | Section                                        | Heading           |
+| -------- | ---------------------------------------------- | ----------------- |
+| `cpu`    | About me                                       | The Core          |
+| `gpu`    | AI: professional projects, local models        | Accelerated Ideas |
+| `ram`    | Now: building, studying, learning + skills     | Active Memory     |
+| `ssd`    | Project archive                                | Project Archives  |
+| `server` | Systems architecture (mini server on the desk) | Connected Systems |
+| `io`     | Contact and résumé                             | Connect           |
 
 Motherboard, PSU and cooling are visible but not selectable in the MVP.
 

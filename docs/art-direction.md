@@ -47,6 +47,13 @@ are plain boxes, data stores carry a powder-blue top edge, and outside services 
 Every diagram says it is simplified, and why: internal details are left out to protect
 proprietary and confidential work. Example outputs (like the network diagram) use made-up data.
 
+## Systems architecture (server)
+
+Each systems project is shown in full rather than folded away: a tape tag for where it's from,
+what it does and what it shows side by side, measured results on yellow-edged stats, and the
+same box-and-arrow diagrams as the AI section. These are personal and school projects, so their
+diagrams just say they're simplified to the main pieces.
+
 ## Now and skills (RAM)
 
 "Right now" is a short list of what's on Marco's desk, each item tagged by what kind of now it
@@ -94,7 +101,7 @@ perforated left panel, a chamfered top cap with a honeycomb grille and the front
 vented plinth (the PSU lives inside it), a vertically mounted GPU angled towards the glass so
 its fans show, a ring-pump AIO wired to a three-fan side radiator, horizontal RAM, and the
 cabling you'd expect. Branding is left off. A mini server (a small home-lab PC) sits on the desk between the monitor and the tower, linked
-to the PC by a blue network cable: it is the home of the distributed-systems section.
+to the PC by a blue network cable: it is the home of the systems architecture section.
 
 ## Light
 
