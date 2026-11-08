@@ -4,19 +4,20 @@
 
 Camera at a 3/4 angle from the front-left. Monitor left of centre on a stand; tower on the
 right with its glass side facing the camera. Inside: motherboard, CPU and cooler, GPU with two
-fans, two RAM sticks, M.2 SSD, a network card, front I/O ports. On the desk: keyboard, lamp,
+fans, two RAM sticks, M.2 SSD, front I/O ports. Between the monitor and the tower: a mini
+server, wired to the PC with a blue network cable. On the desk: keyboard, lamp,
 and a cable from the tower to the monitor.
 
 ## Part → content map
 
-| Part  | Section                                 | Heading           |
-| ----- | --------------------------------------- | ----------------- |
-| `cpu` | About me                                | The Core          |
-| `gpu` | AI, ML and graphics projects            | Accelerated Ideas |
-| `ram` | What I'm working on now + skills I have | Active Memory     |
-| `ssd` | Project archive                         | Project Archives  |
-| `nic` | Distributed systems                     | Connected Systems |
-| `io`  | Contact and résumé                      | Connect           |
+| Part     | Section                                       | Heading           |
+| -------- | --------------------------------------------- | ----------------- |
+| `cpu`    | About me                                      | The Core          |
+| `gpu`    | AI, ML and graphics projects                  | Accelerated Ideas |
+| `ram`    | What I'm working on now + skills I have       | Active Memory     |
+| `ssd`    | Project archive                               | Project Archives  |
+| `server` | Distributed systems (mini server on the desk) | Connected Systems |
+| `io`     | Contact and résumé                            | Connect           |
 
 Motherboard, PSU and cooling are visible but not selectable in the MVP.
 
@@ -49,8 +50,8 @@ Motherboard, PSU and cooling are visible but not selectable in the MVP.
 Before it starts, the canvas stays hidden for a short beat (at least 1.5 s after the scene
 mounts) while every shader is compiled and the desk grain is generated, so nothing stutters
 mid-animation. Then the canvas fades in and the scene assembles while the camera glides in from a wider, higher angle: the desk rises into
-place, the monitor, lamp, keyboard and mug settle, the light switch slides out of the wall. The
-PC builds from the inside out: chassis and plinth, motherboard, CPU, RAM, SSD, network card,
+place, the monitor, lamp, keyboard and mug settle, the light switch slides out of the wall and the mini server drops into place. The
+PC builds from the inside out: chassis and plinth, motherboard, CPU, RAM, SSD,
 GPU, radiator and wiring, then the glass closes and the cap drops on. The display cable runs
 across the desk, the PC powers on (LEDs, fans, interior light) and finally the screen wakes.
 

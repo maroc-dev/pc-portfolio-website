@@ -3,16 +3,16 @@
 An interactive 3D portfolio. Visitors walk up to my desk in the evening and explore my PC: each
 part opens a section on the monitor.
 
-| Part         | Opens                                  |
-| ------------ | -------------------------------------- |
-| CPU          | About me                               |
-| GPU          | AI, ML and graphics projects           |
-| RAM          | What I'm working on now, and my skills |
-| SSD          | Project archive                        |
-| Network card | Distributed systems                    |
-| Front I/O    | Contact and résumé                     |
+| Part        | Opens                                  |
+| ----------- | -------------------------------------- |
+| CPU         | About me                               |
+| GPU         | AI, ML and graphics projects           |
+| RAM         | What I'm working on now, and my skills |
+| SSD         | Project archive                        |
+| Mini server | Distributed systems                    |
+| Front I/O   | Contact and résumé                     |
 
-The tower is modelled on my own case (branding removed, network card added).
+The tower is modelled on my own case (branding removed). A mini server sits beside it on the desk.
 
 ## Stack
 

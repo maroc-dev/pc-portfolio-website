@@ -47,8 +47,8 @@ powder-blue showcase case with panoramic glass across the front corners and righ
 perforated left panel, a chamfered top cap with a honeycomb grille and the front I/O, a tall
 vented plinth (the PSU lives inside it), a vertically mounted GPU angled towards the glass so
 its fans show, a ring-pump AIO wired to a three-fan side radiator, horizontal RAM, and the
-cabling you'd expect. Branding is left off. A network card is added (not in the real build) so
-the distributed-systems section has a home.
+cabling you'd expect. Branding is left off. A mini server (a small home-lab PC) sits on the desk between the monitor and the tower, linked
+to the PC by a blue network cable: it is the home of the distributed-systems section.
 
 ## Light
 
