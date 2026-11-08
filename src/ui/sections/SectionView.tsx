@@ -7,6 +7,7 @@ import { ContactSection } from "./ContactSection";
 import { DraftNote } from "./DraftNote";
 import { MemorySection } from "./MemorySection";
 import { ProjectList } from "./ProjectList";
+import { SystemsSection } from "./systems/SystemsSection";
 
 /** Renders any section from the content registry. */
 export function SectionView({ section }: { section: Section }) {
@@ -24,6 +25,7 @@ export function SectionView({ section }: { section: Section }) {
       {section.kind === "memory" && <MemorySection section={section} />}
       {section.kind === "archive" && <ArchiveSection section={section} />}
       {section.kind === "contact" && <ContactSection section={section} />}
+      {section.kind === "systems" && <SystemsSection section={section} />}
     </>
   );
 }
