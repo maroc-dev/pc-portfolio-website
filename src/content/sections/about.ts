@@ -138,7 +138,7 @@ export const about: AboutSection = {
       when: "Today",
       title: "Back at full speed",
       story: [
-        "I'm finishing my B.S. in Computer Science at Rutgers, graduating in January 2027, with Distributed Systems on this semester's schedule. At work, I build AI agent infrastructure at AT&T Labs.",
+        "I'm finishing my B.S. in Computer Science at Rutgers, graduating in January 2027, with Distributed Systems and Imaging and Multimedia on this semester's schedule. At work, I build AI agent infrastructure at AT&T Labs.",
       ],
     },
   ],
@@ -161,15 +161,16 @@ export const about: AboutSection = {
             "How programs keep working across many machines: leader election, Lamport clocks, two-phase commit, Paxos, Raft and the CAP theorem.",
         },
         {
+          code: "CS 334",
+          name: "Introduction to Imaging and Multimedia",
+          current: true,
+          takeaway: "How images live in software, and the math behind filters that change them.",
+        },
+        {
           code: "CS 440",
           name: "Introduction to Artificial Intelligence",
           takeaway:
             "Search and probabilistic reasoning, from algorithms that play chess to models that guess the weather from past patterns.",
-        },
-        {
-          code: "CS 334",
-          name: "Introduction to Imaging and Multimedia",
-          takeaway: "How images live in software, and the math behind filters that change them.",
         },
         {
           code: "CS 214",
@@ -237,7 +238,19 @@ export const about: AboutSection = {
     {
       name: "Climbing",
       detail: "Rock climbing at Gravity Vault.",
-      photo: slot("On the wall", 1, 1),
+      photo: {
+        placeholder: false,
+        src: "/about/climbing-wall.jpg",
+        width: 900,
+        height: 900,
+        alt: "A bouldering wall covered in colorful holds above a blue crash mat.",
+        caption: "A bouldering wall",
+        credit: {
+          author: "Bondarev.gal",
+          license: "CC BY 4.0",
+          href: "https://commons.wikimedia.org/wiki/File:Luch_Bouldering_Gym_SpB.jpg",
+        },
+      },
     },
     {
       name: "Walks and conventions",
