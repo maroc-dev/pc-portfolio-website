@@ -8,7 +8,7 @@ import { COMPACT_QUERY, useMediaQuery } from "@/lib/dom/use-media-query";
 import { duration, ease } from "@/lib/motion/tokens";
 import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { experienceStore, useExperience, type ScreenRect } from "@/state/experience-store";
-import { justLeftFullscreen } from "@/state/use-fullscreen-sync";
+import { pressedBeforeFullscreenExit } from "@/state/use-fullscreen-sync";
 import { SectionView } from "./sections/SectionView";
 
 /** Window placement: on the monitor's screen when known, otherwise centred. */
@@ -121,7 +121,7 @@ export function ScreenWindow() {
       if (e.key !== "Escape") return;
       const store = experienceStore.getState();
       if (store.fullView) store.setFullView(false);
-      else if (!justLeftFullscreen()) store.back();
+      else if (!pressedBeforeFullscreenExit(e.timeStamp)) store.back();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);

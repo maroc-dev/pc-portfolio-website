@@ -7,11 +7,12 @@ import { experienceStore } from "./experience-store";
 let leftFullscreenAt = Number.NEGATIVE_INFINITY;
 
 /**
- * True just after the browser left full screen. Some browsers deliver the Esc that exits full
- * screen to the page as well; that key press has already done its job.
+ * True for a key press that happened before the browser last left full screen. Some browsers
+ * deliver the Esc that exits full screen to the page afterwards; that press has done its job.
+ * `eventTime` is the event's `timeStamp`, on the same clock as `performance.now()`.
  */
-export function justLeftFullscreen(): boolean {
-  return performance.now() - leftFullscreenAt < 300;
+export function pressedBeforeFullscreenExit(eventTime: number): boolean {
+  return eventTime <= leftFullscreenAt;
 }
 
 /**
