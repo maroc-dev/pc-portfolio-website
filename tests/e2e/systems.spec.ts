@@ -14,6 +14,11 @@ test("systems architecture shows each project with its diagram", async ({ page }
   const draftly = systems.getByRole("figure", { name: "Draftly architecture" });
   await expect(draftly).toContainText("Live editing server");
   await expect(draftly).toContainText("Simplified to the main pieces");
+  await expect(systems.getByRole("heading", { name: "How everyone edits at once" })).toBeVisible();
+  // The worked example reads out each document state, not just the boxes.
+  await expect(systems.getByRole("figure", { name: "Two writers typing at once" })).toContainText(
+    "“the cats”",
+  );
 
   await contents.getByRole("button", { name: "Distributed training" }).click();
   await expect(
