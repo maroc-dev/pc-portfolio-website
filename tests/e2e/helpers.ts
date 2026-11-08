@@ -2,7 +2,7 @@ import { expect, type Page } from "@playwright/test";
 
 export const PARTS = [
   { id: "cpu", button: "CPU About me", heading: "The Core" },
-  { id: "gpu", button: "GPU AI and graphics", heading: "Accelerated Ideas" },
+  { id: "gpu", button: "GPU Artificial intelligence", heading: "Accelerated Ideas" },
   { id: "ram", button: "RAM Now and skills", heading: "Active Memory" },
   { id: "ssd", button: "SSD Projects", heading: "Project Archives" },
   { id: "server", button: "Server Distributed systems", heading: "Connected Systems" },

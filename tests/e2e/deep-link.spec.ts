@@ -13,7 +13,7 @@ test("an unknown part in the URL is ignored", async ({ page }) => {
 
 test("browser back closes the window and forward reopens it", async ({ page }) => {
   await page.goto("/");
-  await openFromDock(page, "GPU AI and graphics", "Accelerated Ideas");
+  await openFromDock(page, "GPU Artificial intelligence", "Accelerated Ideas");
   await page.goBack();
   await expect(window(page, "Accelerated Ideas")).toBeHidden();
   await page.goForward();
