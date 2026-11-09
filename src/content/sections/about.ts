@@ -9,9 +9,9 @@ export const about: AboutSection = {
   portrait: {
     placeholder: false,
     src: "/about/marco.jpg",
-    width: 648,
-    height: 810,
-    alt: "Marco standing in a grey polo next to a demo table with a laptop and two monitors.",
+    width: 602,
+    height: 752,
+    alt: "Marco in a dark suit and tie, smiling, against a grey backdrop.",
     caption: "Marco",
   },
   intro: [
