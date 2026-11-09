@@ -124,7 +124,7 @@ export function ArchDiagram({
   };
 
   return (
-    <figure aria-label={`${name} architecture`} className="mt-6">
+    <figure aria-label={`${name} architecture`} className="isolate mt-6">
       <div className="border-line bg-panel overflow-x-auto rounded-md border">
         <div
           ref={canvas}
