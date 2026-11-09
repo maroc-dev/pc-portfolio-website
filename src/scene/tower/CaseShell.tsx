@@ -12,12 +12,18 @@ const POWDER = "#a9c0ea";
 const HOLE = "#1d2433";
 const SLOT_X = [-0.145, -0.123, -0.101, -0.079, -0.057];
 const PANEL_Y = P + PANEL_H / 2;
+/** Width of the square pillars at the corners. */
+const PILLAR = 0.008;
 
-/** Octagonal footprint, counter-clockwise from the front-left corner of the front edge. */
+/**
+ * Octagonal footprint, counter-clockwise from the front-left corner of the front edge. `inset`
+ * moves every edge inward by the same distance, the diagonal corner edges included: their legs
+ * shrink by (2 - √2) times the inset, so an inset outline grown back by a bevel lines up exactly.
+ */
 function footprint(inset = 0): [number, number][] {
   const hw = W / 2 - inset;
   const hd = D / 2 - inset;
-  const c = C - inset * 0.4;
+  const c = C - inset * (2 - Math.SQRT2);
   return [
     [-hw + c, hd],
     [hw - c, hd],
@@ -60,14 +66,21 @@ interface PanelProps {
   glass?: boolean;
 }
 
-/** A vertical panel spanning one footprint edge, between plinth and cap. */
+/**
+ * A vertical panel spanning one footprint edge, between plinth and cap. It sits just inside the
+ * edge, so its outer face lies on the outline: flush with the cap and plinth, and meeting its
+ * neighbours exactly at the corners.
+ */
 function Panel({ from, to, material, thickness, glass }: PanelProps) {
   const dx = to[0] - from[0];
   const dz = to[1] - from[1];
   const length = Math.hypot(dx, dz);
+  // Inward normal of a counter-clockwise outline (seen from above, front towards +z).
+  const nx = (dz / length) * (thickness / 2);
+  const nz = (-dx / length) * (thickness / 2);
   return (
     <mesh
-      position={[(from[0] + to[0]) / 2, PANEL_Y, (from[1] + to[1]) / 2]}
+      position={[(from[0] + to[0]) / 2 + nx, PANEL_Y, (from[1] + to[1]) / 2 + nz]}
       rotation={[0, -Math.atan2(dz, dx), 0]}
       material={material}
       raycast={glass ? () => null : undefined}
@@ -131,6 +144,16 @@ export function CaseShell() {
     );
   });
   const isGlass = (i: number) => FACES[i] === "glass";
+  // Each pillar turns to face along its corner's bisector, its outermost edge on the corner.
+  const pillars = outline.map(([x, z]) => {
+    const length = Math.hypot(x, z);
+    const back = (PILLAR / 2) * Math.SQRT2;
+    return {
+      x: x - (x / length) * back,
+      z: z - (z / length) * back,
+      angle: Math.PI / 4 - Math.atan2(z, x),
+    };
+  });
 
   // Assembled in three stages for the opening: chassis, then the glass closes, then the cap.
   return (
@@ -163,10 +186,15 @@ export function CaseShell() {
 
       <Assemble step={INTRO.shell}>
         {panels.filter((_, i) => isGlass(i))}
-        {/* Corner pillars framing the glass */}
-        {outline.map(([x, z], i) => (
-          <mesh key={i} position={[x, PANEL_Y, z]} material={materials.casePowder}>
-            <boxGeometry args={[0.008, PANEL_H, 0.008]} />
+        {/* Corner pillars framing the glass, tucked inside each corner */}
+        {pillars.map(({ x, z, angle }, i) => (
+          <mesh
+            key={i}
+            position={[x, PANEL_Y, z]}
+            rotation={[0, angle, 0]}
+            material={materials.casePowder}
+          >
+            <boxGeometry args={[PILLAR, PANEL_H, PILLAR]} />
           </mesh>
         ))}
       </Assemble>
