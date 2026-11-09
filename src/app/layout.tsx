@@ -14,6 +14,8 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
+  // absolute URLs for the link-preview image (set SITE_URL where the site is hosted)
+  metadataBase: new URL(process.env.SITE_URL ?? "https://marcoferreira.dev"),
   title: "Marco Ferreira — explore the machine",
   description:
     "An interactive portfolio: explore a PC on a desk, and each part tells you something about Marco Ferreira's work.",
