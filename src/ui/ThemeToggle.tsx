@@ -25,7 +25,7 @@ export function ThemeToggle() {
           }`}
         />
       </span>
-      <span className="type-meta">{night ? "Day" : "Night"}</span>
+      <span className="type-meta max-sm:hidden">{night ? "Day" : "Night"}</span>
     </button>
   );
 }

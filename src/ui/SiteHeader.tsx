@@ -2,6 +2,7 @@
 
 import type { PartId } from "@/content/types";
 import { profile } from "@/content/profile";
+import { contact } from "@/content/sections/contact";
 import { experienceStore, useExperience } from "@/state/experience-store";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -68,6 +69,24 @@ export function SiteHeader() {
             })}
           </ul>
         </nav>
+        <a
+          href={contact.resume.href}
+          download={contact.resume.href.split("/").pop()}
+          aria-label="Download my résumé (PDF)"
+          className="tape tape-paper hover:bg-tape flex items-center gap-1.5 text-xs transition-[transform,background-color] duration-150 hover:-rotate-1"
+        >
+          <svg viewBox="0 0 16 16" aria-hidden="true" className="h-3 w-3">
+            <path
+              d="M8 2v8M4.5 7 8 10.5 11.5 7M3 13.5h10"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Résumé
+        </a>
         <ThemeToggle />
       </div>
     </header>
