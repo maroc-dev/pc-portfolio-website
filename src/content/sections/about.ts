@@ -254,10 +254,10 @@ export const about: AboutSection = {
       ],
       summary: "Where the journey really started.",
       highlights: [
-        "Founded the Chess Club: more than 15 members at our weekly meetings, and a tournament we organized together.",
         "Led a team of five developers on projects for Joint Base McGuire-Dix-Lakehurst, work that grew into a continuing relationship between the college and the base.",
-        "Built a self-hosted sign-in kiosk for the base, with a MySQL database and CSV export.",
         "Built a completely private, locally run AI assistant over more than 10,000 pages of public documents. Vector search kept answers accurate and cited, with web search and speech-to-text built in.",
+        "Built a self-hosted sign-in kiosk for the base, with a MySQL database and CSV export.",
+        "Founded the Chess Club: more than 15 members at our weekly meetings, and a tournament we organized together.",
       ],
       photos: [
         {
