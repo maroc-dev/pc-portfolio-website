@@ -18,6 +18,58 @@ export interface ProjectLink {
   href: string;
 }
 
+/** One chunk of a heap: its full size (header included) and whether it's in use. */
+export interface HeapChunk {
+  size: number;
+  used: boolean;
+  /** The variable pointing into it, e.g. "a". */
+  name?: string;
+}
+
+/** The heap after one call, e.g. `b = malloc(100)`. */
+export interface HeapStep {
+  call: string;
+  note: string;
+  chunks: HeapChunk[];
+}
+
+/** A box in a chain of linked structs, e.g. one parsed command. */
+export interface ChainNode {
+  title: string;
+  fields: { label: string; value: string }[];
+}
+
+/**
+ * An example that shows a project working: real output, real data or a picture of its insides.
+ * Everything in one comes from running the project or from its repo, never made up.
+ */
+export type ProjectVisual =
+  | { kind: "terminal"; title: string; caption?: string; lines: string[] }
+  | { kind: "code"; title: string; caption?: string; code: string }
+  | { kind: "heap"; title: string; caption?: string; steps: HeapStep[] }
+  | { kind: "chain"; title: string; caption?: string; nodes: ChainNode[]; end: string }
+  | { kind: "diagram"; title: string; architecture: Architecture }
+  | {
+      kind: "table";
+      title: string;
+      caption?: string;
+      columns: string[];
+      rows: string[][];
+      /** Columns (0-based) that hold code or terminal text. */
+      mono?: number[];
+    }
+  | { kind: "pixels"; title: string; caption?: string; rows: string[] }
+  | {
+      kind: "image";
+      title: string;
+      caption?: string;
+      src: string;
+      alt: string;
+      width: number;
+      height: number;
+    }
+  | { kind: "ot-example" };
+
 /**
  * A project from Marco's GitHub (or one he built with friends), written from the repo itself:
  * what it is, how it works, the stack and a simplified diagram.
@@ -38,6 +90,8 @@ export interface Project {
   stats?: Stat[];
   stack: string[];
   diagram?: Architecture;
+  /** Examples of it working, shown under "See it work". */
+  visuals?: ProjectVisual[];
   links: ProjectLink[];
   /** Where it's covered in more depth elsewhere on the site. */
   more?: SectionLink;
