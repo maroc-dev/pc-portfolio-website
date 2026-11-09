@@ -48,6 +48,7 @@ export const memory: MemorySection = {
             "I worked on every part of it: the operators that run filters, joins and aggregates, the physical optimizer in Go with a Rust version alongside, query plans passed around in Substrait, and the HTTP server that takes queries in, all tested in CI.",
           ],
           links: [
+            { label: "Try the live demo", href: "https://marcoferreira.dev/optisql/" },
             { label: "OptiSQL on GitHub", href: "https://github.com/Rich-T-kid/OptiSQL" },
             { label: "Richard on GitHub", href: "https://github.com/Rich-T-kid" },
           ],

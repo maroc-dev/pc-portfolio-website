@@ -112,6 +112,7 @@ export const systems: SystemsSection = {
         groups: [{ label: "On AWS", col: 2, row: 1, colSpan: 2, rowSpan: 3 }],
       },
       links: [
+        { label: "Try the live demo", href: "https://marcoferreira.dev/draftly/" },
         { label: "Draftly on GitHub", href: "https://github.com/Rich-T-kid/Draftly" },
         { label: "Richard on GitHub", href: "https://github.com/Rich-T-kid" },
       ],
