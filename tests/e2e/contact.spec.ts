@@ -25,6 +25,7 @@ test("contact shows email, LinkedIn and GitHub, and never a phone number", async
   );
 
   const resume = contact.getByRole("link", { name: "Download my résumé (PDF)" });
+  await expect(resume).toHaveAttribute("download", "Marco_Ferreira_Resume_2026.pdf");
   const href = await resume.getAttribute("href");
   const response = await page.request.get(href!);
   expect(response.status()).toBe(200);

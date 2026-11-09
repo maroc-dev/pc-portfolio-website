@@ -103,7 +103,7 @@ export function ContactSection({ section }: { section: Contact }) {
           <span>
             <a
               href={section.resume.href}
-              download
+              download={section.resume.href.split("/").pop()}
               className="text-accent font-semibold underline decoration-2 underline-offset-4"
             >
               {section.resume.detail}
