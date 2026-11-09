@@ -15,8 +15,8 @@ export const contact: ContactSection = {
   links: [
     {
       label: "LinkedIn",
-      href: "https://www.linkedin.com/in/marco-ferreira",
-      detail: "linkedin.com/in/marco-ferreira",
+      href: "https://www.linkedin.com/in/marco-ferreira-b270a3251",
+      detail: "linkedin.com/in/marco-ferreira-b270a3251",
       note: "My work history, and a good place to message me",
     },
     {

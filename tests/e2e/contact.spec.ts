@@ -14,8 +14,8 @@ test("contact shows email, LinkedIn and GitHub, and never a phone number", async
     "mailto:marco.a.ferreira.dev@gmail.com",
   );
   await expect(
-    contact.getByRole("link", { name: "linkedin.com/in/marco-ferreira" }),
-  ).toHaveAttribute("href", "https://www.linkedin.com/in/marco-ferreira");
+    contact.getByRole("link", { name: "linkedin.com/in/marco-ferreira-b270a3251" }),
+  ).toHaveAttribute("href", "https://www.linkedin.com/in/marco-ferreira-b270a3251");
   await expect(contact.getByRole("link", { name: "github.com/maroc-dev" })).toBeVisible();
 
   await contact.getByRole("button", { name: "Copy address" }).click();
