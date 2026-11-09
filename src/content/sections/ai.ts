@@ -1,4 +1,3 @@
-import { photoSlot } from "../photos";
 import type { AiSection } from "../types";
 
 /*
@@ -534,12 +533,27 @@ export const ai: AiSection = {
       {
         name: "The GTX 1080 system",
         detail: "Where it started: Mistral 7B, quantized.",
-        photo: photoSlot("My GTX 1080 system"),
+        photo: {
+          placeholder: false,
+          src: "/ai/gtx-1080-system.jpg",
+          width: 1200,
+          height: 900,
+          alt: "Through a glass side panel: a twin-tower air cooler with copper heat pipes above a ZOTAC graphics card.",
+          caption: "My GTX 1080 system",
+        },
       },
       {
         name: "The RTX 5080 system",
-        detail: "Bigger models, RAG, and speech-to-text and text-to-speech experiments.",
-        photo: photoSlot("My RTX 5080 system"),
+        detail:
+          "Bigger models, RAG, and speech-to-text and text-to-speech experiments. It's also the PC the 3D model on this site is based on.",
+        photo: {
+          placeholder: false,
+          src: "/ai/rtx-5080-system.jpg",
+          width: 1200,
+          height: 900,
+          alt: "Inside a white Thermaltake case lit blue: a ZOTAC GeForce RTX card, a liquid cooler, RGB memory and three blue fans.",
+          caption: "My RTX 5080 system",
+        },
       },
     ],
   },

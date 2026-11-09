@@ -1,4 +1,3 @@
-import { photoSlot } from "../photos";
 import { draftlyArchitecture, trainingArchitecture } from "../projects";
 import type { SystemsSection } from "../types";
 
@@ -61,7 +60,7 @@ export const systems: SystemsSection = {
       short: "Home cluster",
       tag: "Building now",
       summary:
-        "I'm turning the old computers I have lying around into one private compute cluster with Kubernetes.",
+        "I'm turning the old computers I have lying around into one private compute cluster with Kubernetes: an old Dell desktop, a Raspberry Pi 4, and an older gaming PC with a GTX 1060 and an Intel Core i7.",
       builtTitle: "What it's for",
       built: [
         "Free compute for my friends: Minecraft and other game servers, a home for old projects, private storage and hosting.",
@@ -72,9 +71,17 @@ export const systems: SystemsSection = {
         "Cloud computing and cloud engineering from the hardware up, not just from a console.",
         "Running real services for real people on machines I own and maintain.",
         "Distributed systems in practice, alongside Distributed Systems at Rutgers.",
+        "Running one cluster across very different machines, including a Raspberry Pi, whose ARM processor needs its own builds of every container.",
       ],
       stack: ["Kubernetes", "Containers"],
-      photo: photoSlot("The cluster, in progress"),
+      photo: {
+        placeholder: false,
+        src: "/systems/home-cluster.jpg",
+        width: 1200,
+        height: 900,
+        alt: "Computers on a carpeted floor in a dim room: a dark desktop tower with a small box on top, a keyboard and a monitor, with network cables and a router's green lights beside them.",
+        caption: "The cluster, in progress",
+      },
       links: [],
       more: { label: "See where it stands in Active Memory", part: "ram", anchor: "now-cluster" },
     },
