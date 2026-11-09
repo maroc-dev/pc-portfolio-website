@@ -24,11 +24,11 @@ export function PartDock() {
       }`}
     >
       <p className="text-muted mb-3 text-sm md:hidden">Tap a part to look inside.</p>
-      <ul className="md:border-line md:bg-panel grid grid-cols-3 gap-2 md:pointer-events-auto md:flex md:gap-0 md:rounded-[10px] md:border md:px-2 md:py-1.5 md:shadow-[0_10px_30px_-12px_rgb(19_35_74/0.35)]">
+      <ul className="md:border-line md:bg-panel grid auto-rows-fr grid-cols-3 gap-2 md:pointer-events-auto md:flex md:gap-0 md:rounded-[10px] md:border md:px-2 md:py-1.5 md:shadow-[0_10px_30px_-12px_rgb(19_35_74/0.35)]">
         {parts.map((part) => {
           const pressed = selected === part.id;
           return (
-            <li key={part.id}>
+            <li key={part.id} className="flex">
               <button
                 type="button"
                 aria-pressed={pressed}
@@ -38,7 +38,7 @@ export function PartDock() {
                 onPointerLeave={() => leave(part.id)}
                 onFocus={() => experienceStore.getState().hover(part.id)}
                 onBlur={() => leave(part.id)}
-                className="group border-line bg-panel flex w-full flex-col items-start gap-1.5 rounded-lg border px-3 py-2.5 text-left md:min-w-[7.5rem] md:border-0 md:bg-transparent md:px-3.5"
+                className="group border-line bg-panel flex h-full w-full flex-col items-start gap-1.5 rounded-lg border px-3 py-2.5 text-left md:min-w-[7.5rem] md:border-0 md:bg-transparent md:px-3.5"
               >
                 <span
                   className={`tape text-xs transition-[transform,background-color] duration-150 group-hover:-rotate-2 group-focus-visible:-rotate-2 ${
