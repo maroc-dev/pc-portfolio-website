@@ -30,9 +30,14 @@ test.describe("navigating the machine", () => {
   test("header shortcuts open the matching sections", async ({ page }) => {
     await page
       .getByRole("navigation", { name: "Sections" })
-      .getByRole("button", { name: "Skills" })
+      .getByRole("button", { name: "Now" })
       .click();
     await expect(window(page, "Active Memory")).toBeVisible();
+    await page
+      .getByRole("navigation", { name: "Sections" })
+      .getByRole("button", { name: "AI" })
+      .click();
+    await expect(window(page, "Accelerated Ideas")).toBeVisible();
   });
 
   test("project archive tabs filter projects", async ({ page }) => {

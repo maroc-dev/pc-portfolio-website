@@ -8,8 +8,10 @@ import { ThemeToggle } from "./ThemeToggle";
 /** Plain-language shortcuts for visitors who just want the essentials. */
 const NAV: { label: string; part: PartId }[] = [
   { label: "About", part: "cpu" },
+  { label: "AI", part: "gpu" },
   { label: "Projects", part: "ssd" },
-  { label: "Skills", part: "ram" },
+  { label: "Systems", part: "server" },
+  { label: "Now", part: "ram" },
   { label: "Contact", part: "io" },
 ];
 
