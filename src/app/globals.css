@@ -122,6 +122,21 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* Tailwind v4 gives buttons the default arrow; anything clickable here shows the hand. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"],
+  summary,
+  label[for],
+  select {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
   h1,
   h2,
   h3 {
