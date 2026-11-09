@@ -30,3 +30,21 @@ test("projects lead with the highlights, then GooseDB, then every drive", async 
     archive.getByRole("figure", { name: "Face and digit classification architecture" }),
   ).toBeVisible();
 });
+
+test("project pages show real examples of the project working", async ({ page }) => {
+  await page.goto("/projects/myshell");
+  await expect(page.getByRole("heading", { name: "See it work", level: 2 })).toBeVisible();
+  await expect(page.getByRole("figure", { name: "A real session" })).toContainText(
+    "cat fruit.txt | grep e | wc -l",
+  );
+  await expect(
+    page.getByRole("figure", { name: "Then it runs: one fork per command, joined by pipes" }),
+  ).toContainText("pipe 1");
+
+  await page.goto("/projects/mymalloc");
+  const heap = page.getByRole("figure", { name: "The heap, one call at a time" });
+  // Each step is spoken as a list of chunks, not only drawn.
+  await expect(heap.getByRole("img").first()).toHaveAccessibleName(
+    "a: used 32 bytes, then free 4056 bytes",
+  );
+});
