@@ -27,7 +27,14 @@ export const about: AboutSection = {
         { place: "3rd", event: "Statewide Java software engineering competition" },
         { place: "1st", event: "SkillsUSA Web Design, in the state" },
       ],
-      photo: slot("Competition days"),
+      photo: {
+        placeholder: false,
+        src: "/about/skillsusa-ocvts.jpg",
+        width: 853,
+        height: 846,
+        alt: "Five students standing in front of the Ocean County Vocational Technical School sign, three of them in red SkillsUSA blazers.",
+        caption: "SkillsUSA days at OCVTS",
+      },
     },
     {
       id: "occ",
@@ -39,7 +46,19 @@ export const about: AboutSection = {
         "I spent whole days in the makerspace wiring up Arduinos and other microcontrollers. I founded the Chess Club, joined the Improv Club, and regularly stayed on campus for twelve hours or more.",
         "I also started shipping software for real users: two projects for Joint Base McGuire-Dix-Lakehurst, a sign-in kiosk and a completely private AI assistant. There's more on both under Education.",
       ],
-      photo: slot("The makerspace"),
+      photo: {
+        placeholder: false,
+        src: "/about/occ-college-center.jpg",
+        width: 1024,
+        height: 768,
+        alt: "The College Center at Ocean County College, a low brick building across a lawn and paths in the central garden.",
+        caption: "Ocean County College's central garden",
+        credit: {
+          author: "Daniel Collins",
+          license: "CC BY-SA 2.0",
+          href: "https://commons.wikimedia.org/wiki/File:OCC17-NJ.jpg",
+        },
+      },
       more: {
         label: "See how the private assistant works",
         part: "gpu",
@@ -56,7 +75,14 @@ export const about: AboutSection = {
         "I built the first version of a tool that turns a prompt or a configuration file into a network diagram. Getting it right meant working closely with network engineers.",
         "I went deep on running models locally, with quantization and llama.cpp, was part of that early community, and got to talk with the team at Weights & Biases. At the end of it, AT&T kept me on as a contractor while I finish my bachelor's.",
       ],
-      photo: slot("AT&T Labs"),
+      photo: {
+        placeholder: false,
+        src: "/about/att-interns.jpg",
+        width: 1200,
+        height: 900,
+        alt: "About fifteen interns gathered on a stage around an AT&T flag, with Marco in the middle of the group.",
+        caption: "The interns I mentored at AT&T. I'm in the middle.",
+      },
       more: { label: "See how the diagram tool works", part: "gpu", anchor: "ai-network-diagrams" },
     },
     {
@@ -232,7 +258,21 @@ export const about: AboutSection = {
         "Built a self-hosted sign-in kiosk for the base, with a MySQL database and CSV export.",
         "Built a completely private, locally run AI assistant over more than 1,000 PDFs of training manuals and regulations. Vector search kept answers accurate and cited, with web search and speech-to-text built in.",
       ],
-      photos: [slot("Ocean County College")],
+      photos: [
+        {
+          placeholder: false,
+          src: "/about/occ-library.jpg",
+          width: 1024,
+          height: 768,
+          alt: "The library at Ocean County College, a brick building with tall windows and a glass clock tower.",
+          caption: "The library and clock tower",
+          credit: {
+            author: "Daniel Collins",
+            license: "CC BY-SA 2.0",
+            href: "https://commons.wikimedia.org/wiki/File:OCC6-NJ.jpg",
+          },
+        },
+      ],
     },
   ],
   hobbies: [
