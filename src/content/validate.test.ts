@@ -9,25 +9,6 @@ describe("content registry", () => {
     expect(validateContent()).toEqual([]);
   });
 
-  it("reports a missing project reference", () => {
-    const broken = parts.map((p) =>
-      p.id === "server"
-        ? {
-            ...p,
-            section: {
-              kind: "projects" as const,
-              intro: "",
-              projectSlugs: ["does-not-exist"],
-              placeholder: false,
-            },
-          }
-        : p,
-    );
-    expect(validateContent(broken)).toContain(
-      'Part "server" references unknown project "does-not-exist"',
-    );
-  });
-
   it("reports an About link to a spot that doesn't exist", () => {
     const broken = parts.map((p) =>
       p.section.kind === "about"

@@ -1,5 +1,5 @@
 import { parts, sectionAnchors } from "./parts";
-import { getProject, projects } from "./projects";
+import { projects } from "./projects";
 import {
   PART_IDS,
   type Architecture,
@@ -75,12 +75,6 @@ export function validateContent(
 
   for (const part of registry) {
     const { section } = part;
-    if (section.kind === "projects") {
-      for (const slug of section.projectSlugs) {
-        if (!getProject(slug))
-          problems.push(`Part "${part.id}" references unknown project "${slug}"`);
-      }
-    }
     if (section.kind === "archive") {
       const featured = [...section.highlights, section.building];
       for (const slug of featured) {

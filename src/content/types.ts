@@ -195,13 +195,6 @@ export interface AboutSection {
   placeholder: boolean;
 }
 
-export interface ProjectsSection {
-  kind: "projects";
-  intro: string;
-  projectSlugs: string[];
-  placeholder: boolean;
-}
-
 /**
  * What's known about how Marco uses a skill. Deliberately not a percentage, and only set where
  * his résumé or notes say so: no tier makes no claim either way.
@@ -438,13 +431,7 @@ export interface SystemsSection {
 }
 
 export type Section =
-  | AboutSection
-  | AiSection
-  | ProjectsSection
-  | MemorySection
-  | ArchiveSection
-  | ContactSection
-  | SystemsSection;
+  AboutSection | AiSection | MemorySection | ArchiveSection | ContactSection | SystemsSection;
 
 /** A selectable piece of hardware and the section it opens. */
 export interface HardwarePart {
