@@ -60,7 +60,7 @@ export const systems: SystemsSection = {
       short: "Home cluster",
       tag: "Building now",
       summary:
-        "I'm turning the old computers I have lying around into one private compute cluster with Kubernetes: an old Dell desktop, a Raspberry Pi 4, and an older gaming PC with a GTX 1060 and an Intel Core i7.",
+        "I'm turning the old computers I have lying around into one private compute cluster with Kubernetes: an old Dell desktop, a Raspberry Pi 4, and an older gaming PC with a GTX 1060 and an Intel Core i7-3770.",
       builtTitle: "What it's for",
       built: [
         "Free compute for my friends: Minecraft and other game servers, a home for old projects, private storage and hosting.",
