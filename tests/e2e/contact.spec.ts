@@ -14,8 +14,8 @@ test("contact shows email, LinkedIn and GitHub, and never a phone number", async
     "mailto:marco.a.ferreira.dev@gmail.com",
   );
   await expect(
-    contact.getByRole("link", { name: "linkedin.com/in/marco-ferreira-b270a3251" }),
-  ).toHaveAttribute("href", "https://www.linkedin.com/in/marco-ferreira-b270a3251");
+    contact.getByRole("link", { name: "linkedin.com/in/marco-ferreira-dev" }),
+  ).toHaveAttribute("href", "https://www.linkedin.com/in/marco-ferreira-dev");
   await expect(contact.getByRole("link", { name: "github.com/maroc-dev" })).toBeVisible();
 
   await contact.getByRole("button", { name: "Copy address" }).click();
@@ -32,4 +32,11 @@ test("contact shows email, LinkedIn and GitHub, and never a phone number", async
   expect(response.headers()["content-type"]).toContain("application/pdf");
 
   await expect(contact).not.toContainText(/\d{3}[-. )]+\d{3}[-. ]\d{4}/);
+});
+
+test("the header offers the résumé as a quick download", async ({ page }) => {
+  await page.goto("/");
+  const resume = page.getByRole("banner").getByRole("link", { name: "Download my résumé (PDF)" });
+  await expect(resume).toHaveAttribute("href", "/resume/Marco_Ferreira_Resume_2026.pdf");
+  await expect(resume).toHaveAttribute("download", "Marco_Ferreira_Resume_2026.pdf");
 });
