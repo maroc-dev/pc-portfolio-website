@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   title: "Marco Ferreira — explore the machine",
   description:
     "An interactive portfolio: explore a PC on a desk, and each part tells you something about Marco Ferreira's work.",
+  // The day icon; useThemeSync swaps in the night one when the light switch flips.
+  icons: { icon: [{ url: "/icons/day.svg", type: "image/svg+xml" }] },
 };
 
 export const viewport: Viewport = {
