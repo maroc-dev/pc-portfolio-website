@@ -102,6 +102,29 @@ describe("content registry", () => {
     );
   });
 
+  it("reports a featured project that doesn't exist", () => {
+    const broken = parts.map((p) =>
+      p.section.kind === "archive" ? { ...p, section: { ...p.section, highlights: ["nope"] } } : p,
+    );
+    expect(validateContent(broken)).toContain('Part "ssd" features unknown project "nope"');
+  });
+
+  it("reports a drive with nothing left on it", () => {
+    // Every database project is featured above the drives, so a databases drive would be empty.
+    const broken = parts.map((p) =>
+      p.section.kind === "archive"
+        ? {
+            ...p,
+            section: {
+              ...p.section,
+              drives: [{ id: "Z", label: "Empty", blurb: "", category: "databases" as const }],
+            },
+          }
+        : p,
+    );
+    expect(validateContent(broken)).toContain("Drive Z has no projects");
+  });
+
   it("reports a missing part", () => {
     expect(validateContent(parts.filter((p) => p.id !== "ram"))).toContain(
       'Part "ram" has no registry entry',

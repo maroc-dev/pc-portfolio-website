@@ -79,6 +79,20 @@ export function validateContent(
           problems.push(`Part "${part.id}" references unknown project "${slug}"`);
       }
     }
+    if (section.kind === "archive") {
+      const featured = [...section.highlights, section.building];
+      for (const slug of featured) {
+        if (!projectList.some((p) => p.slug === slug)) {
+          problems.push(`Part "${part.id}" features unknown project "${slug}"`);
+        }
+      }
+      for (const drive of section.drives) {
+        const onDrive = projectList.filter(
+          (p) => p.category === drive.category && !featured.includes(p.slug),
+        );
+        if (onDrive.length === 0) problems.push(`Drive ${drive.id} has no projects`);
+      }
+    }
     if (section.kind === "ai") {
       const ids = section.professional.projects.map((p) => p.id);
       if (new Set(ids).size !== ids.length) problems.push("Duplicate AI project ids");
@@ -164,6 +178,9 @@ export function validateContent(
         problems.push(`Project "${project.slug}" link "${link.label}" is not https`);
       }
     }
+    const where = `Project "${project.slug}"`;
+    if (project.diagram) problems.push(...validateArchitecture(project.diagram, where));
+    if (project.more) problems.push(...validateSectionLink(project.more, where, registry));
   }
 
   return problems;

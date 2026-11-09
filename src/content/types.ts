@@ -10,28 +10,37 @@ export type PartId = (typeof PART_IDS)[number];
 
 export type ProjectKind = "personal" | "academic" | "professional" | "research";
 
-export type ProjectCategory = "ai-graphics" | "distributed" | "data-backend" | "languages-tools";
+export type ProjectCategory =
+  "systems-c" | "languages" | "ai-ml" | "distributed-backend" | "databases" | "apps-games";
 
 export interface ProjectLink {
   label: string;
   href: string;
 }
 
-/** Case study in the spec's format. Optional fields render only when present. */
+/**
+ * A project from Marco's GitHub (or one he built with friends), written from the repo itself:
+ * what it is, how it works, the stack and a simplified diagram.
+ */
 export interface Project {
   slug: string;
   title: string;
+  /** One sentence: what it is. */
   summary: string;
   kind: ProjectKind;
   category: ProjectCategory;
+  /** Where it's from, on label tape, e.g. "Rutgers CS 440" or "With Richard Baah". */
+  tag: string;
+  /** How it works, in a few short paragraphs. */
+  details: string[];
+  /** Notable features or results. */
+  highlights?: string[];
+  stats?: Stat[];
   stack: string[];
-  problem?: string;
-  role?: string;
-  architecture?: string;
-  challenges?: string[];
-  solutions?: string[];
-  outcomes?: string[];
+  diagram?: Architecture;
   links: ProjectLink[];
+  /** Where it's covered in more depth elsewhere on the site. */
+  more?: SectionLink;
   placeholder: boolean;
 }
 
@@ -214,15 +223,23 @@ export interface MemorySection {
   placeholder: boolean;
 }
 
+/** A drive in the archive: one category of projects. */
 export interface Drive {
   id: string;
   label: string;
+  /** A line on what the drive holds. */
+  blurb: string;
   category: ProjectCategory;
 }
 
+/** SSD: the big projects first, then what's being built, then every project by drive. */
 export interface ArchiveSection {
   kind: "archive";
   intro: string;
+  /** Slugs of the projects shown first, in full. */
+  highlights: string[];
+  /** Slug of the project being built right now. */
+  building: string;
   drives: Drive[];
   placeholder: boolean;
 }
