@@ -1,4 +1,3 @@
-import { photoSlot as slot } from "../photos";
 import type { AboutSection } from "../types";
 
 /*
@@ -7,7 +6,14 @@ import type { AboutSection } from "../types";
  */
 export const about: AboutSection = {
   kind: "about",
-  portrait: slot("Marco", 4, 5),
+  portrait: {
+    placeholder: false,
+    src: "/about/marco.jpg",
+    width: 648,
+    height: 810,
+    alt: "Marco standing in a grey polo next to a demo table with a laptop and two monitors.",
+    caption: "Marco",
+  },
   intro: [
     "I build systems that people actually use, and I like them best when they quietly make someone's day easier. These days that means AI agents, the gateways that keep them secure, and the distributed plumbing underneath.",
     "I got here by trying something new every week, spending a lot of very long days on campus (the good kind), and surviving a detour I never planned. Here's the route.",
@@ -48,16 +54,11 @@ export const about: AboutSection = {
       ],
       photo: {
         placeholder: false,
-        src: "/about/occ-college-center.jpg",
-        width: 1024,
-        height: 768,
-        alt: "The College Center at Ocean County College, a low brick building across a lawn and paths in the central garden.",
-        caption: "Ocean County College's central garden",
-        credit: {
-          author: "Daniel Collins",
-          license: "CC BY-SA 2.0",
-          href: "https://commons.wikimedia.org/wiki/File:OCC17-NJ.jpg",
-        },
+        src: "/about/occ-chess-club.jpg",
+        width: 1078,
+        height: 810,
+        alt: "Two students facing each other over a chessboard and clock in a student life room with a large painted tree on the wall.",
+        caption: "A game at the Chess Club I founded",
       },
       more: {
         label: "See how the private assistant works",
@@ -296,12 +297,26 @@ export const about: AboutSection = {
     {
       name: "Walks and conventions",
       detail: "Walking, and going to conventions.",
-      photo: slot("At a convention", 1, 1),
+      photo: {
+        placeholder: false,
+        src: "/about/gdc.jpg",
+        width: 810,
+        height: 810,
+        alt: "Giant red GDC letters between red brackets in a convention center lobby.",
+        caption: "GDC, the Game Developers Conference",
+      },
     },
     {
       name: "Games and PCs",
       detail: "Gaming, and building PCs. The tower on this desk is modeled on mine.",
-      photo: slot("My actual PC", 1, 1),
+      photo: {
+        placeholder: false,
+        src: "/about/my-pc.jpg",
+        width: 900,
+        height: 900,
+        alt: "Inside a white PC case lit blue: a ZOTAC GeForce RTX card, a Thermaltake liquid cooler, RGB memory and three blue fans.",
+        caption: "My PC, the one on this desk",
+      },
     },
   ],
   placeholder: false,
