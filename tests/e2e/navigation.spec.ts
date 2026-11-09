@@ -38,8 +38,8 @@ test.describe("navigating the machine", () => {
   test("project archive tabs filter projects", async ({ page }) => {
     await openFromDock(page, "SSD Projects", "Project Archives");
     const archive = window(page, "Project Archives");
-    await archive.getByRole("tab", { name: /Databases and backend/ }).click();
-    await expect(archive.getByRole("heading", { name: "goosedb" })).toBeVisible();
-    await expect(archive.getByRole("heading", { name: "Solar System Explorer" })).toBeHidden();
+    await archive.getByRole("tab", { name: /Apps and games/ }).click();
+    await expect(archive.getByRole("heading", { name: "Solar System Explorer" })).toBeVisible();
+    await expect(archive.getByRole("heading", { name: "myshell" })).toBeHidden();
   });
 });
