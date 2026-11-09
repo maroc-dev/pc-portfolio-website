@@ -67,7 +67,7 @@ export function JumpBar({
     <nav
       ref={nav}
       aria-label={label}
-      className={`bg-panel border-line sticky -top-7 z-10 -mx-5 border-b px-5 py-3 md:-top-9 md:-mx-10 md:px-10 ${className}`}
+      className={`bg-panel border-line sticky -top-7 z-30 -mx-5 border-b px-5 py-3 md:-top-9 md:-mx-10 md:px-10 ${className}`}
     >
       <ul className="flex flex-wrap gap-2">
         {items.map(({ id, label: itemLabel }) => (

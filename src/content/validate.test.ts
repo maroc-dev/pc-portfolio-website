@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { parts } from "./parts";
 import { projects } from "./projects";
@@ -6,25 +7,6 @@ import { validateArchitecture, validateContent } from "./validate";
 describe("content registry", () => {
   it("is valid", () => {
     expect(validateContent()).toEqual([]);
-  });
-
-  it("reports a missing project reference", () => {
-    const broken = parts.map((p) =>
-      p.id === "server"
-        ? {
-            ...p,
-            section: {
-              kind: "projects" as const,
-              intro: "",
-              projectSlugs: ["does-not-exist"],
-              placeholder: false,
-            },
-          }
-        : p,
-    );
-    expect(validateContent(broken)).toContain(
-      'Part "server" references unknown project "does-not-exist"',
-    );
   });
 
   it("reports an About link to a spot that doesn't exist", () => {
@@ -100,6 +82,44 @@ describe("content registry", () => {
     expect(validateContent(broken)).toContain(
       'Systems project "draftly": arrow uses unknown box "nowhere"',
     );
+  });
+
+  it("reports a featured project that doesn't exist", () => {
+    const broken = parts.map((p) =>
+      p.section.kind === "archive" ? { ...p, section: { ...p.section, highlights: ["nope"] } } : p,
+    );
+    expect(validateContent(broken)).toContain('Part "ssd" features unknown project "nope"');
+  });
+
+  it("reports a drive with nothing left on it", () => {
+    // Every database project is featured above the drives, so a databases drive would be empty.
+    const broken = parts.map((p) =>
+      p.section.kind === "archive"
+        ? {
+            ...p,
+            section: {
+              ...p.section,
+              drives: [{ id: "Z", label: "Empty", blurb: "", category: "databases" as const }],
+            },
+          }
+        : p,
+    );
+    expect(validateContent(broken)).toContain("Drive Z has no projects");
+  });
+
+  it("links a résumé that's really there", () => {
+    const section = parts.find((p) => p.id === "io")!.section;
+    if (section.kind !== "contact") throw new Error("I/O should be the contact section");
+    expect(existsSync(`public${section.resume.href}`)).toBe(true);
+  });
+
+  it("never lets a phone number into the content", () => {
+    const broken = parts.map((p) =>
+      p.section.kind === "contact"
+        ? { ...p, section: { ...p.section, intro: ["Call me at 555-123-4567."] } }
+        : p,
+    );
+    expect(validateContent(broken)).toContain("Content contains a phone number");
   });
 
   it("reports a missing part", () => {

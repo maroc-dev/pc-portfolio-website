@@ -1,4 +1,3 @@
-import { photoSlot as slot } from "../photos";
 import type { AboutSection } from "../types";
 
 /*
@@ -7,7 +6,14 @@ import type { AboutSection } from "../types";
  */
 export const about: AboutSection = {
   kind: "about",
-  portrait: slot("Marco", 4, 5),
+  portrait: {
+    placeholder: false,
+    src: "/about/marco.jpg",
+    width: 602,
+    height: 752,
+    alt: "Marco in a dark suit and tie, smiling, against a grey backdrop.",
+    caption: "Marco",
+  },
   intro: [
     "I build systems that people actually use, and I like them best when they quietly make someone's day easier. These days that means AI agents, the gateways that keep them secure, and the distributed plumbing underneath.",
     "I got here by trying something new every week, spending a lot of very long days on campus (the good kind), and surviving a detour I never planned. Here's the route.",
@@ -27,7 +33,14 @@ export const about: AboutSection = {
         { place: "3rd", event: "Statewide Java software engineering competition" },
         { place: "1st", event: "SkillsUSA Web Design, in the state" },
       ],
-      photo: slot("Competition days"),
+      photo: {
+        placeholder: false,
+        src: "/about/skillsusa-ocvts.jpg",
+        width: 853,
+        height: 846,
+        alt: "Five students standing in front of the Ocean County Vocational Technical School sign, three of them in red SkillsUSA blazers.",
+        caption: "SkillsUSA days at OCVTS",
+      },
     },
     {
       id: "occ",
@@ -39,7 +52,14 @@ export const about: AboutSection = {
         "I spent whole days in the makerspace wiring up Arduinos and other microcontrollers. I founded the Chess Club, joined the Improv Club, and regularly stayed on campus for twelve hours or more.",
         "I also started shipping software for real users: two projects for Joint Base McGuire-Dix-Lakehurst, a sign-in kiosk and a completely private AI assistant. There's more on both under Education.",
       ],
-      photo: slot("The makerspace"),
+      photo: {
+        placeholder: false,
+        src: "/about/occ-chess-club.jpg",
+        width: 1078,
+        height: 810,
+        alt: "Two students facing each other over a chessboard and clock in a student life room with a large painted tree on the wall.",
+        caption: "A game at the Chess Club I founded",
+      },
       more: {
         label: "See how the private assistant works",
         part: "gpu",
@@ -56,7 +76,14 @@ export const about: AboutSection = {
         "I built the first version of a tool that turns a prompt or a configuration file into a network diagram. Getting it right meant working closely with network engineers.",
         "I went deep on running models locally, with quantization and llama.cpp, was part of that early community, and got to talk with the team at Weights & Biases. At the end of it, AT&T kept me on as a contractor while I finish my bachelor's.",
       ],
-      photo: slot("AT&T Labs"),
+      photo: {
+        placeholder: false,
+        src: "/about/att-interns.jpg",
+        width: 1200,
+        height: 900,
+        alt: "About fifteen interns gathered on a stage around an AT&T flag, with Marco in the middle of the group.",
+        caption: "The interns I mentored at AT&T. I'm in the middle.",
+      },
       more: { label: "See how the diagram tool works", part: "gpu", anchor: "ai-network-diagrams" },
     },
     {
@@ -72,7 +99,7 @@ export const about: AboutSection = {
         {
           name: "Network diagrams, at scale",
           detail:
-            "Grew my internship tool past 100 nodes, and used it to generate thousands of network diagrams for fine-tuning a multimodal model to read them better.",
+            "Grew my internship tool to handle up to 50 Cisco network nodes, and used it to generate over 1,000 training images for internal model development.",
         },
         {
           name: "Personal agents",
@@ -138,7 +165,7 @@ export const about: AboutSection = {
       when: "Today",
       title: "Back at full speed",
       story: [
-        "I'm finishing my B.S. in Computer Science at Rutgers, graduating in January 2027, with Distributed Systems and Imaging and Multimedia on this semester's schedule. At work, I build AI agent infrastructure at AT&T Labs.",
+        "I'm finishing my B.S. in Computer Science at Rutgers, graduating in December 2026, with Distributed Systems and Imaging and Multimedia on this semester's schedule. At work, I build AI agent infrastructure at AT&T Labs.",
       ],
       more: { label: "See what I'm working on now", part: "ram", anchor: "memory-now" },
     },
@@ -148,8 +175,8 @@ export const about: AboutSection = {
       name: "Rutgers University",
       degree: "B.S. in Computer Science",
       where: "New Brunswick, NJ",
-      when: "2024 to January 2027",
-      gpa: "3.62",
+      when: "2024 to December 2026",
+      gpa: "3.7",
       honours: ["Dean's List, 2024"],
       summary:
         "Rutgers connected me with people who know far more than I do about fields I'd never touched, and each of them taught me something. These are the courses that shaped me most.",
@@ -227,12 +254,26 @@ export const about: AboutSection = {
       ],
       summary: "Where the journey really started.",
       highlights: [
-        "Founded the Chess Club: more than 15 members at our weekly meetings, and a tournament we organized together.",
         "Led a team of five developers on projects for Joint Base McGuire-Dix-Lakehurst, work that grew into a continuing relationship between the college and the base.",
+        "Built a completely private, locally run AI assistant over more than 10,000 pages of public documents. Vector search kept answers accurate and cited, with web search and speech-to-text built in.",
         "Built a self-hosted sign-in kiosk for the base, with a MySQL database and CSV export.",
-        "Built a completely private, locally run AI assistant over more than 1,000 PDFs of training manuals and regulations. Vector search kept answers accurate and cited, with web search and speech-to-text built in.",
+        "Founded the Chess Club: more than 15 members at our weekly meetings, and a tournament we organized together.",
       ],
-      photos: [slot("Ocean County College")],
+      photos: [
+        {
+          placeholder: false,
+          src: "/about/occ-library.jpg",
+          width: 1024,
+          height: 768,
+          alt: "The library at Ocean County College, a brick building with tall windows and a glass clock tower.",
+          caption: "The library and clock tower",
+          credit: {
+            author: "Daniel Collins",
+            license: "CC BY-SA 2.0",
+            href: "https://commons.wikimedia.org/wiki/File:OCC6-NJ.jpg",
+          },
+        },
+      ],
     },
   ],
   hobbies: [
@@ -256,12 +297,26 @@ export const about: AboutSection = {
     {
       name: "Walks and conventions",
       detail: "Walking, and going to conventions.",
-      photo: slot("At a convention", 1, 1),
+      photo: {
+        placeholder: false,
+        src: "/about/gdc.jpg",
+        width: 810,
+        height: 810,
+        alt: "Giant red GDC letters between red brackets in a convention center lobby.",
+        caption: "GDC, the Game Developers Conference",
+      },
     },
     {
       name: "Games and PCs",
       detail: "Gaming, and building PCs. The tower on this desk is modeled on mine.",
-      photo: slot("My actual PC", 1, 1),
+      photo: {
+        placeholder: false,
+        src: "/about/my-pc.jpg",
+        width: 900,
+        height: 900,
+        alt: "Inside a white PC case lit blue: a ZOTAC GeForce RTX card, a Thermaltake liquid cooler, RGB memory and three blue fans.",
+        caption: "My PC, the one on this desk",
+      },
     },
   ],
   placeholder: false,

@@ -1,5 +1,5 @@
 import { parts, sectionAnchors } from "./parts";
-import { getProject, projects } from "./projects";
+import { projects } from "./projects";
 import {
   PART_IDS,
   type Architecture,
@@ -9,6 +9,8 @@ import {
 } from "./types";
 
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+/** A North American phone number, e.g. 555-123-4567 or (555) 123 4567. */
+const PHONE = /\(?\b\d{3}\)?[-. ]\d{3}[-. ]\d{4}\b/;
 
 /** Every box fits the grid without sharing a cell, and every arrow joins two real boxes. */
 export function validateArchitecture(arch: Architecture, where: string): string[] {
@@ -73,10 +75,18 @@ export function validateContent(
 
   for (const part of registry) {
     const { section } = part;
-    if (section.kind === "projects") {
-      for (const slug of section.projectSlugs) {
-        if (!getProject(slug))
-          problems.push(`Part "${part.id}" references unknown project "${slug}"`);
+    if (section.kind === "archive") {
+      const featured = [...section.highlights, section.building];
+      for (const slug of featured) {
+        if (!projectList.some((p) => p.slug === slug)) {
+          problems.push(`Part "${part.id}" features unknown project "${slug}"`);
+        }
+      }
+      for (const drive of section.drives) {
+        const onDrive = projectList.filter(
+          (p) => p.category === drive.category && !featured.includes(p.slug),
+        );
+        if (onDrive.length === 0) problems.push(`Drive ${drive.id} has no projects`);
       }
     }
     if (section.kind === "ai") {
@@ -112,6 +122,16 @@ export function validateContent(
           problems.push(`Photo "${photo.caption}" is not a local file`);
         if (photo.credit && !photo.credit.href.startsWith("https://")) {
           problems.push(`Photo "${photo.caption}" credit link is not https`);
+        }
+      }
+    }
+    if (section.kind === "contact") {
+      if (!/^[^\s@]+@[^\s@]+\.[a-z]+$/i.test(section.email)) {
+        problems.push(`Contact email "${section.email}" doesn't look like an email address`);
+      }
+      for (const link of section.links) {
+        if (!link.href.startsWith("https://")) {
+          problems.push(`Contact link "${link.label}" is not https`);
         }
       }
     }
@@ -164,6 +184,14 @@ export function validateContent(
         problems.push(`Project "${project.slug}" link "${link.label}" is not https`);
       }
     }
+    const where = `Project "${project.slug}"`;
+    if (project.diagram) problems.push(...validateArchitecture(project.diagram, where));
+    if (project.more) problems.push(...validateSectionLink(project.more, where, registry));
+  }
+
+  // Marco's phone number must never be published: nothing shaped like one, anywhere.
+  if (PHONE.test(JSON.stringify([registry, projectList]))) {
+    problems.push("Content contains a phone number");
   }
 
   return problems;

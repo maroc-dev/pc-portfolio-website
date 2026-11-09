@@ -30,16 +30,21 @@ test.describe("navigating the machine", () => {
   test("header shortcuts open the matching sections", async ({ page }) => {
     await page
       .getByRole("navigation", { name: "Sections" })
-      .getByRole("button", { name: "Skills" })
+      .getByRole("button", { name: "Now" })
       .click();
     await expect(window(page, "Active Memory")).toBeVisible();
+    await page
+      .getByRole("navigation", { name: "Sections" })
+      .getByRole("button", { name: "AI" })
+      .click();
+    await expect(window(page, "Accelerated Ideas")).toBeVisible();
   });
 
   test("project archive tabs filter projects", async ({ page }) => {
     await openFromDock(page, "SSD Projects", "Project Archives");
     const archive = window(page, "Project Archives");
-    await archive.getByRole("tab", { name: /Databases and backend/ }).click();
-    await expect(archive.getByRole("heading", { name: "goosedb" })).toBeVisible();
-    await expect(archive.getByRole("heading", { name: "Solar System Explorer" })).toBeHidden();
+    await archive.getByRole("tab", { name: /Apps and games/ }).click();
+    await expect(archive.getByRole("heading", { name: "Solar System Explorer" })).toBeVisible();
+    await expect(archive.getByRole("heading", { name: "myshell" })).toBeHidden();
   });
 });

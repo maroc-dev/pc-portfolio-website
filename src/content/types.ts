@@ -10,28 +10,91 @@ export type PartId = (typeof PART_IDS)[number];
 
 export type ProjectKind = "personal" | "academic" | "professional" | "research";
 
-export type ProjectCategory = "ai-graphics" | "distributed" | "data-backend" | "languages-tools";
+export type ProjectCategory =
+  "systems-c" | "languages" | "ai-ml" | "distributed-backend" | "databases" | "apps-games";
 
 export interface ProjectLink {
   label: string;
   href: string;
 }
 
-/** Case study in the spec's format. Optional fields render only when present. */
+/** One chunk of a heap: its full size (header included) and whether it's in use. */
+export interface HeapChunk {
+  size: number;
+  used: boolean;
+  /** The variable pointing into it, e.g. "a". */
+  name?: string;
+}
+
+/** The heap after one call, e.g. `b = malloc(100)`. */
+export interface HeapStep {
+  call: string;
+  note: string;
+  chunks: HeapChunk[];
+}
+
+/** A box in a chain of linked structs, e.g. one parsed command. */
+export interface ChainNode {
+  title: string;
+  fields: { label: string; value: string }[];
+}
+
+/**
+ * An example that shows a project working: real output, real data or a picture of its insides.
+ * Everything in one comes from running the project or from its repo, never made up.
+ */
+export type ProjectVisual =
+  | { kind: "terminal"; title: string; caption?: string; lines: string[] }
+  | { kind: "code"; title: string; caption?: string; code: string }
+  | { kind: "heap"; title: string; caption?: string; steps: HeapStep[] }
+  | { kind: "chain"; title: string; caption?: string; nodes: ChainNode[]; end: string }
+  | { kind: "diagram"; title: string; architecture: Architecture }
+  | {
+      kind: "table";
+      title: string;
+      caption?: string;
+      columns: string[];
+      rows: string[][];
+      /** Columns (0-based) that hold code or terminal text. */
+      mono?: number[];
+    }
+  | { kind: "pixels"; title: string; caption?: string; rows: string[] }
+  | {
+      kind: "image";
+      title: string;
+      caption?: string;
+      src: string;
+      alt: string;
+      width: number;
+      height: number;
+    }
+  | { kind: "ot-example" };
+
+/**
+ * A project from Marco's GitHub (or one he built with friends), written from the repo itself:
+ * what it is, how it works, the stack and a simplified diagram.
+ */
 export interface Project {
   slug: string;
   title: string;
+  /** One sentence: what it is. */
   summary: string;
   kind: ProjectKind;
   category: ProjectCategory;
+  /** Where it's from, on label tape, e.g. "Rutgers CS 440" or "With Richard Baah". */
+  tag: string;
+  /** How it works, in a few short paragraphs. */
+  details: string[];
+  /** Notable features or results. */
+  highlights?: string[];
+  stats?: Stat[];
   stack: string[];
-  problem?: string;
-  role?: string;
-  architecture?: string;
-  challenges?: string[];
-  solutions?: string[];
-  outcomes?: string[];
+  diagram?: Architecture;
+  /** Examples of it working, shown under "See it work". */
+  visuals?: ProjectVisual[];
   links: ProjectLink[];
+  /** Where it's covered in more depth elsewhere on the site. */
+  more?: SectionLink;
   placeholder: boolean;
 }
 
@@ -132,13 +195,6 @@ export interface AboutSection {
   placeholder: boolean;
 }
 
-export interface ProjectsSection {
-  kind: "projects";
-  intro: string;
-  projectSlugs: string[];
-  placeholder: boolean;
-}
-
 /**
  * What's known about how Marco uses a skill. Deliberately not a percentage, and only set where
  * his résumé or notes say so: no tier makes no claim either way.
@@ -214,29 +270,44 @@ export interface MemorySection {
   placeholder: boolean;
 }
 
+/** A drive in the archive: one category of projects. */
 export interface Drive {
   id: string;
   label: string;
+  /** A line on what the drive holds. */
+  blurb: string;
   category: ProjectCategory;
 }
 
+/** SSD: the big projects first, then what's being built, then every project by drive. */
 export interface ArchiveSection {
   kind: "archive";
   intro: string;
+  /** Slugs of the projects shown first, in full. */
+  highlights: string[];
+  /** Slug of the project being built right now. */
+  building: string;
   drives: Drive[];
   placeholder: boolean;
 }
 
 export interface ContactLink {
   label: string;
-  href?: string;
+  href: string;
+  /** The handle as people would type it, e.g. "github.com/maroc-dev". */
   detail: string;
+  /** What it's good for, in a few words. */
+  note: string;
 }
 
+/** I/O: how to reach Marco. Never includes his phone number. */
 export interface ContactSection {
   kind: "contact";
-  intro: string;
+  intro: string[];
+  email: string;
   links: ContactLink[];
+  /** The résumé PDF, a version made for the site without a phone number. */
+  resume: { href: string; detail: string; note: string };
   placeholder: boolean;
 }
 
@@ -360,13 +431,7 @@ export interface SystemsSection {
 }
 
 export type Section =
-  | AboutSection
-  | AiSection
-  | ProjectsSection
-  | MemorySection
-  | ArchiveSection
-  | ContactSection
-  | SystemsSection;
+  AboutSection | AiSection | MemorySection | ArchiveSection | ContactSection | SystemsSection;
 
 /** A selectable piece of hardware and the section it opens. */
 export interface HardwarePart {

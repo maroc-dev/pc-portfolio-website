@@ -23,8 +23,8 @@ test("browser back closes the window and forward reopens it", async ({ page }) =
 test("case study links go to the project page and back to the archive", async ({ page }) => {
   await page.goto("/?part=ssd");
   const archive = window(page, "Project Archives");
-  await archive.getByRole("tab", { name: /Databases and backend/ }).click();
-  await archive.getByRole("link", { name: "Read the case study" }).first().click();
+  await archive.getByRole("tab", { name: /Systems programming/ }).click();
+  await archive.getByRole("link", { name: "Open as a page" }).first().click();
   await expect(page).toHaveURL(/\/projects\//);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await page.getByRole("link", { name: "Back to the machine" }).click();

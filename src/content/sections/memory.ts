@@ -1,4 +1,3 @@
-import { photoSlot } from "../photos";
 import type { MemorySection } from "../types";
 
 /**
@@ -89,11 +88,18 @@ export const memory: MemorySection = {
       short: "Home cluster",
       title: "A private cloud out of old computers",
       story: [
-        "I'm taking the old computers I have lying around and joining them into a private compute cluster with Kubernetes.",
+        "I'm taking the old computers I have lying around and joining them into a private compute cluster with Kubernetes: an old Dell desktop, a Raspberry Pi 4, and an older gaming PC with a GTX 1060 and an Intel Core i7-3770.",
         "The plan is to give my friends free compute: Minecraft and other game servers, a home for old projects, private storage, hosting, whatever they need.",
         "It's for me too. I want the freedom to run my own programs in my own isolated, AWS-like environment, and the best way I know to learn cloud computing, cloud engineering and distributed systems is to run them myself.",
       ],
-      photo: photoSlot("The cluster, in progress"),
+      photo: {
+        placeholder: false,
+        src: "/systems/home-cluster.jpg",
+        width: 1200,
+        height: 900,
+        alt: "Computers on a carpeted floor in a dim room: a dark desktop tower with a small box on top, a keyboard and a monitor, with network cables and a router's green lights beside them.",
+        caption: "The cluster, in progress",
+      },
     },
     {
       id: "rutgers",
@@ -101,7 +107,7 @@ export const memory: MemorySection = {
       short: "Last semester",
       title: "My last semester at Rutgers",
       story: [
-        "I'm finishing my B.S. in Computer Science and graduating in January 2027. This semester it's Distributed Systems and Imaging and Multimedia.",
+        "I'm finishing my B.S. in Computer Science and graduating in December 2026. This semester it's Distributed Systems and Imaging and Multimedia.",
       ],
       more: { label: "Read about my time at Rutgers", part: "cpu", anchor: "about-education" },
     },

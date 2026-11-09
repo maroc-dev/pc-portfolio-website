@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import { THEME_BOOTSTRAP } from "@/state/use-theme-sync";
 import "./globals.css";
 
@@ -15,10 +16,12 @@ const archivo = Archivo({
 
 export const metadata: Metadata = {
   // absolute URLs for the link-preview image (set SITE_URL where the site is hosted)
-  metadataBase: new URL(process.env.SITE_URL ?? "https://marcoferreira.dev"),
+  metadataBase: new URL(SITE_URL),
   title: "Marco Ferreira — explore the machine",
   description:
     "An interactive portfolio: explore a PC on a desk, and each part tells you something about Marco Ferreira's work.",
+  // The day icon; useThemeSync swaps in the night one when the light switch flips.
+  icons: { icon: [{ url: "/icons/day.svg", type: "image/svg+xml" }] },
 };
 
 export const viewport: Viewport = {

@@ -1,4 +1,4 @@
-import { photoSlot } from "../photos";
+import { draftlyArchitecture, trainingArchitecture } from "../projects";
 import type { SystemsSection } from "../types";
 
 /**
@@ -47,70 +47,7 @@ export const systems: SystemsSection = {
         "Docker",
         "AWS",
       ],
-      architecture: {
-        cols: 3,
-        rows: 3,
-        nodes: [
-          {
-            id: "writers",
-            label: "Writers",
-            detail: "Editing one document together",
-            kind: "person",
-            col: 1,
-            row: 1,
-            rowSpan: 3,
-          },
-          {
-            id: "live",
-            label: "Live editing server",
-            detail: "Go, rooms, operational transformation",
-            kind: "service",
-            col: 2,
-            row: 1,
-          },
-          {
-            id: "api",
-            label: "Documents API",
-            detail: "Go, REST",
-            kind: "service",
-            col: 2,
-            row: 2,
-            rowSpan: 2,
-          },
-          {
-            id: "oplog",
-            label: "Operation log",
-            detail: "Every edit, in order",
-            kind: "store",
-            col: 3,
-            row: 1,
-          },
-          {
-            id: "postgres",
-            label: "PostgreSQL",
-            detail: "Users, documents, sharing",
-            kind: "store",
-            col: 3,
-            row: 2,
-          },
-          {
-            id: "s3",
-            label: "Amazon S3",
-            detail: "Document files",
-            kind: "store",
-            col: 3,
-            row: 3,
-          },
-        ],
-        edges: [
-          { from: "writers", to: "live", label: "edits", both: true },
-          { from: "writers", to: "api", label: "accounts" },
-          { from: "live", to: "oplog", label: "append", both: true },
-          { from: "api", to: "postgres" },
-          { from: "api", to: "s3" },
-        ],
-        groups: [{ label: "On AWS", col: 2, row: 1, colSpan: 2, rowSpan: 3 }],
-      },
+      architecture: draftlyArchitecture,
       links: [
         { label: "Try the live demo", href: "https://marcoferreira.dev/draftly/" },
         { label: "Draftly on GitHub", href: "https://github.com/Rich-T-kid/Draftly" },
@@ -123,7 +60,7 @@ export const systems: SystemsSection = {
       short: "Home cluster",
       tag: "Building now",
       summary:
-        "I'm turning the old computers I have lying around into one private compute cluster with Kubernetes.",
+        "I'm turning the old computers I have lying around into one private compute cluster with Kubernetes: an old Dell desktop, a Raspberry Pi 4, and an older gaming PC with a GTX 1060 and an Intel Core i7-3770.",
       builtTitle: "What it's for",
       built: [
         "Free compute for my friends: Minecraft and other game servers, a home for old projects, private storage and hosting.",
@@ -134,9 +71,17 @@ export const systems: SystemsSection = {
         "Cloud computing and cloud engineering from the hardware up, not just from a console.",
         "Running real services for real people on machines I own and maintain.",
         "Distributed systems in practice, alongside Distributed Systems at Rutgers.",
+        "Running one cluster across very different machines, including a Raspberry Pi, whose ARM processor needs its own builds of every container.",
       ],
       stack: ["Kubernetes", "Containers"],
-      photo: photoSlot("The cluster, in progress"),
+      photo: {
+        placeholder: false,
+        src: "/systems/home-cluster.jpg",
+        width: 1200,
+        height: 900,
+        alt: "Computers on a carpeted floor in a dim room: a dark desktop tower with a small box on top, a keyboard and a monitor, with network cables and a router's green lights beside them.",
+        caption: "The cluster, in progress",
+      },
       links: [],
       more: { label: "See where it stands in Active Memory", part: "ram", anchor: "now-cluster" },
     },
@@ -166,71 +111,7 @@ export const systems: SystemsSection = {
         { value: "0.0001", label: "final training loss, down from 9.94" },
       ],
       stack: ["Go", "RPC", "Replication", "Gradient descent"],
-      architecture: {
-        cols: 3,
-        rows: 3,
-        nodes: [
-          {
-            id: "coordinator",
-            label: "Coordinator",
-            detail: "Splits batches, retries slow workers",
-            kind: "service",
-            col: 1,
-            row: 1,
-            rowSpan: 2,
-          },
-          {
-            id: "worker-a",
-            label: "Worker",
-            detail: "Computes gradients",
-            kind: "service",
-            col: 2,
-            row: 1,
-          },
-          {
-            id: "worker-b",
-            label: "Worker",
-            detail: "Computes gradients",
-            kind: "service",
-            col: 2,
-            row: 2,
-          },
-          {
-            id: "trainer",
-            label: "Training loop",
-            detail: "Reads and writes the model",
-            kind: "service",
-            col: 1,
-            row: 3,
-          },
-          {
-            id: "primary",
-            label: "Primary",
-            detail: "Parameter server",
-            kind: "store",
-            col: 2,
-            row: 3,
-          },
-          {
-            id: "backup",
-            label: "Backup",
-            detail: "A copy of every write",
-            kind: "store",
-            col: 3,
-            row: 3,
-          },
-        ],
-        edges: [
-          { from: "coordinator", to: "worker-a", label: "slices", both: true },
-          { from: "coordinator", to: "worker-b", both: true },
-          { from: "trainer", to: "primary", label: "get, put", both: true },
-          { from: "primary", to: "backup", label: "forward", both: true },
-        ],
-        groups: [
-          { label: "Part 1: training", col: 1, row: 1, colSpan: 2, rowSpan: 2 },
-          { label: "Part 2: replicated model", col: 1, row: 3, colSpan: 3, rowSpan: 1 },
-        ],
-      },
+      architecture: trainingArchitecture,
       links: [
         {
           label: "Source on GitHub",

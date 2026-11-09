@@ -64,11 +64,14 @@ export function ArchDiagram({
   architecture,
   name,
   caption,
+  label,
 }: {
   architecture: Architecture;
   name: string;
   /** Says what was simplified, and why. */
   caption: string;
+  /** The figure's accessible name, when "<name> architecture" doesn't fit. */
+  label?: string;
 }) {
   const { cols, rows, nodes, edges, groups = [] } = architecture;
   const canvas = useRef<HTMLDivElement>(null);
@@ -124,7 +127,7 @@ export function ArchDiagram({
   };
 
   return (
-    <figure aria-label={`${name} architecture`} className="mt-6">
+    <figure aria-label={label ?? `${name} architecture`} className="isolate mt-6">
       <div className="border-line bg-panel overflow-x-auto rounded-md border">
         <div
           ref={canvas}

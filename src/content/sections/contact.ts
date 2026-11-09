@@ -1,13 +1,35 @@
 import type { ContactSection } from "../types";
 
+/**
+ * I/O: contact details from Marco's résumé, confirmed by him for the site on 2026-11-09. His
+ * phone number must never appear here. The posted PDF (Marco_Resume_2026-3.pdf, served as
+ * Marco_Ferreira_Resume_2026.pdf) is the version he made without it; check any replacement for a phone number before publishing it.
+ */
 export const contact: ContactSection = {
   kind: "contact",
-  intro: "Want to talk about a role, a project or this machine? Here's how to reach me.",
-  links: [
-    { label: "GitHub", href: "https://github.com/maroc-dev", detail: "github.com/maroc-dev" },
-    { label: "Email", detail: "Coming soon" },
-    { label: "LinkedIn", detail: "Coming soon" },
-    { label: "Résumé", detail: "Coming soon" },
+  intro: [
+    "I'm finishing my B.S. in Computer Science at Rutgers and building AI agent infrastructure at AT&T Labs.",
+    "Whether it's a role, a project or a question about this machine, I'd love to hear from you.",
   ],
-  placeholder: true,
+  email: "marco.a.ferreira.dev@gmail.com",
+  links: [
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/marco-ferreira-b270a3251",
+      detail: "linkedin.com/in/marco-ferreira-b270a3251",
+      note: "My work history, and a good place to message me",
+    },
+    {
+      label: "GitHub",
+      href: "https://github.com/maroc-dev",
+      detail: "github.com/maroc-dev",
+      note: "The code behind most of the projects on this site",
+    },
+  ],
+  resume: {
+    href: "/resume/Marco_Ferreira_Resume_2026.pdf",
+    detail: "Download my résumé (PDF)",
+    note: "One page, with my experience, projects and skills",
+  },
+  placeholder: false,
 };

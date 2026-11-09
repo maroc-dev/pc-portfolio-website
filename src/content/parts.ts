@@ -48,7 +48,7 @@ export const parts: readonly HardwarePart[] = [
     hardwareName: "Storage",
     heading: "Project Archives",
     topic: "Projects",
-    blurb: "Everything I've built, sorted into drives.",
+    blurb: "My biggest projects, what I'm building now, and everything else by category.",
     appName: "files.app",
     section: archive,
   },
@@ -94,6 +94,9 @@ export function sectionAnchors(section: Section): string[] {
   }
   if (section.kind === "memory") {
     return ["memory-now", "memory-skills", ...section.now.map((item) => nowAnchor(item.id))];
+  }
+  if (section.kind === "archive") {
+    return ["archive-highlights", "archive-building", "archive-drives"];
   }
   if (section.kind === "systems") {
     return section.projects.map((project) => systemsAnchor(project.id));
