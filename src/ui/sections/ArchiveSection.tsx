@@ -60,7 +60,25 @@ export function ArchiveSection({ section }: { section: Archive }) {
         className="border-line mt-4 scroll-mt-20 border-t pt-9"
       >
         <SubHeading id="archive-drives-title">All projects</SubHeading>
-        <div role="tablist" aria-label="Drives" className="mt-5 flex flex-wrap gap-2.5">
+        <div
+          role="tablist"
+          aria-label="Drives"
+          onKeyDown={(e) => {
+            // Arrow keys move between drives, as in any tab list.
+            const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+            const ids = section.drives.map((d) => d.id);
+            const at = ids.indexOf(drive?.id ?? "");
+            let next: number | undefined;
+            if (step) next = (at + step + ids.length) % ids.length;
+            else if (e.key === "Home") next = 0;
+            else if (e.key === "End") next = ids.length - 1;
+            if (next === undefined) return;
+            e.preventDefault();
+            setActive(ids[next]);
+            document.getElementById(`${baseId}-tab-${ids[next]}`)?.focus();
+          }}
+          className="mt-5 flex flex-wrap gap-2.5"
+        >
           {section.drives.map((d) => (
             <button
               key={d.id}
@@ -68,6 +86,7 @@ export function ArchiveSection({ section }: { section: Archive }) {
               role="tab"
               id={`${baseId}-tab-${d.id}`}
               aria-selected={d.id === drive?.id}
+              tabIndex={d.id === drive?.id ? 0 : -1}
               aria-controls={`${baseId}-panel`}
               onClick={() => setActive(d.id)}
               className={`tape text-sm transition-[transform,background-color] duration-150 ${

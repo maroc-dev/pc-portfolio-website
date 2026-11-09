@@ -87,7 +87,6 @@ export function ProjectBlock({
       <div className="mt-4 flex flex-wrap items-baseline gap-x-5 gap-y-2">
         <ExternalLinks links={project.links} />
         <Link
-          prefetch
           href={`/projects/${project.slug}`}
           className="text-muted hover:text-fg underline underline-offset-4"
         >

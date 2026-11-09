@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 
 /*
  * A made-up worked example of operational transformation, following Draftly's rule: an insert
@@ -59,10 +59,11 @@ function Step({ who, what, children }: { who: string; what: string; children: Re
 }
 
 export function OtExample() {
+  const titleId = useId();
   return (
-    <figure aria-labelledby="ot-example-title" className="mt-9">
+    <figure aria-labelledby={titleId} className="mt-9">
       <p className="flex flex-wrap items-center gap-3">
-        <span id="ot-example-title" className="type-label">
+        <span id={titleId} className="type-label">
           Two writers typing at once
         </span>
         <span className="tape text-xs">Example</span>
