@@ -24,5 +24,11 @@ test("contact shows email, LinkedIn and GitHub, and never a phone number", async
     "marco.a.ferreira.dev@gmail.com",
   );
 
+  const resume = contact.getByRole("link", { name: "Download my résumé (PDF)" });
+  const href = await resume.getAttribute("href");
+  const response = await page.request.get(href!);
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toContain("application/pdf");
+
   await expect(contact).not.toContainText(/\d{3}[-. )]+\d{3}[-. ]\d{4}/);
 });

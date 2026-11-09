@@ -100,7 +100,16 @@ export function ContactSection({ section }: { section: Contact }) {
         ))}
         <li className="grid gap-1 py-4 @xl:grid-cols-[9rem_1fr] @xl:items-baseline @xl:gap-6">
           <span className="type-label">Résumé</span>
-          <span className="text-muted">{section.resume}</span>
+          <span>
+            <a
+              href={section.resume.href}
+              download
+              className="text-accent font-semibold underline decoration-2 underline-offset-4"
+            >
+              {section.resume.detail}
+            </a>
+            <span className="text-muted mt-1 block text-sm">{section.resume.note}</span>
+          </span>
         </li>
       </ul>
     </>

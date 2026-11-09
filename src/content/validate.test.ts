@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { parts } from "./parts";
 import { projects } from "./projects";
@@ -125,10 +126,16 @@ describe("content registry", () => {
     expect(validateContent(broken)).toContain("Drive Z has no projects");
   });
 
+  it("links a résumé that's really there", () => {
+    const section = parts.find((p) => p.id === "io")!.section;
+    if (section.kind !== "contact") throw new Error("I/O should be the contact section");
+    expect(existsSync(`public${section.resume.href}`)).toBe(true);
+  });
+
   it("never lets a phone number into the content", () => {
     const broken = parts.map((p) =>
       p.section.kind === "contact"
-        ? { ...p, section: { ...p.section, resume: "Call me at 555-123-4567." } }
+        ? { ...p, section: { ...p.section, intro: ["Call me at 555-123-4567."] } }
         : p,
     );
     expect(validateContent(broken)).toContain("Content contains a phone number");

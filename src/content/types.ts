@@ -313,8 +313,8 @@ export interface ContactSection {
   intro: string[];
   email: string;
   links: ContactLink[];
-  /** How to get the résumé (the PDF has his phone number, so it isn't posted). */
-  resume: string;
+  /** The résumé PDF, a version made for the site without a phone number. */
+  resume: { href: string; detail: string; note: string };
   placeholder: boolean;
 }
 

@@ -68,7 +68,7 @@ export const parts: readonly HardwarePart[] = [
     hardwareName: "Front ports",
     heading: "Connect",
     topic: "Contact",
-    blurb: "How to reach me: email, LinkedIn and GitHub.",
+    blurb: "How to reach me, plus my résumé.",
     appName: "connect.app",
     section: contact,
   },

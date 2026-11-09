@@ -1,9 +1,9 @@
 import type { ContactSection } from "../types";
 
 /**
- * I/O: contact details from Marco's résumé (Marco_Resume_2026-1.pdf), confirmed by him for the
- * site on 2026-11-09. His phone number is on the résumé but must never appear here, which is
- * also why the résumé PDF itself isn't posted.
+ * I/O: contact details from Marco's résumé, confirmed by him for the site on 2026-11-09. His
+ * phone number must never appear here. The posted PDF (Marco_Resume_2026-2.pdf) is the version
+ * he made without it; check any replacement for a phone number before publishing it.
  */
 export const contact: ContactSection = {
   kind: "contact",
@@ -26,6 +26,10 @@ export const contact: ContactSection = {
       note: "The code behind most of the projects on this site",
     },
   ],
-  resume: "Email me and I'll send the latest copy.",
+  resume: {
+    href: "/resume/marco-ferreira-resume.pdf",
+    detail: "Download my résumé (PDF)",
+    note: "One page, with my experience, projects and skills",
+  },
   placeholder: false,
 };
