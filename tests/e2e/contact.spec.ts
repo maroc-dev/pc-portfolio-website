@@ -36,7 +36,7 @@ test("contact shows email, LinkedIn and GitHub, and never a phone number", async
 
 test("the header offers the résumé as a quick download", async ({ page }) => {
   await page.goto("/");
-  const resume = page.getByRole("banner").getByRole("link", { name: "Download my résumé (PDF)" });
+  const resume = page.locator("header").getByRole("link", { name: "Download my résumé (PDF)" });
   await expect(resume).toHaveAttribute("href", "/resume/Marco_Ferreira_Resume_2026.pdf");
   await expect(resume).toHaveAttribute("download", "Marco_Ferreira_Resume_2026.pdf");
 });
