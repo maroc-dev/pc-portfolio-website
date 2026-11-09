@@ -300,14 +300,21 @@ export interface ArchiveSection {
 
 export interface ContactLink {
   label: string;
-  href?: string;
+  href: string;
+  /** The handle as people would type it, e.g. "github.com/maroc-dev". */
   detail: string;
+  /** What it's good for, in a few words. */
+  note: string;
 }
 
+/** I/O: how to reach Marco. Never includes his phone number. */
 export interface ContactSection {
   kind: "contact";
-  intro: string;
+  intro: string[];
+  email: string;
   links: ContactLink[];
+  /** How to get the résumé (the PDF has his phone number, so it isn't posted). */
+  resume: string;
   placeholder: boolean;
 }
 

@@ -125,6 +125,15 @@ describe("content registry", () => {
     expect(validateContent(broken)).toContain("Drive Z has no projects");
   });
 
+  it("never lets a phone number into the content", () => {
+    const broken = parts.map((p) =>
+      p.section.kind === "contact"
+        ? { ...p, section: { ...p.section, resume: "Call me at 555-123-4567." } }
+        : p,
+    );
+    expect(validateContent(broken)).toContain("Content contains a phone number");
+  });
+
   it("reports a missing part", () => {
     expect(validateContent(parts.filter((p) => p.id !== "ram"))).toContain(
       'Part "ram" has no registry entry',

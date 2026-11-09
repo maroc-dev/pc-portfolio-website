@@ -9,6 +9,8 @@ import {
 } from "./types";
 
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+/** A North American phone number, e.g. 555-123-4567 or (555) 123 4567. */
+const PHONE = /\(?\b\d{3}\)?[-. ]\d{3}[-. ]\d{4}\b/;
 
 /** Every box fits the grid without sharing a cell, and every arrow joins two real boxes. */
 export function validateArchitecture(arch: Architecture, where: string): string[] {
@@ -129,6 +131,16 @@ export function validateContent(
         }
       }
     }
+    if (section.kind === "contact") {
+      if (!/^[^\s@]+@[^\s@]+\.[a-z]+$/i.test(section.email)) {
+        problems.push(`Contact email "${section.email}" doesn't look like an email address`);
+      }
+      for (const link of section.links) {
+        if (!link.href.startsWith("https://")) {
+          problems.push(`Contact link "${link.label}" is not https`);
+        }
+      }
+    }
     if (section.kind === "systems") {
       const ids = section.projects.map((p) => p.id);
       if (new Set(ids).size !== ids.length) problems.push("Duplicate systems project ids");
@@ -181,6 +193,11 @@ export function validateContent(
     const where = `Project "${project.slug}"`;
     if (project.diagram) problems.push(...validateArchitecture(project.diagram, where));
     if (project.more) problems.push(...validateSectionLink(project.more, where, registry));
+  }
+
+  // Marco's phone number must never be published: nothing shaped like one, anywhere.
+  if (PHONE.test(JSON.stringify([registry, projectList]))) {
+    problems.push("Content contains a phone number");
   }
 
   return problems;
