@@ -55,6 +55,11 @@ Every project gets the same block: a tape tag for where it's from, what it is, h
 simplified box diagram, its stack and its links, plus a page of its own. Projects are written
 from their repos; empty repos, forks, private work and test builds are left out.
 
+Under "See it work", projects show themselves working: a recorded terminal session, a heap
+drawn chunk by chunk, a parsed command list, a results table, the pixels a classifier reads.
+Every example comes from running the project or from its repo's own output, never made up;
+terminals stay dark in both themes, like real ones.
+
 ## Systems architecture (server)
 
 Each systems project is shown in full rather than folded away: a tape tag for where it's from,
