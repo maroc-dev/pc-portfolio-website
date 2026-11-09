@@ -8,15 +8,16 @@ export const about: AboutSection = {
   kind: "about",
   portrait: {
     placeholder: false,
-    src: "/about/marco.jpg",
+    src: "/about/marco-portrait.jpg",
     width: 602,
     height: 752,
     alt: "Marco in a dark suit and tie, smiling, against a grey backdrop.",
     caption: "Marco",
   },
   intro: [
-    "I build systems that people actually use, and I like them best when they quietly make someone's day easier. These days that means AI agents, the gateways that keep them secure, and the distributed plumbing underneath.",
-    "I got here by trying something new every week, spending a lot of very long days on campus (the good kind), and surviving a detour I never planned. Here's the route.",
+    "Ever since I was a kid, I've dreamed of building systems people actually use. Walking past someone using something I built, and seeing it make their day easier, is why I'm proud to be an engineer. Today that means AI agents and the gateways that keep them secure.",
+    "I try to learn something new every week, whether it's on a long day on campus or a side project on the weekend. Learning should never stop, and it should never be confined to a classroom.",
+    "Here's my journey, and how I kept learning in and out of the classroom.",
   ],
   journey: [
     {
@@ -27,7 +28,7 @@ export const about: AboutSection = {
       story: [
         "I wrote my first programs in high school, and soon added a part-time programming course at the Ocean County Vocational Technical School. That's where I picked up Java, Python and the basics of web design.",
         "It turned into competitions, and the competitions turned into results.",
-        "More than any language, those years taught me how to learn. On my own I worked through data structures and algorithms, and set myself one rule: explore something new every week.",
+        "More than any language, those years at OCVTS taught me how to learn. On my own I worked through data structures and algorithms, and set myself one rule: explore something new every week.",
       ],
       placings: [
         { place: "3rd", event: "Statewide Java software engineering competition" },
@@ -78,11 +79,11 @@ export const about: AboutSection = {
       ],
       photo: {
         placeholder: false,
-        src: "/about/att-interns.jpg",
-        width: 1200,
-        height: 900,
-        alt: "About fifteen interns gathered on a stage around an AT&T flag, with Marco in the middle of the group.",
-        caption: "The interns I mentored at AT&T. I'm in the middle.",
+        src: "/about/att-intern-presentation.jpg",
+        width: 1078,
+        height: 810,
+        alt: "Marco standing beside a demo table with a laptop and two monitors showing his intern project.",
+        caption: "Presenting my intern project at AT&T Labs",
       },
       more: { label: "See how the diagram tool works", part: "gpu", anchor: "ai-network-diagrams" },
     },
@@ -94,6 +95,14 @@ export const about: AboutSection = {
       story: [
         "As a contractor, first through Externetworks and now as a senior software engineer through HCLTech, the projects got bigger and so did the systems. I also mentored interns, leading a team of five.",
       ],
+      photo: {
+        placeholder: false,
+        src: "/about/att-interns.jpg",
+        width: 1200,
+        height: 900,
+        alt: "About fifteen interns gathered on a stage around an AT&T flag, with Marco in the middle of the group.",
+        caption: "The interns I mentored. I'm in the middle.",
+      },
       more: { label: "See how these systems work", part: "gpu", anchor: "ai-professional" },
       built: [
         {
