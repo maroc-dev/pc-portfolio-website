@@ -163,6 +163,7 @@ export const projects: Project[] = [
     diagram: draftlyArchitecture,
     visuals: [{ kind: "ot-example" }],
     links: [
+      { label: "Try the live demo", href: "https://marcoferreira.dev/draftly/" },
       { label: "Draftly on GitHub", href: "https://github.com/Rich-T-kid/Draftly" },
       { label: "Richard on GitHub", href: "https://github.com/Rich-T-kid" },
     ],
@@ -236,6 +237,7 @@ export const projects: Project[] = [
       ],
     },
     links: [
+      { label: "Try the live demo", href: "https://marcoferreira.dev/optisql/" },
       { label: "OptiSQL on GitHub", href: "https://github.com/Rich-T-kid/OptiSQL" },
       { label: "Richard on GitHub", href: "https://github.com/Rich-T-kid" },
     ],
