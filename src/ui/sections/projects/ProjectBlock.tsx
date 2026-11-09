@@ -3,6 +3,7 @@ import type { Project } from "@/content/types";
 import { ArchDiagram } from "../ArchDiagram";
 import { BuiltWith, DIAGRAM_CAPTION, ExternalLinks, Points, Stats } from "../ProjectParts";
 import { SectionLinkButton } from "../SectionLinkButton";
+import { ProjectVisuals } from "./ProjectVisuals";
 
 /** The element id of a project shown in the archive. */
 export function projectAnchor(slug: string): string {
@@ -58,7 +59,7 @@ export function ProjectBlock({
 
       {project.highlights && (
         <div className="mt-6">
-          <Points title="Highlights" points={project.highlights} />
+          <Points title="Highlights" points={project.highlights} level={5} />
         </div>
       )}
 
@@ -70,7 +71,18 @@ export function ProjectBlock({
         />
       )}
 
-      <BuiltWith stack={project.stack} className="mt-6" />
+      {project.visuals && (
+        <section aria-labelledby={`${projectAnchor(project.slug)}-work`} className="mt-9">
+          <h5 id={`${projectAnchor(project.slug)}-work`} className="type-display text-[1.25rem]">
+            See it work
+          </h5>
+          <div className="mt-4">
+            <ProjectVisuals visuals={project.visuals} level={6} />
+          </div>
+        </section>
+      )}
+
+      <BuiltWith stack={project.stack} className="mt-7" />
 
       <div className="mt-4 flex flex-wrap items-baseline gap-x-5 gap-y-2">
         <ExternalLinks links={project.links} />

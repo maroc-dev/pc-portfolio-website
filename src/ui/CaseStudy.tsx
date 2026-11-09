@@ -5,6 +5,7 @@ import type { Project } from "@/content/types";
 import { ArchDiagram } from "./sections/ArchDiagram";
 import { DraftNote } from "./sections/DraftNote";
 import { DIAGRAM_CAPTION, ExternalLinks, Points, Stats } from "./sections/ProjectParts";
+import { ProjectVisuals } from "./sections/projects/ProjectVisuals";
 
 /**
  * A project on its own page, laid out like a spec sheet: the title block on top, the write-up
@@ -69,7 +70,9 @@ export function CaseStudy({ project }: { project: Project }) {
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
-            {project.highlights && <Points title="Highlights" points={project.highlights} />}
+            {project.highlights && (
+              <Points title="Highlights" points={project.highlights} level={2} />
+            )}
           </div>
         </div>
 
@@ -79,6 +82,17 @@ export function CaseStudy({ project }: { project: Project }) {
             name={project.title}
             caption={project.diagram.caption ?? DIAGRAM_CAPTION}
           />
+        )}
+
+        {project.visuals && (
+          <section aria-labelledby="see-it-work" className="mt-12">
+            <h2 id="see-it-work" className="type-display text-[1.75rem]">
+              See it work
+            </h2>
+            <div className="mt-5">
+              <ProjectVisuals visuals={project.visuals} level={3} />
+            </div>
+          </section>
         )}
       </article>
     </div>

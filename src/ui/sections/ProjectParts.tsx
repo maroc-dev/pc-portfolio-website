@@ -7,10 +7,20 @@ export const DIAGRAM_CAPTION = "Simplified to the main pieces and how they talk 
 const LEAD = /^([^:.]{2,32}): /;
 
 /** A titled list of points, each marked with a short powder dash. */
-export function Points({ title, points }: { title: string; points: string[] }) {
+export function Points({
+  title,
+  points,
+  level = 4,
+}: {
+  title: string;
+  points: string[];
+  /** Heading level of the title, one below whatever the list sits under. */
+  level?: 2 | 3 | 4 | 5;
+}) {
+  const Heading = `h${level}` as const;
   return (
     <div>
-      <h4 className="type-label text-[0.9375rem]">{title}</h4>
+      <Heading className="type-label text-[0.9375rem]">{title}</Heading>
       <ul className="mt-3 max-w-[70ch] space-y-2.5">
         {points.map((point) => {
           const lead = LEAD.exec(point);
