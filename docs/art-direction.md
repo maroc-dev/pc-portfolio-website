@@ -47,6 +47,14 @@ are plain boxes, data stores carry a powder-blue top edge, and outside services 
 Every diagram says it is simplified, and why: internal details are left out to protect
 proprietary and confidential work. Example outputs (like the network diagram) use made-up data.
 
+## Projects (SSD)
+
+The two big projects (Draftly and OptiSQL) come first and in full, then GooseDB under "Building
+now" with its tag in yellow, then every other project on a lettered drive, one category each.
+Every project gets the same block: a tape tag for where it's from, what it is, how it works, a
+simplified box diagram, its stack and its links, plus a page of its own. Projects are written
+from their repos; empty repos, forks, private work and test builds are left out.
+
 ## Systems architecture (server)
 
 Each systems project is shown in full rather than folded away: a tape tag for where it's from,
