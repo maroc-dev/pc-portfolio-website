@@ -21,9 +21,9 @@ export const ai: AiSection = {
           "Turns a prompt or a router configuration into a network diagram. Built for Cisco and Juniper routers and networks.",
         points: [
           "Built for Cisco and Juniper routers and networks: it reads their configurations, or a plain-language prompt, and draws the topology.",
-          "Produces editable Draw.io diagrams with both Layer 2 and Layer 3 connections, and now handles more than 100 nodes.",
+          "Produces editable Draw.io diagrams with both Layer 2 and Layer 3 connections, and handles up to 50 Cisco network nodes.",
           "Started as my internship project, and getting it right meant working closely with network engineers.",
-          "Generated thousands of diagrams to fine-tune a multimodal model to read network diagrams better, and made the diagram workflow about 500% more efficient.",
+          "Generated over 1,000 high-quality training images for internal model development, and made the diagram workflow about 500% more efficient.",
         ],
         stack: ["LLMs", "Agentic workflow", "Draw.io"],
         architecture: {
@@ -439,7 +439,7 @@ export const ai: AiSection = {
         name: "Private assistant for Joint Base McGuire-Dix-Lakehurst",
         org: "Ocean County College",
         summary:
-          "A completely private assistant that answers from more than 1,000 PDFs of manuals and regulations, and cites its sources.",
+          "A completely private assistant that answers from over 10,000 pages of public documents, and cites its sources.",
         points: [
           "Led a team of five developers building it for the base.",
           "Understands text and voice, with web search, PDF querying and table extraction.",
@@ -496,7 +496,7 @@ export const ai: AiSection = {
             {
               id: "retrieval",
               label: "LlamaIndex and PostgreSQL",
-              detail: "1,000+ PDFs, cited answers",
+              detail: "10,000+ pages, cited answers",
               kind: "store",
               col: 4,
               row: 2,

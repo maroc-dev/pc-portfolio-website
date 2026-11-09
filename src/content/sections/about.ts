@@ -99,7 +99,7 @@ export const about: AboutSection = {
         {
           name: "Network diagrams, at scale",
           detail:
-            "Grew my internship tool past 100 nodes, and used it to generate thousands of network diagrams for fine-tuning a multimodal model to read them better.",
+            "Grew my internship tool to handle up to 50 Cisco network nodes, and used it to generate over 1,000 training images for internal model development.",
         },
         {
           name: "Personal agents",
@@ -165,7 +165,7 @@ export const about: AboutSection = {
       when: "Today",
       title: "Back at full speed",
       story: [
-        "I'm finishing my B.S. in Computer Science at Rutgers, graduating in January 2027, with Distributed Systems and Imaging and Multimedia on this semester's schedule. At work, I build AI agent infrastructure at AT&T Labs.",
+        "I'm finishing my B.S. in Computer Science at Rutgers, graduating in December 2026, with Distributed Systems and Imaging and Multimedia on this semester's schedule. At work, I build AI agent infrastructure at AT&T Labs.",
       ],
       more: { label: "See what I'm working on now", part: "ram", anchor: "memory-now" },
     },
@@ -175,8 +175,8 @@ export const about: AboutSection = {
       name: "Rutgers University",
       degree: "B.S. in Computer Science",
       where: "New Brunswick, NJ",
-      when: "2024 to January 2027",
-      gpa: "3.62",
+      when: "2024 to December 2026",
+      gpa: "3.7",
       honours: ["Dean's List, 2024"],
       summary:
         "Rutgers connected me with people who know far more than I do about fields I'd never touched, and each of them taught me something. These are the courses that shaped me most.",
@@ -257,7 +257,7 @@ export const about: AboutSection = {
         "Founded the Chess Club: more than 15 members at our weekly meetings, and a tournament we organized together.",
         "Led a team of five developers on projects for Joint Base McGuire-Dix-Lakehurst, work that grew into a continuing relationship between the college and the base.",
         "Built a self-hosted sign-in kiosk for the base, with a MySQL database and CSV export.",
-        "Built a completely private, locally run AI assistant over more than 1,000 PDFs of training manuals and regulations. Vector search kept answers accurate and cited, with web search and speech-to-text built in.",
+        "Built a completely private, locally run AI assistant over more than 10,000 pages of public documents. Vector search kept answers accurate and cited, with web search and speech-to-text built in.",
       ],
       photos: [
         {
