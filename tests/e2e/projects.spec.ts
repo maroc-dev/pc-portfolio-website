@@ -1,25 +1,35 @@
 import { expect, test } from "@playwright/test";
 import { window } from "./helpers";
 
-test("projects lead with the highlights, then GooseDB, then every drive", async ({ page }) => {
+test("projects open with an overview of the highlights, each one a jump", async ({ page }) => {
   await page.goto("/?part=ssd");
   const archive = window(page, "Project Archives");
   const contents = archive.getByRole("navigation", { name: "Project Archives" });
   await expect(contents.getByRole("button")).toHaveText([
-    "Highlights",
-    "Building now",
+    "Draftly",
+    "OptiSQL",
+    "GooseDB",
     "All projects",
   ]);
 
-  // The two big projects come first, each with its diagram.
+  // The overview names each highlight with a one-line description.
+  const glance = archive.getByRole("list", { name: "Highlights at a glance" });
+  await expect(glance.getByRole("button")).toHaveCount(3);
+  await expect(glance).toContainText("in-memory query execution engine");
+
+  // All three highlights are shown in full, each with its diagram.
   const highlights = archive.locator("#archive-highlights");
-  await expect(highlights.getByRole("article")).toHaveCount(2);
-  await expect(highlights.getByRole("article", { name: "Draftly" })).toBeVisible();
-  await expect(highlights.getByRole("article", { name: "OptiSQL" })).toBeVisible();
+  await expect(highlights.getByRole("article")).toHaveCount(3);
+  for (const name of ["Draftly", "OptiSQL", "GooseDB"]) {
+    await expect(highlights.getByRole("article", { name })).toBeVisible();
+  }
   await expect(highlights.getByRole("figure", { name: "OptiSQL architecture" })).toContainText(
     "Physical optimizer",
   );
-  await expect(archive.locator("#archive-building")).toContainText("GooseDB");
+
+  // Choosing one in the overview jumps to its write-up.
+  await glance.getByRole("button", { name: /GooseDB/ }).click();
+  await expect(highlights.getByRole("heading", { name: "GooseDB", level: 4 })).toBeInViewport();
 
   // Featured projects aren't repeated on the drives.
   await archive.getByRole("tab", { name: /AI and machine learning/ }).click();

@@ -1,14 +1,14 @@
 import type { ArchiveSection } from "../types";
 
 /**
- * SSD: the two big projects, then what's being built, then every project on its drive. Each
- * drive is one category; projects already shown above it aren't repeated.
+ * SSD: a quick overview of the three headline projects, each in full, then every other project
+ * on its drive. Each drive is one category; the headline projects aren't repeated there.
  */
 export const archive: ArchiveSection = {
   kind: "archive",
   intro:
     "Everything I've built and kept, from the big team projects to the class assignments that taught me how computers actually work. Each one has a short explanation, a diagram of how it fits together and the stack behind it.",
-  highlights: ["draftly", "optisql"],
+  highlights: ["draftly", "optisql", "goosedb"],
   building: "goosedb",
   drives: [
     {

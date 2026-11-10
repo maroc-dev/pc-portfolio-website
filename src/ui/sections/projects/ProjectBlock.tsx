@@ -1,14 +1,10 @@
 import Link from "next/link";
+import { projectAnchor } from "@/content/parts";
 import type { Project } from "@/content/types";
 import { ArchDiagram } from "../ArchDiagram";
 import { BuiltWith, DIAGRAM_CAPTION, ExternalLinks, Points, Stats } from "../ProjectParts";
 import { SectionLinkButton } from "../SectionLinkButton";
 import { ProjectVisuals } from "./ProjectVisuals";
-
-/** The element id of a project shown in the archive. */
-export function projectAnchor(slug: string): string {
-  return `project-${slug}`;
-}
 
 /**
  * One project in full: what it is, how it works, a diagram, the stack and its links. Highlights

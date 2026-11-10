@@ -279,13 +279,16 @@ export interface Drive {
   category: ProjectCategory;
 }
 
-/** SSD: the big projects first, then what's being built, then every project by drive. */
+/**
+ * SSD: a short overview of the headline projects, then each of them in full, then every other
+ * project by drive.
+ */
 export interface ArchiveSection {
   kind: "archive";
   intro: string;
-  /** Slugs of the projects shown first, in full. */
+  /** Slugs of the headline projects, introduced at the top and shown first, in full. */
   highlights: string[];
-  /** Slug of the project being built right now. */
+  /** The highlight that's being built right now: its tag wears yellow tape. */
   building: string;
   drives: Drive[];
   placeholder: boolean;
