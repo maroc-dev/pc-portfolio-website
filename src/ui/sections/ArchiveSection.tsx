@@ -1,28 +1,35 @@
 "use client";
 
 import { useId, useState } from "react";
-import { getProject, getProjects, projects } from "@/content/projects";
+import { projectAnchor } from "@/content/parts";
+import { getProjects, projects } from "@/content/projects";
 import type { ArchiveSection as Archive } from "@/content/types";
+import { prefersReducedMotion } from "@/lib/motion/use-reduced-motion";
 import { JumpBar } from "./JumpBar";
 import { ProjectBlock } from "./projects/ProjectBlock";
 import { SubHeading } from "./SubHeading";
 
-const PARTS = [
-  { id: "archive-highlights", label: "Highlights" },
-  { id: "archive-building", label: "Building now" },
-  { id: "archive-drives", label: "All projects" },
-];
+function jumpTo(id: string) {
+  document
+    .getElementById(id)
+    ?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+}
 
 /**
- * SSD: the two big projects in full, then the one being built, then every other project sorted
- * into drives, browsed with tabs labelled like the drives themselves.
+ * SSD: a quick overview of the headline projects (each one a jump to its write-up), then each of
+ * them in full, then every other project sorted into drives, browsed with tabs labelled like the
+ * drives themselves.
  */
 export function ArchiveSection({ section }: { section: Archive }) {
   const [active, setActive] = useState(section.drives[0]?.id);
   const baseId = useId();
   const drive = section.drives.find((d) => d.id === active) ?? section.drives[0];
-  const featured = [...section.highlights, section.building];
-  const building = getProject(section.building);
+  const featured = section.highlights;
+  const headline = getProjects(section.highlights);
+  const contents = [
+    ...headline.map((p) => ({ id: projectAnchor(p.slug), label: p.title })),
+    { id: "archive-drives", label: "All projects" },
+  ];
   const onDrive = drive
     ? projects.filter((p) => p.category === drive.category && !featured.includes(p.slug))
     : [];
@@ -30,7 +37,26 @@ export function ArchiveSection({ section }: { section: Archive }) {
   return (
     <div>
       <p className="max-w-[62ch] text-[1.0625rem] leading-relaxed">{section.intro}</p>
-      <JumpBar label="Project Archives" items={PARTS} className="mt-8" />
+
+      <ul aria-label="Highlights at a glance" className="mt-7 grid gap-3 @2xl:grid-cols-3">
+        {headline.map((project) => (
+          <li key={project.slug} className="flex">
+            <button
+              type="button"
+              onClick={() => jumpTo(projectAnchor(project.slug))}
+              className="group border-line bg-base hover:border-powder flex h-full w-full flex-col items-start rounded-md border p-4 text-left transition-colors"
+            >
+              <span className="type-label text-lg">{project.title}</span>
+              <span className="text-muted mt-1.5 text-sm leading-snug">{project.summary}</span>
+              <span className="text-accent mt-auto pt-3 text-sm font-semibold underline decoration-2 underline-offset-4">
+                Jump to {project.title}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <JumpBar label="Project Archives" items={contents} className="mt-8" />
 
       <section
         id="archive-highlights"
@@ -38,21 +64,15 @@ export function ArchiveSection({ section }: { section: Archive }) {
         className="mt-9 scroll-mt-20"
       >
         <SubHeading id="archive-highlights-title">Highlights</SubHeading>
-        {getProjects(section.highlights).map((project) => (
-          <ProjectBlock key={project.slug} project={project} size="large" />
+        {headline.map((project) => (
+          <ProjectBlock
+            key={project.slug}
+            project={project}
+            size="large"
+            active={project.slug === section.building}
+          />
         ))}
       </section>
-
-      {building && (
-        <section
-          id="archive-building"
-          aria-labelledby="archive-building-title"
-          className="border-line mt-4 scroll-mt-20 border-t pt-9"
-        >
-          <SubHeading id="archive-building-title">Building now</SubHeading>
-          <ProjectBlock project={building} size="large" active />
-        </section>
-      )}
 
       <section
         id="archive-drives"

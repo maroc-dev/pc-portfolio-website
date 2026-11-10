@@ -96,12 +96,17 @@ export function sectionAnchors(section: Section): string[] {
     return ["memory-now", "memory-skills", ...section.now.map((item) => nowAnchor(item.id))];
   }
   if (section.kind === "archive") {
-    return ["archive-highlights", "archive-building", "archive-drives"];
+    return ["archive-highlights", "archive-drives", ...section.highlights.map(projectAnchor)];
   }
   if (section.kind === "systems") {
     return section.projects.map((project) => systemsAnchor(project.id));
   }
   return [];
+}
+
+/** The element id of a project shown in the archive. */
+export function projectAnchor(slug: string): string {
+  return `project-${slug}`;
 }
 
 /** The element id of a project in the systems section. */

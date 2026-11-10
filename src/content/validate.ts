@@ -76,7 +76,12 @@ export function validateContent(
   for (const part of registry) {
     const { section } = part;
     if (section.kind === "archive") {
-      const featured = [...section.highlights, section.building];
+      const featured = section.highlights;
+      if (!featured.includes(section.building)) {
+        problems.push(
+          `Part "${part.id}" is building "${section.building}", which isn't a highlight`,
+        );
+      }
       for (const slug of featured) {
         if (!projectList.some((p) => p.slug === slug)) {
           problems.push(`Part "${part.id}" features unknown project "${slug}"`);
