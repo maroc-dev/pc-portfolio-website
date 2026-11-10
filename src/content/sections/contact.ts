@@ -2,7 +2,7 @@ import type { ContactSection } from "../types";
 
 /**
  * I/O: contact details from Marco's résumé, confirmed by him for the site on 2026-11-09. His
- * phone number must never appear here. The posted PDF (Marco_Resume_2026-4.pdf, served as
+ * phone number must never appear here. The posted PDF (Marco_Resume_2026-5.pdf, served as
  * Marco_Ferreira_Resume_2026.pdf) is the version he made without it; check any replacement for a phone number before publishing it.
  */
 export const contact: ContactSection = {
