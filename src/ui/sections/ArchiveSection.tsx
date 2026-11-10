@@ -46,12 +46,7 @@ export function ArchiveSection({ section }: { section: Archive }) {
               onClick={() => jumpTo(projectAnchor(project.slug))}
               className="group border-line bg-base hover:border-powder flex h-full w-full flex-col items-start rounded-md border p-4 text-left transition-colors"
             >
-              <span
-                className={`tape text-xs ${project.slug === section.building ? "" : "tape-paper"}`}
-              >
-                {project.tag}
-              </span>
-              <span className="type-label mt-3 text-lg">{project.title}</span>
+              <span className="type-label text-lg">{project.title}</span>
               <span className="text-muted mt-1.5 text-sm leading-snug">{project.summary}</span>
               <span className="text-accent mt-auto pt-3 text-sm font-semibold underline decoration-2 underline-offset-4">
                 Jump to {project.title}
